@@ -34,6 +34,24 @@ class UserSignupForm(UserCreationForm):
             raise forms.ValidationError("Email already has an account.")
         return email
 
+class UserLoginForm(forms.Form):
+    entry = forms.CharField( label = 'Username/Email')
+    password = forms.CharField(max_length=32, label='password', widget=forms.PasswordInput)
+
+    #validate password:
+    def clean_entry(self):
+        entry = self.cleaned_data.get('entry')
+        if '@' in entry:
+            qs = User.objects.filter(email=entry)
+            if not qs.exists():
+                raise forms.ValidationError("Email does not exist. Please sign up!")
+        else: 
+            qs = User.objects.filter(username=entry)
+            if not qs.exists():
+                raise forms.ValidationError("Username does not exist. Please sign up!")
+        return entry
+
+
 class UserUpdateForm(UserCreationForm):
     dob = forms.DateField(widget=forms.SelectDateWidget())
     email = forms.CharField(min_length=6, max_length = 256)

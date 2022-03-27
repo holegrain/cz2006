@@ -13,7 +13,7 @@ app_name = 'accounts'
 urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('signup/', SignupView, name='signup'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView, name='login'),
     path('settings/', SettingsView, name='settings'),
     path('', AccountView, name='myaccount'),
     path('editprofile/', ProfileView, name='profile'),
