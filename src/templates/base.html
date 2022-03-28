@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Peta&family=Prata&family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar"> 
+        <div class="wrapper">{% include 'navbar.html' %}
+      </div>
+      </header>
+    {% block content %} replace me {% endblock %}
+  </body>
+</html>
+
+<style>
+
+.alert {
+        text-align: center;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #d45959;
+    }
+    
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .wrapper {
+    width: 1170px;
+    margin: auto;
+  }
+  .navbar {
+    /* background: linear-gradient(rgb(24, 4, 78), rgb(255, 244, 97));  */
+    height: 15vh;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    font-family: 'Lexend Peta', serif;
+  }
+  body {
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+  }
+
+  /* .background {
+    background-image: url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZnJlZSUyMGxpYnJhcnl8ZW58MHx8MHx8&w=1000&q=80);
+    height: 100vh;
+  } */
+</style>

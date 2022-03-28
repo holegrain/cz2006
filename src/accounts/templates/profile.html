@@ -1,0 +1,138 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="wrapper">
+    <div class="vertical-menu">
+        <a href="/account">My Account</a>
+        <a href="/account/editprofile" class="active">Edit Profile</a>
+        <a href="/account/delete">Delete Account</a>
+      </div>
+</div>
+
+<div id="content">
+    <div class="header">
+        <h1 class="title">My Profile</h1>
+      </div>
+      
+      <form id="form" action="" method="POST">
+        <p class="field">
+            username: <br />
+            {{ object.username }} 
+        </p>
+        {% csrf_token %} {% for field in form %}
+        <div>
+          <p class="field">
+            {{ field.label }}: <br />
+            {{ field }} 
+          </p>
+          {% for error in field.errors %}
+          <small style="color: red">{{ error }}</small>
+          {% endfor %}
+        </div>
+        {% endfor %}
+        <button class="cutebutton" type="submit">Update</button>
+      </form>
+      
+      <div>
+        {% if messages %}
+        <ul style="text-align: center">
+          {% for message in messages %}
+          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+            {{ message }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+</div>
+
+
+<style>
+    #content{
+        color: rgb(24, 59, 61);    
+        text-align: center;
+    }
+
+
+    .vertical-menu {
+      width: 200px;
+      position:relative;
+      top:40vh;
+      left:0vw;
+    }
+    
+    .vertical-menu a {
+      color: rgb(0, 0, 0);
+      display: block;
+      padding: 12px;
+      text-decoration: none;
+      background-color: rgb(216, 212, 212);
+    }
+    
+    .vertical-menu a:hover {
+      background-color: rgb(252, 199, 178);
+    }
+    
+    .vertical-menu a.active {
+      background-color: lightsalmon;
+      color: white;
+    }
+
+    #form {
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: black;
+  }
+  form {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    padding-top: 10px;
+  }
+  .field {
+    padding: 5px;
+  }
+  .cutebutton {
+    background-color: bisque; /* Green */
+    border: none;
+    color: black;
+    border-radius: 5px;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    text-transform: uppercase;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .cutebutton:hover {
+    /* border: 1px #000000 solid; */
+    background-color: rgb(198, 255, 215);
+  }
+
+
+  .header {
+    padding-top: 0;
+    /* margin-left: 35%;
+    margin-top: 3%; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 50em;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 30px;
+    /* color: #442b38; */
+    text-shadow: 2px 2px #d7bdca;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+</style>
+
+{% endblock %}
