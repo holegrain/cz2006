@@ -5,6 +5,11 @@ from .models import User
 from django.db import transaction
 
 
+class ForgetPWForm(forms.Form):
+    username = forms.CharField(min_length=6, max_length = 256)
+    email = forms.CharField(min_length=6, max_length = 256)
+
+
 class UserSignupForm(UserCreationForm):
     dob = forms.DateField(widget=forms.SelectDateWidget())
     email = forms.CharField(min_length=6, max_length = 256)
