@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserSignupForm, UserUpdateForm, UserLoginForm, UserDeleteForm
 from .models import User
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
@@ -11,6 +12,13 @@ def SignupView(request):
     if request.method == 'POST':
         form = UserSignupForm(request.POST)
         if form.is_valid():
+            send_mail(
+                'Welcome to klib!',
+                f"Thank you {form.cleaned_data['username']}, our journey to find great books begins today!",
+                'st.test1998@gmail.com',
+                [form.cleaned_data['email']],
+                fail_silently=False,
+            )
             form.save()
             messages.success(
                 request, f'Your account has been created. You can log in now!')
