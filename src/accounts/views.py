@@ -72,11 +72,10 @@ def LoginView(request):
         form = UserLoginForm(request.POST)
         if form.is_valid():
             entry = form.cleaned_data.get('entry')
-            # print(entry)
             password = form.cleaned_data.get('password')
-            # print(password)
             if '@' in entry:
-                user = authenticate(email=entry, password=password)
+                user = User.objects.get(email=entry)
+                user = authenticate(username=user, password=password)
             else:
                 user = authenticate(username=entry, password=password)
             if user == None:
@@ -110,18 +109,14 @@ def ProfileView(request):
             messages.success(
                 request, f'Your account successfully updated.')
             form = UserUpdateForm(initial={'username': obj.username, 'dob': obj.dob, 'email': obj.email}, request=request)
-        else:
-            form = UserUpdateForm(initial={'username': obj.username, 'dob': obj.dob, 'email': obj.email}, request=request)
     else:
         form = UserUpdateForm(initial={'username': obj.username, 'dob': obj.dob, 'email': obj.email}, request=request)
-
     context = {'form': form,
     'object': obj}
     return render(request, 'profile.html', context)
 
 def DeleteView(request):
     if request.method == 'POST':
-        user = request.user
         form = UserDeleteForm(request.POST, request=request)
         if form.is_valid():
             obj = get_object_or_404(User, username=request.user)

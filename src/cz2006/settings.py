@@ -94,6 +94,9 @@ DATABASES = {
         'PASSWORD': 'Cheesec@ke',
         'HOST': '114.119.173.226',
         'PORT': '3306',
+        'OPTIONS': {
+        'sql_mode': 'traditional',
+        }
     }
 }
 
