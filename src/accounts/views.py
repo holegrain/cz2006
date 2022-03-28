@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserSignupForm, UserUpdateForm, UserLoginForm
+from .forms import UserSignupForm, UserUpdateForm, UserLoginForm, UserDeleteForm
 from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def SignupView(request):
@@ -49,9 +49,6 @@ def LoginView(request):
     context = {'form': form}
     return render(request, 'login.html', context)
 
-def SettingsView(request):
-    return render(request, 'settings.html')
-
 def AccountView(request):
     return render(request, 'account.html')
 
@@ -80,4 +77,15 @@ def ProfileView(request):
     return render(request, 'profile.html', context)
 
 def DeleteView(request):
-    return render(request, 'delete.html')
+    if request.method == 'POST':
+        user = request.user
+        form = UserDeleteForm(request.POST, request=request)
+        if form.is_valid():
+            obj = get_object_or_404(User, username=request.user)
+            logout(request)
+            obj.delete()
+            return redirect('/') 
+    else:
+        form = UserDeleteForm(request=request)
+    context = {'form': form}
+    return render(request, 'delete.html', context)

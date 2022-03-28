@@ -93,3 +93,19 @@ class UserUpdateForm(UserCreationForm):
             if qs.exists():
                 raise forms.ValidationError("Email already has an account.")
         return email
+
+
+class UserDeleteForm(forms.Form):
+    password = forms.CharField(max_length=32, label='password', widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(UserDeleteForm, self).__init__(*args, **kwargs)
+
+
+    #validate password:
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if authenticate(username=self.request.user, password=password) == None:
+            raise forms.ValidationError("Incorrect Password.")
+        return password
