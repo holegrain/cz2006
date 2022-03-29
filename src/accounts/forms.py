@@ -40,8 +40,14 @@ class UserSignupForm(UserCreationForm):
         return email
 
 class UserLoginForm(forms.Form):
-    entry = forms.CharField( label = 'Username/Email')
-    password = forms.CharField(max_length=32, label='Password', widget=forms.PasswordInput)
+    entry = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder':'Username / Email', 
+        'style':'width: 400px; height: 50px; margin-bottom: 20px', 
+        'class':'form-control'}))
+    password = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={
+        'placeholder':'Password', 
+        'style': 'width: 400px; height: 50px; margin-bottom: 20px',
+        'class':'form-control'}))
 
     #validate password:
     def clean_entry(self):
@@ -49,11 +55,11 @@ class UserLoginForm(forms.Form):
         if '@' in entry:
             qs = User.objects.filter(email=entry)
             if not qs.exists():
-                raise forms.ValidationError("Email does not exist. Please sign up!")
+                raise forms.ValidationError("Email does not exist.")
         else: 
             qs = User.objects.filter(username=entry)
             if not qs.exists():
-                raise forms.ValidationError("Username does not exist. Please sign up!")
+                raise forms.ValidationError("Username does not exist.")
         return entry
 
 
