@@ -9,11 +9,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-
-    /* * {
-      border: 1px solid red;
-    } */
-
     body {
       font-family: Roboto, sans-serif;
       height: 100vh;
@@ -27,6 +22,7 @@
     .navbar {
       display: flex;
       justify-content: space-between;
+      border-bottom: 2px solid black;
     }
 
     ul {
@@ -38,7 +34,7 @@
       align-items: center;
     }
 
-    li {
+    .navbar ul li {
       padding: 8px;
     }
 
@@ -46,12 +42,13 @@
       text-decoration: none;
       color: grey;
       padding: 8px;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 20px;
     }
 
     li a:hover {
       border-bottom: 3px solid grey;
+      color: black;
     }
 
     #site-logo {
@@ -61,6 +58,8 @@
     }
 
     .footer {
+      display: flex;
+      justify-content: flex-end;
       background-color: #eeeeee;
       margin: 0;
       padding: 0;
@@ -73,10 +72,10 @@
     }
 
     ul#footer-content {
-      padding: 8px;
+      padding: 12px;
       margin: 0;
+      gap: 20px;
     }
-
   </style>
 </head>
 
@@ -87,12 +86,13 @@
     <a href="/"><img id="site-logo" src="{% static 'images/logo.jpg' %}" alt="Lib-RSS Logo"></a>
 
     <ul>
+      <li><a href="/search">Search</a></li>
       {% if user.is_authenticated %}
+      <li style="text-transform: uppercase"><a href="/account">{{ user.username }}</a></li>
       <li><a href="/account/logout">Logout</a></li>
       {% else %}
       <li><a href="/account/login">Login</a></li>
       {% endif %}
-      <li><a href="/search">Search</a></li>
     </ul>
   </div>
 
@@ -104,7 +104,8 @@
 
   <div class="footer">
     <ul id="footer-content">
-      <li>Test</li>
+      <li>FAQ</li>
+      <li>About Us</li>
     </ul>
   </div>
 

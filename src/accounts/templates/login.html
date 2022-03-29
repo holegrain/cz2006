@@ -1,133 +1,72 @@
-{% extends 'base.html' %} {% block content %} 
-
-<div id="background">
-    <div class="login">
-        <div class="header">
-            <h1 class="title">LOGIN</h1>
-        </div>
-        
-
-        <form id="form" action="" method="POST">
-            {% csrf_token %} {% for field in form %}
-            <p class="field">
-                {{ field.label }}: <br />
-                {{ field }}
-            </p>
-
-    {% endfor %}
-    <button class="submit" type="submit">Login</button>
-    </form>
-
-        {% if messages %}
-        <ul class="messages" style="text-align: center">
-            {% for message in messages %}
-            <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-            {{ message }}
-        </li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-        
-        {% for field in form %}
-        {% for error in field.errors %}
-        <p class='messages' style="text-align: center">{{ error }}</p>
-        {% endfor %}
-        {% endfor %}
-
-    <div class="signup">
-        <div id="prompt"> 
-            <p>Don't Have An Account?</p>
-            <a href="http://127.0.0.1:7000/account/signup/"> <button class="submit">  Sign Up Here</button> </a>
-        </div>
-    </div>
-</div>
+{% extends 'base.html' %} {% block content %}
 
 <style>
-  #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
-  }
- 
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
+  .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
   }
 
-  .field {
-    padding: 5px;
-  }
-
-  .submit {
-    background-color: rgb(197, 164, 171); 
-    border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .submit:hover {
-    background-color: rgb(185, 175, 211);
-  }
-
-
-  #prompt {
-    color: black;
-    text-align: center;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-  }
-  #background {
-      background:rgb(247, 245, 241);
+  .card {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
   }
 
   .login {
-      width:50vw;
-      height:90vh;
-      margin-bottom: 0;
-      background:rgb(204, 231, 225);
-      position: relative;
+    background-color: rgb(253, 232, 236);
   }
 
   .signup {
-      position: fixed;
-      left: 50vw;
-      width: 50vw;
-      height: 85vh;
+    background-color: aliceblue;
   }
 
-
-  .header {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20vh;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 50px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .messages {
-    text-align: center;
-    padding-top: 10px;
+  #form, #prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
   }
 </style>
+
+<title>Login | Lib-RSS</title>
+
+<div class="card login">
+  <form id="form" action="" method="POST">
+    {% csrf_token %} {% for field in form %}
+    <p class="field">
+      {{ field.label }}: <br/>
+      {{ field }}
+    </p>
+
+    {% endfor %}
+    <button class="submit" type="submit">Login</button>
+  </form>
+
+  {% if messages %}
+  <ul class="messages" style="text-align: center">
+    {% for message in messages %}
+    <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% for field in form %}
+  {% for error in field.errors %}
+  <p class='messages' style="text-align: center">{{ error }}</p>
+  {% endfor %}
+  {% endfor %}
+</div>
+
+<div class="card signup">
+  <div id="prompt">
+    <p>Don't Have An Account?</p>
+    <a href="http://127.0.0.1:8000/account/signup/"> <button class="submit"> Sign Up Here</button> </a>
+  </div>
+</div>
 
 {% endblock %}

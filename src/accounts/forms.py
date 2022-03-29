@@ -41,7 +41,7 @@ class UserSignupForm(UserCreationForm):
 
 class UserLoginForm(forms.Form):
     entry = forms.CharField( label = 'Username/Email')
-    password = forms.CharField(max_length=32, label='password', widget=forms.PasswordInput)
+    password = forms.CharField(max_length=32, label='Password', widget=forms.PasswordInput)
 
     #validate password:
     def clean_entry(self):
