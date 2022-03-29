@@ -84,11 +84,11 @@
 
   <div class="navbar">
     {% load static %}
-    <a href="/"><img id="site-logo" src="{% static 'images/logo.png' %}" alt="Lib-RSS Logo"></a>
+    <a href="/"><img id="site-logo" src="{% static 'images/logo.jpg' %}" alt="Lib-RSS Logo"></a>
 
     <ul>
       {% if user.is_authenticated %}
-      <li>Logout</li>
+      <li><a href="/account/logout">Logout</a></li>
       {% else %}
       <li><a href="/account/login">Login</a></li>
       {% endif %}
