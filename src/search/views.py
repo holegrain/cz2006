@@ -9,11 +9,10 @@ def SearchView(request):
         if form.is_valid():
             title = form.cleaned_data.get('title')
             isbn = form.cleaned_data.get('isbn')
-            bid = form.cleaned_data.get('bid')
             author = form.cleaned_data.get('author')
             genres = form.cleaned_data.get('genres')
             genretuple = tuple(genres.split(','))
-            resultlist = standard_search(title=title, author=author, isbn=isbn, bid=bid, genre=genretuple)
+            resultlist = standard_search(title=title, author=author, isbn=isbn, genre=genretuple)
             if resultlist:
                 return render(request, 'booklist.html', {'resultlist': resultlist})
             else:

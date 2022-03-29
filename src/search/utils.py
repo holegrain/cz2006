@@ -15,10 +15,7 @@ API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 client = nlbsg.Client(PRODUCTION_URL, API_KEY) # initialise the nlb client
 
-# zhouw: simple_search replaced with standard_search. client.search cannot search using isbn or bid. If have questions text in grp.
-# zhouw: Added bid to simple/standard search options. Yall okay with this?
-search_options = ['title', 'isbn', 'bid', 'author', 'genre']
-#search_options = ['title', 'isbn', 'author', 'genre']
+search_options = ['title', 'isbn', 'author', 'genre']
 
 # initialise mysql connection
 db = mysql.connector.connect(host='114.119.173.226', database='library', user='root', 
@@ -26,54 +23,41 @@ db = mysql.connector.connect(host='114.119.173.226', database='library', user='r
 cursor = db.cursor()
 
 def standard_search(**kwargs) -> Optional[list]:
-    bidset = set()
-    resultlist = []
-    if kwargs['isbn']:
+    if kwargs['isbn'] != '':
         item = client.get_title_details(isbn=kwargs['isbn'])
         if item.status!='FAIL':
-            bidset.add(item.title_detail.bid)
+            item = item.title_detail
+            return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': item.summary, \
+                     'year': 'Unknown', 'author': item.author}]
 
-    if kwargs['bid']:
-        item = client.get_title_details(isbn=kwargs['bid'])
-        if item.status!='FAIL':
-            bidset.add(item.title_detail.bid)
-
-    searchresult = client.search(title=kwargs['title'], author=kwargs['author'], subject=kwargs['genre'], media_code=MediaCode.BOOKS, limit=20)
-    if searchresult.titles is None:
-        pass
+        else:
+            return None
+# search gives {'title': 'Jane eyre', 'author': '', 'isbn': '', 'bid': None, 'genre': ('',)}
     else:
-        for title in searchresult.titles: 
-            bidset.add(title.bid)
-
-    for bid in bidset:
-        book = client.get_title_details(bid=bid)
-        #moreinfo = client.search(title=book.title_detail.title_name, media_code=MediaCode.BOOKS, limit=1)
-        result = {'isbn': book.title_detail.isbn, 'bid': book.title_detail.bid, 
-                'title': book.title_detail.title_name, 'plot': book.title_detail.summary, 'author': book.title_detail.author}
-                #'year': year}
-        resultlist.append(result)
-    return resultlist
+        for k in list(kwargs.keys()):
+            if k == 'genre' and kwargs[k] == ('',):
+                kwargs.pop(k)
+            else:
+                if kwargs[k] == '':
+                    kwargs.pop(k)
         
-# zhouwe: client.search does not search using isbn nor bid.
-'''def simple_search(**kwargs) -> Optional[list]:
-    for item in list(kwargs.keys()):
-        if item not in search_options or kwargs[item] is None: # filter out irrelevant arguments
-            kwargs.pop(item)
-    
-    # zhouw: Can remove because SimpleSearchForm took care of this.
-    if len(kwargs) == 0: # no input
-        return None
+        if len(kwargs) == 0:
+            return None
 
-    responses = client.search(**kwargs, limit=50)
-    titles = list(responses.titles) # titles is a list of Title objects
-
-    # obtain the plot of each book
-    plots = [client.get_title_details(item.bid).title_detail.summary for item in titles]
-
-    # return same thing as advanced search
-    return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, 'year': item.publish_year, 
-             'author': item.author} for item, plot in zip(titles, plots)]
-'''
+        responses = client.search(**kwargs, limit=20)
+        titles = list(responses.titles) # titles is a list of Title objects
+        
+        plots = []
+        # obtain the plot of each book
+        for item in titles:
+            if client.get_title_details(item.bid).title_detail is not None:
+                plots.append(client.get_title_details(item.bid).title_detail.summary)
+            else:
+                plots.append('None')
+        # return same thing as advanced search
+        return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, \
+                 'year': item.publish_year, 'author': item.author} for item, plot in zip(titles, plots)]
+        
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
     if plot is None and keywords is None: # check input validity
