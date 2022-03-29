@@ -1,3 +1,4 @@
+{% load static%}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -29,9 +30,9 @@
 				<input type="submit" value="Login">	
   		</div>
 		<div class="rightside">
-			<img class="book" src="book.png"/>
+			<img class="book" src="{% static 'book.png' %}"/>
 			<div class="signup">
-				<a href="#">Sign Up</a>
+				<a href="{% static # %}">Sign Up</a>
 			</div>			
 		</div>	
 	</body>
