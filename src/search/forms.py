@@ -6,7 +6,7 @@ class SimpleSearchForm(forms.Form):
     isbn = forms.CharField(max_length=13, label='ISBN', required=False)
     bid = forms.CharField(max_length=9, label='BID', required=False)
     # TODO: Are we gonna allow tagging? Or we split the genres by ' ' and then group as a tuple.
-    genres = forms.CharField(max_length=50, label='Genre(s)', help_text="Please seperate multiple genres using whitespace.", required=False) 
+    genres = forms.CharField(max_length=50, label='Genre(s)', help_text="Please seperate multiple genres using commas.", required=False) 
     
     def clean(self):
         # TODO: Hide validation error for erroneous input.
