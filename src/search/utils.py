@@ -8,12 +8,15 @@ from typing_extensions import Literal
 from nlbsg.catalogue import PRODUCTION_URL
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+from nlbsg import MediaCode
 
 API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 client = nlbsg.Client(PRODUCTION_URL, API_KEY) # initialise the nlb client
-# zhouw: Added bid to simple search options. Yall okay with this?
+
+# zhouw: simple_search replaced with standard_search. client.search cannot search using isbn or bid. If have questions text in grp.
+# zhouw: Added bid to simple/standard search options. Yall okay with this?
 search_options = ['title', 'isbn', 'bid', 'author', 'genre']
 #search_options = ['title', 'isbn', 'author', 'genre']
 
@@ -22,14 +25,44 @@ db = mysql.connector.connect(host='114.119.173.226', database='library', user='r
                              password='Cheesec@ke')
 cursor = db.cursor()
 
-def simple_search(**kwargs) -> Optional[list]:
+def standard_search(**kwargs) -> Optional[list]:
+    bidset = set()
+    resultlist = []
+    if kwargs['isbn']:
+        item = client.get_title_details(isbn=kwargs['isbn'])
+        if item.status!='FAIL':
+            bidset.add(item.title_detail.bid)
+
+    if kwargs['bid']:
+        item = client.get_title_details(isbn=kwargs['bid'])
+        if item.status!='FAIL':
+            bidset.add(item.title_detail.bid)
+
+    searchresult = client.search(title=kwargs['title'], author=kwargs['author'], subject=kwargs['genre'], media_code=MediaCode.BOOKS, limit=20)
+    if searchresult.titles is None:
+        pass
+    else:
+        for title in searchresult.titles: 
+            bidset.add(title.bid)
+
+    for bid in bidset:
+        book = client.get_title_details(bid=bid)
+        #moreinfo = client.search(title=book.title_detail.title_name, media_code=MediaCode.BOOKS, limit=1)
+        result = {'isbn': book.title_detail.isbn, 'bid': book.title_detail.bid, 
+                'title': book.title_detail.title_name, 'plot': book.title_detail.summary, 'author': book.title_detail.author}
+                #'year': year}
+        resultlist.append(result)
+    return resultlist
+        
+# zhouwe: client.search does not search using isbn nor bid.
+'''def simple_search(**kwargs) -> Optional[list]:
     for item in list(kwargs.keys()):
         if item not in search_options or kwargs[item] is None: # filter out irrelevant arguments
             kwargs.pop(item)
     
     # zhouw: Can remove because SimpleSearchForm took care of this.
-    '''if len(kwargs) == 0: # no input
-        return None'''
+    if len(kwargs) == 0: # no input
+        return None
 
     responses = client.search(**kwargs, limit=50)
     titles = list(responses.titles) # titles is a list of Title objects
@@ -40,7 +73,7 @@ def simple_search(**kwargs) -> Optional[list]:
     # return same thing as advanced search
     return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, 'year': item.publish_year, 
              'author': item.author} for item, plot in zip(titles, plots)]
-
+'''
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
     if plot is None and keywords is None: # check input validity
@@ -139,7 +172,7 @@ def sort(results: list, sort_by: Literal['title', 'author', 'year', 'popularity'
     return None
 
 
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     # define a test result list
     books = [{'isbn': '1', 'title': 'a', 'author':'c', 'plot': 'z', 'year': '2000'}, 
              {'isbn': '2', 'title': 'b', 'author':'b', 'plot': 'y', 'year': '2001'},
@@ -150,4 +183,8 @@ if __name__ == "__main__":
     print(filter(books, year=2001))
     print(simple_search(title='sherlock', kek='abc', author=None)) # check function
     test_str = "he is a detective, big dog"
-    print(adv_search(test_str))
+    print(adv_search(test_str))'''
+
+'''ls = standard_search(title='Jane Eyre')
+for x in ls.titles:
+    print(x.title_name)'''

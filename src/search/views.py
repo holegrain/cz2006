@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import AdvancedSearchForm, SimpleSearchForm
-from .utils import simple_search, adv_search
+from .utils import standard_search, adv_search
 from django.contrib import messages
 
 def SearchView(request):
@@ -13,9 +13,9 @@ def SearchView(request):
             author = form.cleaned_data.get('author')
             genres = form.cleaned_data.get('genres')
             genretuple = tuple(genres.split(','))
-            resultlist = simple_search(title=title, author=author, isbn=isbn, bid=bid, genre=genretuple)
+            resultlist = standard_search(title=title, author=author, isbn=isbn, bid=bid, genre=genretuple)
             if resultlist:
-                return render(request, 'booklist.html', resultlist)
+                return render(request, 'booklist.html', {'resultlist': resultlist})
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"
@@ -32,6 +32,13 @@ def AdvSearchView(request):
         if form.is_valid():
             keywords = form.cleaned_data.get('keywords')
             plot = form.cleaned_data.get('plot')
+            resultlist = adv_search(keywords=keywords, plot=plot)
+            if resultlist:
+                return render(request, 'booklist.html', {'resultlist': resultlist})
+            else:
+                messages.error(
+                    request, f"Sorry, no matching books can be found!"
+                )
     else: 
         form = AdvancedSearchForm()
     context = {'form': form}
