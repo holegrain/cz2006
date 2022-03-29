@@ -13,7 +13,9 @@ API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 client = nlbsg.Client(PRODUCTION_URL, API_KEY) # initialise the nlb client
-search_options = ['title', 'isbn', 'author', 'genre']
+# zhouw: Added bid to simple search options. Yall okay with this?
+search_options = ['title', 'isbn', 'bid', 'author', 'genre']
+#search_options = ['title', 'isbn', 'author', 'genre']
 
 # initialise mysql connection
 db = mysql.connector.connect(host='114.119.173.226', database='library', user='root', 
@@ -25,8 +27,9 @@ def simple_search(**kwargs) -> Optional[list]:
         if item not in search_options or kwargs[item] is None: # filter out irrelevant arguments
             kwargs.pop(item)
     
-    if len(kwargs) == 0: # no input
-        return None
+    # zhouw: Can remove because SimpleSearchForm took care of this.
+    '''if len(kwargs) == 0: # no input
+        return None'''
 
     responses = client.search(**kwargs, limit=50)
     titles = list(responses.titles) # titles is a list of Title objects
