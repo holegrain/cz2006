@@ -1,61 +1,113 @@
 <!DOCTYPE html>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!DOCTYPE html>
+<html lang="en">
 
-<link href="https://fonts.googleapis.com/css2?family=Lexend+Peta&family=Prata&family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
+  <style>
 
-  <body>
-    <header>
-      <div class="navbar"> 
-        <div class="wrapper">{% include 'navbar.html' %}
-      </div>
-      </header>
-    {% block content %} replace me {% endblock %}
-  </body>
-</html>
+    /* * {
+      border: 1px solid red;
+    } */
 
-<style>
-
-.alert {
-        text-align: center;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        color: #d45959;
+    body {
+      font-family: Roboto, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0;
+      margin: 0;
     }
-    
-  * {
-    margin: 0;
-    padding: 0;
-  }
 
-  .wrapper {
-    width: 1170px;
-    margin: auto;
-  }
-  .navbar {
-    /* background: linear-gradient(rgb(24, 4, 78), rgb(255, 244, 97));  */
-    height: 15vh;
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
-    font-family: 'Lexend Peta', serif;
-  }
-  body {
-    margin:0;
-    padding:0;
-    overflow-x:hidden;
-  }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+    }
 
-  /* .background {
-    background-image: url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZnJlZSUyMGxpYnJhcnl8ZW58MHx8MHx8&w=1000&q=80);
-    height: 100vh;
-  } */
-</style>
+    ul {
+      list-style: none;
+      display: flex;
+      padding: 0;
+      margin-right: 32px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    li {
+      padding: 8px;
+    }
+
+    li a {
+      text-decoration: none;
+      color: grey;
+      padding: 8px;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    li a:hover {
+      border-bottom: 3px solid grey;
+    }
+
+    #site-logo {
+      height: 100px;
+      width: auto;
+      margin-left: 32px;
+    }
+
+    .footer {
+      background-color: #eeeeee;
+      margin: 0;
+      padding: 0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul#footer-content {
+      padding: 8px;
+      margin: 0;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    {% load static %}
+    <a href="/"><img id="site-logo" src="{% static 'images/logo.png' %}" alt="Lib-RSS Logo"></a>
+
+    <ul>
+      {% if user.is_authenticated %}
+      <li>Logout</li>
+      {% else %}
+      <li><a href="/account/login">Login</a></li>
+      {% endif %}
+      <li><a href="/search">Search</a></li>
+    </ul>
+  </div>
+
+  <div class="content"> 
+
+    {% block content %} {% endblock %}
+
+  </div>
+
+  <div class="footer">
+    <ul id="footer-content">
+      <li>Test</li>
+    </ul>
+  </div>
+
+</body>
+
+</html>
