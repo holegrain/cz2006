@@ -23,7 +23,7 @@ class SimpleSearchForm(forms.Form):
     isbn = forms.CharField(max_length=13, label='ISBN', required=False, validators=[onlyX])
     bid = forms.CharField(max_length=9, label='BID', required=False)
     # TODO: Are we gonna allow tagging? Or we split the genres by ' ' and then group as a tuple.
-    genres = forms.CharField(max_length=50, label='Genre(s)', help_text="Please seperate multiple genres using commas.", required=False, validators=[withcomma]) 
+    genres = forms.CharField(max_length=50, label='Genre(s)', help_text="Please seperate genres using only a single comma.", required=False, validators=[withcomma]) 
     
     def clean(self):
         # TODO: Hide validation error for erroneous input.
@@ -38,7 +38,7 @@ class SimpleSearchForm(forms.Form):
             return bid
 
 class AdvancedSearchForm(forms.Form):
-    keywords = forms.CharField(max_length=50, label='Keyword(s)', help_text="Please seperate multiple genres using commas.", required=False, validators=[withcomma])
+    keywords = forms.CharField(max_length=50, label='Keyword(s)', help_text="Please seperate multiple keywords using commas.", required=False, validators=[withcomma])
     plot = forms.CharField(max_length=1000, label='Plot', required=False)
     
     # TODO: Hide validation error for erroneous input.

@@ -38,7 +38,7 @@ def simple_search(**kwargs) -> Optional[list]:
     plots = [client.get_title_details(item.bid).title_detail.summary for item in titles]
 
     # return same thing as advanced search
-    return [{'isbn': item.isbn, 'title': item.title_name, 'plot': plot, 'year': item.publish_year, 
+    return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, 'year': item.publish_year, 
              'author': item.author} for item, plot in zip(titles, plots)]
 
 
