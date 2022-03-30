@@ -7,7 +7,9 @@
   <body>
     {% for book in resultlist %}
     <h4>
-      Title: {{ book.title }}
+      <a href="{% url 'book:ViewBook' bid=book.bid %}" class="btn btn-success"
+        >Title: {{ book.title }}
+      </a>
       <br />
       Author: {{ book.author }} <br />
       ISBN: {{ book.isbn }} <br />

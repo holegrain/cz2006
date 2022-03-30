@@ -60,9 +60,6 @@ def standard_search(**kwargs) -> Optional[list]:
         
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
-    if plot is None and keywords is None: # check input validity
-        return None
-
     # to reduce the search space, first filter by keywords
     if keywords is None: # extract keywords from plot
         kw_extractor = yake.KeywordExtractor(top=10, stopwords=None)
@@ -168,7 +165,3 @@ def sort(results: list, sort_by: Literal['title', 'author', 'year', 'popularity'
     print(simple_search(title='sherlock', kek='abc', author=None)) # check function
     test_str = "he is a detective, big dog"
     print(adv_search(test_str))'''
-
-'''ls = standard_search(title='Jane Eyre')
-for x in ls.titles:
-    print(x.title_name)'''
