@@ -8,11 +8,13 @@ from typing_extensions import Literal
 from nlbsg.catalogue import PRODUCTION_URL
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+from nlbsg import MediaCode
 
 API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 client = nlbsg.Client(PRODUCTION_URL, API_KEY) # initialise the nlb client
+
 search_options = ['title', 'isbn', 'author', 'genre']
 
 # initialise mysql connection
@@ -20,29 +22,44 @@ db = mysql.connector.connect(host='114.119.173.226', database='library', user='r
                              password='Cheesec@ke')
 cursor = db.cursor()
 
-def simple_search(**kwargs) -> Optional[list]:
-    for item in list(kwargs.keys()):
-        if item not in search_options or kwargs[item] is None: # filter out irrelevant arguments
-            kwargs.pop(item)
-    
-    if len(kwargs) == 0: # no input
-        return None
+def standard_search(**kwargs) -> Optional[list]:
+    if kwargs['isbn'] != '':
+        item = client.get_title_details(isbn=kwargs['isbn'])
+        if item.status!='FAIL':
+            item = item.title_detail
+            return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': item.summary, \
+                     'year': 'Unknown', 'author': item.author}]
 
-    responses = client.search(**kwargs, limit=50)
-    titles = list(responses.titles) # titles is a list of Title objects
+        else:
+            return None
+# search gives {'title': 'Jane eyre', 'author': '', 'isbn': '', 'bid': None, 'genre': ('',)}
+    else:
+        for k in list(kwargs.keys()):
+            if k == 'genre' and kwargs[k] == ('',):
+                kwargs.pop(k)
+            else:
+                if kwargs[k] == '':
+                    kwargs.pop(k)
+        
+        if len(kwargs) == 0:
+            return None
 
-    # obtain the plot of each book
-    plots = [client.get_title_details(item.bid).title_detail.summary for item in titles]
-
-    # return same thing as advanced search
-    return [{'isbn': item.isbn, 'title': item.title_name, 'plot': plot, 'year': item.publish_year, 
-             'author': item.author} for item, plot in zip(titles, plots)]
-
+        responses = client.search(**kwargs, limit=20)
+        titles = list(responses.titles) # titles is a list of Title objects
+        
+        plots = []
+        # obtain the plot of each book
+        for item in titles:
+            if client.get_title_details(item.bid).title_detail is not None:
+                plots.append(client.get_title_details(item.bid).title_detail.summary)
+            else:
+                plots.append('None')
+        # return same thing as advanced search
+        return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, \
+                 'year': item.publish_year, 'author': item.author} for item, plot in zip(titles, plots)]
+        
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
-    if plot is None and keywords is None: # check input validity
-        return None
-
     # to reduce the search space, first filter by keywords
     if keywords is None: # extract keywords from plot
         kw_extractor = yake.KeywordExtractor(top=10, stopwords=None)
@@ -136,7 +153,7 @@ def sort(results: list, sort_by: Literal['title', 'author', 'year', 'popularity'
     return None
 
 
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     # define a test result list
     books = [{'isbn': '1', 'title': 'a', 'author':'c', 'plot': 'z', 'year': '2000'}, 
              {'isbn': '2', 'title': 'b', 'author':'b', 'plot': 'y', 'year': '2001'},
@@ -147,4 +164,4 @@ if __name__ == "__main__":
     print(filter(books, year=2001))
     print(simple_search(title='sherlock', kek='abc', author=None)) # check function
     test_str = "he is a detective, big dog"
-    print(adv_search(test_str))
+    print(adv_search(test_str))'''

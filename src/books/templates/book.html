@@ -1,49 +1,21 @@
-{% extends 'base.html' %}{% block content %}
-
-<title>Basic Search | Lib-RSS</title>
+{% extends 'base.html' %} {% block content %}
 
 <div id="content">
   <div class="header">
-    <h1 class="title">Search</h1>
+    <h1 class="title"> {{ Title }} </h1>
   </div>
-
-  <form id="form" action="" method="POST">
-    {% csrf_token %} {% for field in form %}
-    <div>
-      <p class="field">
-        {{ field.label }}: <br />
-        {{ field }}
-      </p>
-      {% for error in field.errors %}
-      <small style="color: red">{{ error }}</small>
-      {% endfor %}
-      {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-      {% endif %}
-    </div>
-    {% endfor %}
-    <button class="cutebutton" type="submit">Search</button>
-  </form>
-
-  <div>
-    <ul style="text-align: center">
-        {% for error in form.non_field_errors %}
-        <medium style="color: red">{{ error }}</medium>
-      {% endfor %}
-    </ul>
-  </div>
-  
-  <div>
-    {% if messages %}
-    <ul style="text-align: center">
-      {% for message in messages %}
-      <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-        {{ message }}
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </div>
+  <body>
+    <h3>
+      Author: {{ Author }} <br />
+      Other Authors: {{ Other_authors }} <br />
+      Publisher: {{ Publisher }} <br />
+      ISBN: {{ ISBN }} <br />
+      BID: {{ BID }} <br />
+      Physical Description: {{ Physical_desc }} <br />
+    </h3>
+    <h4>Genres: {{ Subjects }} <br /></h4>
+    <p>Abstract: {{ Summary }}</p>
+  </body>
 </div>
 
 <style>
@@ -86,10 +58,10 @@
     text-align: center;
     margin: auto;
     width: 50%;
-    padding-top: 5px;
+    padding-top: 10px;
   }
   .field {
-    padding: 10px;
+    padding: 5px;
   }
   .cutebutton {
     background-color: bisque; /* Green */

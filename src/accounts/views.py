@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserSignupForm, UserUpdateForm, UserLoginForm, UserDeleteForm
+from .forms import UserSignupForm, UserUpdateForm, UserLoginForm, UserDeleteForm, ForgetPWForm
 from .models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
@@ -7,6 +7,44 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 import datetime
+from .utils import random_password
+
+def ForgetPwView(request):
+    if request.method == 'POST':
+        form = ForgetPWForm(request.POST)
+        if form.is_valid():
+            # get the relevant field first
+            name = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            # check the email and username
+            user = get_object_or_404(User, username=name, email=email)
+
+            if isinstance(user, User): # if there is a valid username email pair
+                new_pw = random_password()
+                user.password = new_pw
+                send_mail(
+                    'Reset password',
+                    f"Dear {name}, our journey to find great books begins today\
+                        you have requested to rest your password on klib. Here is your new password \
+                            {new_pw} \
+                        if you did not make this request, please email us at st.test1998@gmail.com \
+                      Regards, \
+                      The klib team.",
+                    'st.test1998@gmail.com',
+                    [form.cleaned_data['email']],
+                    fail_silently=False,
+                )
+                # go back to account page
+                return render(request, 'login.html')
+            
+            else: # if invalid username
+                # TODO @xiangyi: display error message? Need someone else to implement I don't know how
+                context = {'error': "wrong username and password you dumbfuck."}
+                render(request, 'forget.html', context)
+    else:   
+        form = ForgetPWForm()
+    context = {'form': form}
+    return render(request, 'forget.html', context)
 
 # Create your views here.
 def SignupView(request):
@@ -29,9 +67,6 @@ def SignupView(request):
     context = {'form': form}
     return render(request, 'signup.html', context)
 
-# class LoginView(LoginView):
-#     template_name = 'login.html'
-#     next_page = '/'
         
 def LoginView(request):
     if request.method == 'POST':

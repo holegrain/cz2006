@@ -22,5 +22,5 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path('search/', include('search.urls')),
     path('', HomeView, name='home'),
-
+    path('books/', include('books.urls'))
 ]
