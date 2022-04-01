@@ -121,18 +121,18 @@
 
 
     <ul class="nav-area">
-      <li>
-        <div class="dropdown">
-          <button class="dropbtn">Search</button>
-          <div class="dropdown-content">
-          <a href="/">Standard Search</a>
-          <a href="/adv">Advanced Search</a>
-      </li>
       {% if user.is_authenticated %}
         <li>
           <div class="dropdown">
             <p class = "dropbtn"> Hello, {{user.username}}</p>
           </div>
+        </li>
+        <li>
+          <div class="dropdown">
+            <button class="dropbtn">Search</button>
+            <div class="dropdown-content">
+            <a href="/">Standard Search</a>
+            <a href="/adv">Advanced Search</a>
         </li>
         <li>
           <div class="dropdown">
@@ -146,6 +146,13 @@
             </div>
           </div>
       {% else %}
+      <li>
+        <div class="dropdown">
+          <button class="dropbtn">Search</button>
+          <div class="dropdown-content">
+          <a href="/">Standard Search</a>
+          <a href="/adv">Advanced Search</a>
+      </li>
         <li>
           <div class="dropdown">
             <button class="dropbtn">Account</button>
