@@ -27,10 +27,11 @@ def ViewBook(request, bid):
     bookdetail = book.title_detail
     isSaved = False
     detail={
+            'Title': bookdetail.title_name,
             'ISBN': bookdetail.isbn,
             'BID': bookdetail.bid,
             'Author': bookdetail.author,
-            'Other Authors': bookdetail.other_authors,
+            'Other_authors': bookdetail.other_authors,
             'Publisher': bookdetail.publisher,
             'Physical_desc': bookdetail.physical_desc,
             'Subjects': bookdetail.subjects,
