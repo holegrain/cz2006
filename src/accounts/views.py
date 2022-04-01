@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
+import datetime
 from .utils import random_password
 
 def ForgetPwView(request):
@@ -48,7 +49,7 @@ def ForgetPwView(request):
 # Create your views here.
 def SignupView(request):
     if request.method == 'POST':
-        form = UserSignupForm(request.POST)
+        form = UserSignupForm(request.POST, initial={'dob': datetime.date.today()})
         if form.is_valid():
             send_mail(
                 'Welcome to klib!',
@@ -62,7 +63,7 @@ def SignupView(request):
                 request, f'Your account has been created. You can log in now!')
             return redirect('/account/login/')
     else:
-        form = UserSignupForm()
+        form = UserSignupForm(initial={'dob': datetime.date.today()})
     context = {'form': form}
     return render(request, 'signup.html', context)
 

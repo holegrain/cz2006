@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model, authenticate
 from .models import User
 from django.db import transaction
 
+years = [x for x in range(1920, 2023)]
 
 class ForgetPWForm(forms.Form):
     username = forms.CharField(min_length=6, max_length = 256)
@@ -11,7 +12,7 @@ class ForgetPWForm(forms.Form):
 
 
 class UserSignupForm(UserCreationForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget())
+    dob = forms.DateField(widget=forms.SelectDateWidget(years=years))
     email = forms.CharField(min_length=6, max_length = 256)
     class Meta(UserCreationForm.Meta):
         model = User
@@ -64,7 +65,7 @@ class UserLoginForm(forms.Form):
 
 
 class UserUpdateForm(UserCreationForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget())
+    dob = forms.DateField(widget=forms.SelectDateWidget(years=years))
     email = forms.CharField(min_length=6, max_length = 256)
     password1 = forms.CharField(max_length=32, label='new password',widget=forms.PasswordInput, required=False)
     password2 = forms.CharField(max_length=32, label='password confirmation',widget=forms.PasswordInput, required=False)
