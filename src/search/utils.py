@@ -60,13 +60,15 @@ def standard_search(**kwargs) -> Optional[list]:
         
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
+    
     # to reduce the search space, first filter by keywords
     if keywords is None: # extract keywords from plot
         kw_extractor = yake.KeywordExtractor(top=10, stopwords=None)
         keywords = kw_extractor.extract_keywords(plot)
+
         # sort the keywords by confidence score
         keywords = [k for k, _ in sorted(keywords, key=lambda x: x[1], reverse=True)][:5]
-        
+
     total_books = []
     
     keyword_length = max(len(keywords), 5) # get maximum number of word choices
@@ -98,8 +100,8 @@ def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) ->
             if name is not None and plot is not None:
                 plot = plot.replace('&#8212', '-')
                 rec_cand.append({'isbn': isbn, 'title': name, 'plot': plot, 'year': year,
-                                 'author': author}) # get only the important information
-    
+                                 'author': author, 'bid': title_details.title_detail.bid}) # get only the important information
+
     sentences = [i['plot'] for i in rec_cand]
     sentence_emb = model.encode([plot]+sentences) # embed the sentences
     sim = cosine_similarity([sentence_emb[0]], sentence_emb[1:])[0] # find similarity
