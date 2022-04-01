@@ -30,7 +30,7 @@ class SimpleSearchForm(forms.Form):
             raise forms.ValidationError("Please fill in at least one of the fields to begin searching.")
 
 class AdvancedSearchForm(forms.Form):
-    keywords = forms.CharField(max_length=50, label='Keyword(s)', help_text="Please seperate multiple keywords using commas.", required=False, validators=[withcomma])
+    keywords = forms.CharField(max_length=50, label='Keyword(s)', help_text="Please seperate multiple keywords using only a single comma.", required=False, validators=[withcomma])
     plot = forms.CharField(max_length=1000, label='Plot', required=False)
     
     # TODO: Hide validation error for erroneous input.

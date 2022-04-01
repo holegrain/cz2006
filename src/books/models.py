@@ -20,6 +20,6 @@ class Save(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     bid = models.CharField(max_length=9)
 
-# The Book() model stores the book bid.
+'''# The Book() model stores the book bid.
 class Book(models.Model):
-    bid = models.CharField(max_length=9)
+    bid = models.CharField(max_length=9)'''

@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from .models import Rate, Save, View, Book
+from .models import Rate, Save, View
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
 from .forms import RatingForm
