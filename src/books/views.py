@@ -43,8 +43,10 @@ def ViewBook(request, bid):
     if request.session.has_key('is_logged'):
         if Rate.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             RatedBook = Rate.objects.get(Q(user=request.user), Q(bid=bid))
+            detail['Rating'] = RatedBook.rating
         if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             isSaved = True
+            detail['Saved'] = isSaved
         if View.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             # Book has been viewed before by the user.
             ViewedBook = View.objects.get(Q(user=request.user), Q(bid=bid))
@@ -54,8 +56,6 @@ def ViewBook(request, bid):
             # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
             ViewedBook.save()
-        detail['Rating'] = RatedBook.rating
-        detail['Saved'] = isSaved
     return render(request,'book.html', detail)
         
 # RateBook() 
