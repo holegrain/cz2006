@@ -38,7 +38,8 @@ def ViewBook(request, bid):
             'Summary': bookdetail.summary,
             'Notes': bookdetail.notes,
             'Rating': 0,
-            'Saved': isSaved
+            'Saved': isSaved,
+            'URL': "domainname.com/books/"+bookdetail.bid
         }
     if request.session.has_key('is_logged'):
         if Rate.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
@@ -56,6 +57,7 @@ def ViewBook(request, bid):
             # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
             ViewedBook.save()
+
     return render(request,'book.html', detail)
         
 # RateBook() 
