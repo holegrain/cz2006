@@ -1,122 +1,43 @@
-{% extends 'base.html' %}
 {% block content %}
-
-<style>
-  .content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: stretch;
-  }
-
-  .card {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-  }
-
-  .login {
-    background-color: rgb(253, 232, 236);
-  }
-
-  .signup {
-    background-color: aliceblue;
-  }
-
-  #prompt {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  #loginform {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .login-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .error-messages {
-    text-align: center;
-    margin: 10px 0 0 0;
-    padding: 0;
-    color: red;
-  }
-
-  .form-control {
-    border: 3px solid rgb(253, 232, 236);
-    font-size: 16px;
-  }
-
-  .form-control:focus {
-    border: 3px solid #555;
-  }
-
-  ::placeholder {
-    font-size: 16px;
-  }
-
-  .button-9 {
-    appearance: button;
-    backface-visibility: hidden;
-    background-color: #405cf5;
-    border-radius: 6px;
-    border-width: 0;
-    box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .1) 0 2px 5px 0, rgba(0, 0, 0, .07) 0 1px 1px 0;
-    box-sizing: border-box;
-    color: #fff;
-    cursor: pointer;
-    font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
-    font-size: 100%;
-    height: 44px;
-    line-height: 1.15;
-    margin: 0;
-    padding: 0 25px;
-    text-align: center;
-    transform: translateZ(0);
-    transition: all .2s, box-shadow .08s ease-in;
-  }
-</style>
-
-<title>Login | Lib-RSS</title>
-
-<div class="card login">
-  <form id="loginform" class="uniForm" action="" method="POST">
-
-      <h1 style="width: fit-content; padding: 0; margin: 12px; border-bottom: 2px solid grey;">Login</h1>
-    {% csrf_token %}
-
-    {{ form.entry }}
-    {{ form.password }}
-    <div class="login-bottom">
-      <button class="button-9" type="submit" style="align-self: flex-start">Login</button>
-      <p style="margin: 0; padding: 0"><a href="" style="text-decoration: none">Forgot password?</a></p>
-    </div>
-
-    {% for field in form %}
-    {% for error in field.errors %}
-    <p class='error-messages'>{{ error }}</p>
-    {% endfor %}
-    {% endfor %}
-  </form>
-</div>
-
-<div class="card signup">
-  <div id="prompt">
-    <h1 style="width: fit-content; padding: 0; margin: 0; border-bottom: 2px solid grey;">New here?</h1>
-    <p>Sign up and explore the world's knowledge!</p>
-    <a href="http://127.0.0.1:8000/account/signup/"><button class="button-9">Sign Up</button> </a>
-  </div>
-</div>
-
+{% load static%}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="{% static 'Loginstyle.css' %}">
+	</head>
+	<body>
+		<div class="leftside">
+			<h1>Login</h1>
+			<h2>Welcome Back!</h2>
+			<form method="post">
+				{% csrf_token %}
+				{{form.entry}}
+				{{form.password}}	
+				<div class="misc">
+					<div class="rmbme">	
+						<input type="checkbox">
+						<label>Remember Me</label>
+					</div>	
+				</div>
+  				<div class="misc">
+					  <div class="pass">
+						<a href="">Forgot Password?</a>	
+					  </div>
+				  </div>
+				  <input type="submit" value="Login">	
+  		</div>
+        {% for field in form %}
+        {% for error in field.errors %}
+        <p class='error-messages'>{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
+		<div class="rightside">
+			<img class="book" src="{% static 'book.png' %}"/>
+			<div class="signup">
+				<a href="http://127.0.0.1:8000/account/signup/">Sign Up</a>
+			</div>			
+		</div>	
+	</body>
+</html>
 {% endblock %}
