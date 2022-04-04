@@ -42,12 +42,12 @@ class UserSignupForm(UserCreationForm):
 
 class UserLoginForm(forms.Form):
     entry = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder':'Username / Email', 
-        'style':'width: 400px; height: 50px; margin-bottom: 20px', 
+        'placeholder':'Email/Username', 
+        'style':'position: relative;bottom:40px;margin:10px 0;', 
         'class':'form-control'}))
     password = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={
         'placeholder':'Password', 
-        'style': 'width: 400px; height: 50px; margin-bottom: 20px',
+        'style':'position: relative;bottom:40px;margin:10px 0;', 
         'class':'form-control'}))
 
     #validate password:
