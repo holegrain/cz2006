@@ -31,6 +31,9 @@
 	{% endfor %}
 	<div class="rightside">
 		<img class="book" src="{% static 'book.png' %}" />
+		<p id="one">New here?</p>
+	</br>
+		<p id="two">Sign up and explore the world's knowledge!</p>
 		<div class="signup">
 			<a href="http://127.0.0.1:8000/account/signup/">Sign Up</a>
 		</div>
@@ -39,9 +42,8 @@
 
 <style>
 	.leftside {
-		position: relative;
-		top: 120px;
-		left: 115px;
+		position: absolute;
+		left: 100px;
 		width: 50%;
 	}
 
@@ -120,36 +122,49 @@
 	}
 
 	.rightside {
-		position: absolute;
-		bottom: 0px;
-		right: 0px;
-		height: 100%;
-		width: 50%;
+		position: relative;
+		left:50%;
+		width:50%;
+		height:100%;
 	}
 
 	.book {
 		width: 100%;
 		height: 100%;
 	}
+	#one{
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 800;
+		font-size: 40px;
+		position:absolute;
+		left:58%;
+		bottom:52%;
 
+	}
+
+	#two{
+		font-family: 'Open Sans', sans-serif;
+		position:absolute;
+		font-size: 28px;
+		left:55%;
+		bottom:39%;
+	}
 	.signup {
-		position: relative;
-		bottom: 40%;
-		left: 40%;
-		width: 200px;
-
+		position: absolute;
+		bottom: 30%;
+		left: 63%;
 	}
 
 	.signup a {
 		font-family: 'Open Sans', sans-serif;
 		font-size: 28px;
 		font-weight: 800;
-		background: #657dff;
+		background: LightCyan;
 		cursor: pointer;
 		color: black;
 		border-radius: 45px;
 		border: 15px solid;
-		border-color: #657dff;
+		border-color: LightCyan;
 		text-decoration: none;
 		width: 30%;
 	}
