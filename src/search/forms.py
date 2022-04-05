@@ -46,8 +46,12 @@ class SimpleSearchForm(forms.Form):
 
 class AdvancedSearchForm(forms.Form):
     keywords = forms.CharField(max_length=50, label='Keyword(s)',
-                               help_text="Please seperate multiple keywords using only a single comma.", required=False, validators=[withcomma])
-    plot = forms.CharField(max_length=1000, label='Plot', required=False)
+                               help_text="Please seperate multiple keywords using only a single comma.", required=False, validators=[withcomma],
+                               widget=forms.TextInput(attrs={
+                                   'class': 'form-input'}))
+    plot = forms.CharField(max_length=1000, label='Plot', required=False,
+                               widget=forms.TextInput(attrs={
+                               'class': 'form-input'}))
 
     # TODO: Hide validation error for erroneous input.
     def clean(self):

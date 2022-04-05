@@ -1,132 +1,183 @@
-{% extends 'base.html' %}{% block content %}
+{% extends 'base.html' %}{% block content %} {% load static %}
 
-<title>Plot Search | Lib-RSS</title>
+<title>Advanced Search | Lib-RSS</title>
 
-<div id="content">
-  <div class="header">
-    <h1 class="title">Plot Search</h1>
+<div class="search-content">
+  <div class="search-header">
+    <p style="font-size: 32px; font-weight: 400; height: 3rem; line-height: 3rem; text-align: center">
+      Advanced Search
+    </p>
+    <img id="search-icon" src="{% static 'images/search.png' %}" />
   </div>
 
-  <form id="form" action="" method="POST">
-    {% csrf_token %} {% for field in form %}
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <div style="display: flex; justify-content: center">
+      <div class="input-boxes">
+        <p>Keyword(s) {{ form.keywords }}</p>
+        <p>Plot {{ form.plot }}</p>
+      </div>
+    </div>
+
     <div>
-      <p class="field">
-        {{ field.label }}: <br />
-        {{ field }}
-      </p>
       {% for error in field.errors %}
       <small style="color: red">{{ error }}</small>
       {% endfor %} {% if field.help_text %}
       <p class="help">{{ field.help_text|safe }}</p>
       {% endif %}
     </div>
-    {% endfor %}
-    <button class="cutebutton" type="submit">Search</button>
+
+    <div>
+      <ul style="text-align: center; height: 3rem; line-height: 3rem">
+        {% for error in form.non_field_errors %}
+        <medium style="color: red">{{ error }}</medium>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <button id="search-button" type="submit">
+      <p id="btnText">Search</p>
+      <div class="check-box">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+          <path fill="transparent" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+        </svg>
+      </div>
+      <script type="text/javascript">
+        const btn = document.querySelector("#search-button");
+        const btnText = document.querySelector("#btnText");
+
+        btn.onclick = () => {
+          btnText.innerHTML = "Searching...";
+          btn.classList.add("active");
+        };
+      </script>
+    </button>
   </form>
-
-  <div>
-    <ul style="text-align: center">
-      {% for error in form.non_field_errors %}
-      <medium style="color: red">{{ error }}</medium>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div>
-    {% if messages %}
-    <ul style="text-align: center">
-      {% for message in messages %}
-      <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-        {{ message }}
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </div>
 </div>
 
 <style>
-  #content {
-    color: rgb(24, 59, 61);
-    text-align: center;
-  }
-
-  .vertical-menu {
-    width: 200px;
+  .content {
     position: relative;
-    top: 40vh;
-    left: 0vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 35rem;
   }
 
-  .vertical-menu a {
-    color: rgb(0, 0, 0);
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    background-color: rgb(216, 212, 212);
+  .content::after {
+    position: absolute;
+    content: "";
+    background-image: url("{% static 'images/search-bg.jpg' %}");
+    opacity: 0.5;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
   }
 
-  .vertical-menu a:hover {
-    background-color: rgb(252, 199, 178);
-  }
-
-  .vertical-menu a.active {
-    background-color: lightsalmon;
-    color: white;
-  }
-
-  #form {
+  .search-content {
+    position: relative;
     text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
+    background-color: rgba(243, 255, 246, 0.35);
+    padding: 1rem;
   }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 5px;
+
+  .search-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
-  .field {
-    padding: 10px;
+
+  /* Container for all form input boxes */
+  .input-boxes {
+    display: flex;
+    align-items: flex-end;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+    white-space: nowrap;
   }
-  .cutebutton {
-    background-color: bisque; /* Green */
+
+  .form-input {
+    font-size: inherit;
+    width: 30rem;
+    height: 2rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  #search-icon {
+    height: 2.5rem;
+    width: auto;
+  }
+
+  #search-button {
+    width: 180px;
+    height: 54px;
     border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 40px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
   }
 
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
+  .check-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 40px;
+    box-shadow: 0 0 12px -2px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    right: -30px;
+    opacity: 0;
   }
 
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
+  .check-box svg {
+    width: 40px;
+    margin-top: 7px;
+    margin-right: 2px;
   }
 
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 30px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
+  svg path {
+    stroke-width: 3;
+    stroke: #fff;
+    stroke-dasharray: 34;
+    stroke-dashoffset: 34;
+    stroke-linecap: round;
+  }
+
+  #search-button.active {
+    background: #4d14f8;
+    transition: 1s;
+  }
+
+  .active .check-box {
+    right: 0;
+    opacity: 1;
+    transition: 1s;
+  }
+
+  .active p {
+    margin-right: 50px;
+    transition: 1s;
+  }
+
+  .active svg path {
+    stroke-dashoffset: 0;
+    transition: 1s;
+    transition-delay: 1s;
   }
 </style>
 
