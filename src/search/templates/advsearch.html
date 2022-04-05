@@ -1,6 +1,6 @@
 {% extends 'base.html' %}{% block content %}
 
-<p>Plot Search | Lib-RSS</p>
+<title>Plot Search | Lib-RSS</title>
 
 <div id="content">
   <div class="header">
@@ -16,9 +16,8 @@
       </p>
       {% for error in field.errors %}
       <small style="color: red">{{ error }}</small>
-      {% endfor %}
-      {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
+      {% endfor %} {% if field.help_text %}
+      <p class="help">{{ field.help_text|safe }}</p>
       {% endif %}
     </div>
     {% endfor %}
@@ -27,12 +26,12 @@
 
   <div>
     <ul style="text-align: center">
-        {% for error in form.non_field_errors %}
-        <medium style="color: red">{{ error }}</medium>
+      {% for error in form.non_field_errors %}
+      <medium style="color: red">{{ error }}</medium>
       {% endfor %}
     </ul>
   </div>
-  
+
   <div>
     {% if messages %}
     <ul style="text-align: center">
