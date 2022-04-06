@@ -13,34 +13,32 @@ def ForgetPwView(request):
     if request.method == 'POST':
         form = ForgetPWForm(request.POST)
         if form.is_valid():
-            # get the relevant field first
-            name = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            # check the email and username
-            user = get_object_or_404(User, username=name, email=email)
+            entry = form.cleaned_data['entry']
+            if '@' in entry:
+                user = User.objects.filter(email=entry).first()
+            else: 
+                user = User.objects.filter(username=entry).first()
 
-            if isinstance(user, User): # if there is a valid username email pair
+            if isinstance(user, User): 
+            # if there is a valid username email pair
                 new_pw = random_password()
-                user.password = new_pw
+                user.set_password(new_pw)
+                user.save()
                 send_mail(
-                    'Reset password',
-                    f"Dear {name}, our journey to find great books begins today\
-                        you have requested to rest your password on klib. Here is your new password \
-                            {new_pw} \
-                        if you did not make this request, please email us at st.test1998@gmail.com \
-                      Regards, \
-                      The klib team.",
-                    'st.test1998@gmail.com',
-                    [form.cleaned_data['email']],
+                    subject = 'Reset password',
+                    message = "Dear {0},\nOur journey to find great books begins today. \nYou have requested to rest your password on klib. Here is your new password \n{1} \nPlease change your password as soon as possible. \nIf you did not make this request, please email us at st.test1998@gmail.com \nRegards, \nThe klib team.".format(user.username, new_pw),
+                    from_email = 'st.test1998@gmail.com',
+                    recipient_list = [user.email],
                     fail_silently=False,
                 )
                 # go back to account page
+                messages.success(
+                    request, f'We have emailed you your temporary password. You can log in now!')
                 return render(request, 'login.html')
             
-            else: # if invalid username
-                # TODO @xiangyi: display error message? Need someone else to implement I don't know how
-                context = {'error': "wrong username and password you dumbfuck."}
-                render(request, 'forget.html', context)
+            else: 
+                messages.error(
+                    request, f'No user found')
     else:   
         form = ForgetPWForm()
     context = {'form': form}
@@ -116,6 +114,7 @@ def ProfileView(request):
     'object': obj}
     return render(request, 'profile.html', context)
 
+@login_required(login_url='/account/login/')
 def DeleteView(request):
     if request.method == 'POST':
         form = UserDeleteForm(request.POST, request=request)

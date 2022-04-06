@@ -4,7 +4,7 @@ def random_password():
     lower = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     upper = 'abcdefghijklmnopqrstuvwxyz'
     num = '1234567890'
-    symbols = '!#$%&*+,-./=?@\^_~'
+    symbols = '!@#$%^&*'
     
     all = lower + upper + num + symbols
 

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="content">
+    <div class="header">
+        <h1 class="title">Trouble Logging In?</h1>
+      </div>
+      
+      <form id="form" action="" method="POST">
+        <p id="nicemsg"> Enter your email,  or username and we'll send you a link to get back into your account.</p>
+        {% csrf_token %}
+        <div style="display: flex; justify-content: center">
+          <p class="field">
+            {{ form.entry }} </p>
+          {% for error in form.entry.errors %}
+          <small style="color: red">{{ error }}</small>
+          {% endfor %} 
+        </div>
+        <button class="cutebutton" type="submit">Send temporary password</button>
+      </form>
+      
+      <div>
+        {% if messages %}
+        <ul style="text-align: center">
+          {% for message in messages %}
+          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %} style="color: red">
+            {{ message }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      <p> <br/> ------ OR ------  <br/></p>
+      <a href="{% url 'accounts:signup' %} "><p style="text-align: center">Create New Account</p></a>
+</div>
+
+<style>
+    #content{
+        color: rgb(24, 59, 61);    
+        text-align: center;
+    }
+
+    #form {
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    color: black;
+  }
+  form {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+    padding-top: 10px;
+  }
+  .field {
+    padding: 1vh;
+  }
+  .cutebutton {
+    background-color: bisque; /* Green */
+    border: none;
+    color: black;
+    border-radius: 5px;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    text-transform: uppercase;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 1vh;
+  }
+
+  .cutebutton:hover {
+    /* border: 1px #000000 solid; */
+    background-color: rgb(198, 255, 215);
+  }
+
+
+  .header {
+    padding-top: 0;
+    /* margin-left: 35%;
+    margin-top: 3%; */
+    margin-left: auto;
+    margin-right: auto;
+    width: 50em;
+    text-align: center;
+  }
+
+  .title {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    font-size: 4vh;
+    /* color: #442b38; */
+    text-shadow: 2px 2px #d7bdca;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 20vh;
+  }
+
+  #nicemsg {
+      color: grey
+  }
+
+  a{
+      text-decoration: none;
+      color: black;
+      font-weight: 400;
+  }
+
+</style>
+{% endblock %}

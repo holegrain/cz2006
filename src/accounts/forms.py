@@ -8,8 +8,7 @@ years = [x for x in range(1920, 2023)]
 
 
 class ForgetPWForm(forms.Form):
-    username = forms.CharField(min_length=6, max_length=256)
-    email = forms.CharField(min_length=6, max_length=256)
+    entry = forms.CharField(min_length=4, max_length=256,  widget=forms.TextInput(attrs={'placeholder': 'Username/Email'}) )
 
 
 class UserSignupForm(UserCreationForm):
