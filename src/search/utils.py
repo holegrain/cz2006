@@ -110,8 +110,10 @@ def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) ->
     sim = cosine_similarity([sentence_emb[0]], sentence_emb[1:])[0] # find similarity
     sorted_sim_idx = np.argsort(sim)[::-1] # from most similar to least similar
     ranked_candidates = [rec_cand[i] for i in sorted_sim_idx] # rank the candidates
-
-    return ranked_candidates[:10]
+    if len(ranked_candidates)>100:
+        return ranked_candidates[:100], 100
+    else: 
+        return ranked_candidates, len(ranked_candidates)
 
 
 def kw_search(keywords: list, count: int, client: nlbsg.Client) -> nlbsg.types.SearchResponse:
