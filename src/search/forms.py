@@ -45,16 +45,12 @@ class SimpleSearchForm(forms.Form):
 
 
 class AdvancedSearchForm(forms.Form):
-    keywords = forms.CharField(max_length=50, label='Keyword(s)',
-                               help_text="Please seperate multiple keywords using only a single comma.", required=False, validators=[withcomma],
-                               widget=forms.TextInput(attrs={
-                                   'class': 'form-input'}))
     plot = forms.CharField(max_length=1000, label='Plot', required=False,
-                               widget=forms.TextInput(attrs={
-                               'class': 'form-input'}))
+                               widget=forms.Textarea(attrs={
+                               'class': 'form-input',
+                               'placeholder': 'Enter Your Plot',
+                               'rows': 5,
+                                'cols': 90,
+                                'maxlength': '1000'}))
 
-    # TODO: Hide validation error for erroneous input.
-    def clean(self):
-        if not (self.cleaned_data.get('keywords') or self.cleaned_data.get('plot')):
-            raise forms.ValidationError(
-                "Please fill in at least one of the fields to begin searching.")
+

@@ -89,7 +89,10 @@ def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) ->
 
     for book in total_books:
         bid = book.bid
-        isbn = book.isbn.split()[0]
+        if book.isbn != None:
+            isbn = book.isbn.split()[0]
+        else: 
+            isbn = None
         title_details = client.get_title_details(bid) # get the details of each book
         if title_details.title_detail is not None:
             name = title_details.title_detail.title_name

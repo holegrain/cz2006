@@ -29,9 +29,8 @@ def AdvSearchView(request):
     if request.method == 'POST':
         form = AdvancedSearchForm(request.POST)
         if form.is_valid():
-            keywords = form.cleaned_data.get('keywords')
             plot = form.cleaned_data.get('plot')
-            resultlist = adv_search(keywords=keywords, plot=plot)
+            resultlist = adv_search(plot=plot)
             if resultlist:
                 return render(request, 'booklist.html', {'resultlist': resultlist})
             else:
