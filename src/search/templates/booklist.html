@@ -10,7 +10,8 @@
 </head>
 
 <div id="content">
-  <p class="header-text">You searched for {{plot}} <br/> Search Results</p>
+  <p class="header-text">You searched for {{plot}}</p>
+  <p class="header-text"> Search Results</p>
   {% for book in resultlist %}
   <div class="book-card">
     <a href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">

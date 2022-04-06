@@ -15,8 +15,16 @@ def SearchView(request):
             genres = form.cleaned_data.get('genres')
             genretuple = tuple(genres.split(','))
             resultlist, length = standard_search(title=title, author=author, isbn=isbn, genre=genretuple)
-            plot_truncated = plot[:30] + '...'
-            request.session['plot'] = plot
+            if title:
+                search = title+'...'
+            elif isbn:
+                search = isbn+'...'
+            elif author:
+                search = author+'...'
+            elif isbn:
+                search = genres+'...'
+            print(search)
+            request.session['search'] = search
             request.session['resultlength'] = length
             request.session['resultlist'] = resultlist
             resultlist = request.session['resultlist']
@@ -39,7 +47,7 @@ def AdvSearchView(request):
             plot = form.cleaned_data.get('plot')
             resultlist, length = adv_search(plot=plot)
             plot_truncated = plot[:30] + '...'
-            request.session['plot'] = plot
+            request.session['search'] = plot
             request.session['resultlength'] = length
             request.session['resultlist'] = resultlist
             resultlist = request.session['resultlist']
@@ -57,7 +65,7 @@ def AdvSearchView(request):
 def ResultView(request, id=id):
     resultlist = request.session['resultlist']
     length = request.session['resultlength']
-    plot = request.session['plot']
+    plot = request.session['search']
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  

@@ -56,7 +56,7 @@ def standard_search(**kwargs) -> Optional[list]:
                 plots.append('None')
         # return same thing as advanced search
         return [{'isbn': item.isbn, 'bid': item.bid, 'title': item.title_name, 'plot': plot, \
-                 'year': item.publish_year, 'author': item.author} for item, plot in zip(titles, plots)]
+                 'year': item.publish_year, 'author': item.author} for item, plot in zip(titles, plots)], len(titles)
         
 
 def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) -> Optional[list]:
