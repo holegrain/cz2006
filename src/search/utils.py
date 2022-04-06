@@ -44,7 +44,7 @@ def standard_search(**kwargs) -> Optional[list]:
         if len(kwargs) == 0:
             return None
 
-        responses = client.search(**kwargs, limit=20)
+        responses = client.search(**kwargs, limit=100)
         titles = list(responses.titles) # titles is a list of Title objects
         
         plots = []
