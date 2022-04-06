@@ -31,7 +31,7 @@
         {% endif %}
       </div>
       <p> <br/> ------ OR ------  <br/></p>
-      <a href="{% url 'accounts:signup' %} "><p style="text-align: center">Create New Account</p></a>
+      <a id='createnew' href="{% url 'accounts:signup' %} "><p style="text-align: center">Create New Account</p></a>
 </div>
 
 <style>
@@ -100,10 +100,10 @@
       color: grey
   }
 
-  a{
+  #createnew{
       text-decoration: none;
       color: black;
-      font-weight: 400;
+      font-weight: 600;
   }
 
 </style>

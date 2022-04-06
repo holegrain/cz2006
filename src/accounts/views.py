@@ -34,7 +34,7 @@ def ForgetPwView(request):
                 # go back to account page
                 messages.success(
                     request, f'We have emailed you your temporary password. You can log in now!')
-                return render(request, 'login.html')
+                return redirect('/account/login/')
             
             else: 
                 messages.error(
@@ -102,8 +102,9 @@ def ProfileView(request):
         if form.is_valid():
             obj.dob = form.cleaned_data.get('dob')
             obj.email = form.cleaned_data.get('email')
-            if form.cleaned_data.get('password') != None:
-                obj.set_password(form.cleaned_data.get('password'))
+            password = form.cleaned_data.get('password1')
+            if password != None:
+                obj.set_password(password)
             obj.save()
             messages.success(
                 request, f'Your account successfully updated.')
