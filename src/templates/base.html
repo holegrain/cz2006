@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,38 +7,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      font-size: 16px;
+    }    
+
+    * {
+      /* border: 1px solid red; */
+      padding: 0;
+      margin: 0;
+      font-family: 'Poppins', Open Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
+    }
+
+    html {
+      min-width: 35rem;
+    }
+
     body {
-      font-family: Roboto, sans-serif;
-      height: 100vh;
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 0;
-      margin: 0;
     }
 
-    .nav-area {
-      float: right;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid black;
+    }
+
+    .navbar ul {
       list-style: none;
-      margin-top: 30px;
-      font-family: 'Lexand Peta', sans-serif;
+      margin-right: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
-  
-    .nav-area li {
-      display: inline-block;
+
+    #site-logo {
+      height: 80px;
+      width: auto;
     }
-  
+
     /* Style The Dropdown Button */
     .dropbtn {
       background-color: transparent;
-      color: black;
-      padding: 10px;
-      font-size: 16px;
-      font-family: 'EB Garamond', serif;
       border: none;
+      padding: 10px;
+      font-size: inherit;
       cursor: pointer;
       outline: none;
-      font-weight: 500;
+      font-weight: 400;
     }
 
     /* The container <div> - needed to position the dropdown content */
@@ -58,7 +77,7 @@
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
       border-radius: 12px;
       z-index: 1;
-      font-family: 'EB Garamond', serif;
+      font-size: 14px;
     }
   
     /* Links inside the dropdown */
@@ -67,7 +86,6 @@
       padding: 12px 16px;
       text-decoration: none;
       display: block;
-      font-family: 'EB Garamond', serif;
     }
   
     /* Change color of dropdown links on hover */
@@ -85,43 +103,29 @@
       color: grey;
     }
 
-    #site-logo {
-      height: 100px;
-      width: auto;
-      margin-left: 32px;
+    .header-text {
+    font-size: 32px;
+    font-weight: 400;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
     }
 
-    .footer {
-      display: flex;
-      justify-content: flex-end;
-      background-color: #eeeeee;
-      margin: 0;
-      padding: 0;
-    }
-
-    .content {
-      flex: 1;
-      padding: 0;
-      margin: 0;
-    }
-
-    ul#footer-content {
-      padding: 12px;
-      margin: 0;
-      gap: 20px;
-    }
   </style>
 </head>
 
 <body>
 
   <div class="navbar">
+
     {% load static %}
-    <a href="/"><img id="site-logo" src="{% static 'images/logo.jpg' %}" alt="Lib-RSS Logo"></a>
+    <a href="/search" style="height: 80px; margin-left: 2rem;">
+      <img id="site-logo" src="{% static 'images/logo.jpg' %}" alt="Lib-RSS Logo">
+    </a>
 
-
-    <ul class="nav-area">
+    <ul>
       {% if user.is_authenticated %}
+<<<<<<< HEAD
         <li>
             <p class = "dropbtn"> Hello, {{user.username}}</p>
         </li>
@@ -144,27 +148,58 @@
             </div>
           </div>
       {% else %}
+=======
+      <li>
+        <div class="dropdown">
+          <p class="dropbtn"> Hello, {{user.username}}</p>
+        </div>
+      </li>
+>>>>>>> 8e1a0787981b369693ebb3b9d3c14c3d7c3199e7
       <li>
         <div class="dropdown">
           <button class="dropbtn">Search</button>
           <div class="dropdown-content">
+<<<<<<< HEAD
           <a href="/">Standard Search</a>
           <a href="/search/adv">Advanced Search</a>
+=======
+          <a href="/search">Standard Search</a>
+          <a href="/search/adv">Advanced Search</a>
       </li>
-        <li>
-          <div class="dropdown">
-            <button class="dropbtn">Account</button>
-            <div class="dropdown-content">
-            <a href="/account/signup">Signup</a>
-            <a href="/account/login">Login</a>
-        </li>
-      {% endif %}
-    
-        <li>
-          <div class="dropdown">
-            <a href="/recommend"><button class="dropbtn">Recommendation</button></a>
-          </div>  
-        </li>
+      <li>
+        <div class="dropdown">
+          <button class = "dropbtn">Account</button>
+          <div class="dropdown-content">
+            <a href="/account">My Account</a>
+            {% if user.is_superuser %}
+            <a href="/admin">Admin</a>         
+            {% endif %}
+            <a href="/account/logout">Logout</a>
+          </div>
+        </div>
+    {% else %}
+    <li>
+      <div class="dropdown">
+        <button class="dropbtn">Search</button>
+        <div class="dropdown-content">
+        <a href="/search">Standard Search</a>
+        <a href="/search/adv">Advanced Search</a>
+    </li>
+      <li>
+        <div class="dropdown">
+          <button class="dropbtn">Account</button>
+          <div class="dropdown-content">
+          <a href="/account/login">Login</a>
+          <a href="/account/signup">Signup</a>
+      </li>
+    {% endif %}
+  
+      <li>
+        <div class="dropdown">
+          <a href="/recommend"><button class="dropbtn">Recommend</button></a>
+        </div>  
+>>>>>>> 8e1a0787981b369693ebb3b9d3c14c3d7c3199e7
+      </li>
     </ul>
   </div>
 
@@ -173,14 +208,6 @@
     {% block content %} {% endblock %}
 
   </div>
-
-  <div class="footer">
-    <ul id="footer-content">
-      <li>FAQ</li>
-      <li>About Us</li>
-    </ul>
-  </div>
-
 </body>
 
 </html>

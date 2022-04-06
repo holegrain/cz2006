@@ -1,107 +1,81 @@
 {% extends 'base.html' %} {% block content %}
 
+<title>Search Results | Lib-RSS</title>
+
+<head>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"
+  ></script>
+</head>
+
 <div id="content">
-  <div class="header">
-    <h1 class="title">Results</h1>
+  <p class="header-text">Search Results</p>
+  {% for book in resultlist %}
+  <div class="book-card">
+    <a href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
+      {{ book.title }}
+    </a>
+
+    {% if book.author is not None %}
+    <p class="book-info book-author">Author: {{ book.author }}</p>
+    {% endif %}
+
+    {% if book.isbn is not None %}
+    <p class="book-info book-isbn">ISBN: {{ book.isbn }}</p>
+    {% endif %}
+
+    {% if book.year is not None %}
+    <p class="book-info book-year">Published in {{ book.year }}</p>
+    {% endif %}
+
+    {% if book.plot is not None %}
+    <p class="book-info book-plot">{{ book.plot }}</p>
+    {% endif %}
   </div>
-  <body>
-    {% for book in resultlist %}
-    <h4>
-      <a href="{% url 'books:ViewBook' bid=book.bid %}" class="btn btn-success"
-        >Title: {{ book.title }}
-      </a>
-      <br />
-      Author: {{ book.author }} <br />
-      ISBN: {{ book.isbn }} <br />
-      Year of Publication: {{ book.year }} <br />
-    </h4>
-    <p>Abstract: {{ book.plot }}</p>
-    {% endfor %}
-  </body>
+  {% endfor %}
 </div>
+
+<script>
+  const collection = document.querySelectorAll(".book-plot");
+
+  if (collection) {
+    collection.forEach((paragraph, index) => {
+      $clamp(paragraph, {clamp:5});
+    });
+  }
+</script>
 
 <style>
   #content {
-    color: rgb(24, 59, 61);
-    text-align: center;
+    display: flex;
+    flex-direction: column;
   }
 
-  .vertical-menu {
-    width: 200px;
-    position: relative;
-    top: 40vh;
-    left: 0vw;
+  .header-text {
+    margin-top: 1rem;
   }
 
-  .vertical-menu a {
-    color: rgb(0, 0, 0);
+  .book-card {
+    border-bottom: 2px dotted black;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .book-info {
+    margin: 0.3rem;
+  }
+
+  .book-author, .book-isbn, .book-year, .book-title {
     display: block;
-    padding: 12px;
-    text-decoration: none;
-    background-color: rgb(216, 212, 212);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0.3rem;
   }
 
-  .vertical-menu a:hover {
-    background-color: rgb(252, 199, 178);
-  }
-
-  .vertical-menu a.active {
-    background-color: lightsalmon;
-    color: white;
-  }
-
-  #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
-  }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
-  }
-  .field {
-    padding: 5px;
-  }
-  .cutebutton {
-    background-color: bisque; /* Green */
-    border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
-  }
-
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 30px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
+  .book-plot {
+    text-align: justify;
   }
 </style>
 
