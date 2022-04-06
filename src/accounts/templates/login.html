@@ -8,9 +8,16 @@
 		<h1>Login</h1>
 		<h2>Welcome Back!</h2>
 		<form method="post">
-			{% csrf_token %}
-			{{form.entry}}
-			{{form.password}}
+			{% csrf_token %}{% for field in form %}
+			<div>
+			  <p class="field">
+				{{ field }} 
+			  </p>
+			  {% for error in form.errors %}
+			  <small id ='field' style="color: red">{{ error }}</small>
+			  {% endfor %}
+			</div>
+			{% endfor %}
 			<div class="misc">
 				<div class="rmbme">
 					<input type="checkbox">
@@ -24,16 +31,12 @@
 			</div>
 			<input type="submit" value="Login">
 	</div>
-	{% for field in form %}
-	{% for error in field.errors %}
-	<p class='error-messages'>{{ error }}</p>
-	{% endfor %}
-	{% endfor %}
+
 	<div>
         {% if messages %}
         <ul style="text-align: center">
           {% for message in messages %}
-          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %} style="color: red">
+          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
             {{ message }}
           </li>
           {% endfor %}
@@ -190,6 +193,9 @@
 		font-family:'Open Sans', sans-serif;
 		color:black;
 	}
+
+
+
 
 	
 </style>
