@@ -103,7 +103,7 @@ def ProfileView(request):
             obj.dob = form.cleaned_data.get('dob')
             obj.email = form.cleaned_data.get('email')
             if form.cleaned_data.get('password') != None:
-                obj.set_password(form.clean_password2())
+                obj.set_password(form.cleaned_data.get('password'))
             obj.save()
             messages.success(
                 request, f'Your account successfully updated.')
