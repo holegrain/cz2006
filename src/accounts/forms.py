@@ -8,7 +8,15 @@ years = [x for x in range(1920, 2023)]
 
 
 class ForgetPWForm(forms.Form):
-    entry = forms.CharField(min_length=4, max_length=256,  widget=forms.TextInput(attrs={'placeholder': 'Username/Email'}) )
+    entry = forms.CharField(min_length=4, max_length=256,  widget=forms.TextInput(attrs={
+        'placeholder': 'Username/Email',
+        'class': 'form-input'}) )
+
+    def clean(self):
+        # TODO: Hide validation error for erroneous input.
+        if not (self.cleaned_data.get('entry')):
+            raise forms.ValidationError(
+                "Please enter your username or email.")    
 
 
 class UserSignupForm(UserCreationForm):

@@ -39,7 +39,7 @@ class SimpleSearchForm(forms.Form):
 
     def clean(self):
         # TODO: Hide validation error for erroneous input.
-        if not (self.cleaned_data.get('title') or self.cleaned_data.get('author') or self.cleaned_data.get('isbn') or self.cleaned_data.get('bid') or self.cleaned_data.get('genres')):
+        if not (self.cleaned_data.get('title') or self.cleaned_data.get('author') or self.cleaned_data.get('isbn') or self.cleaned_data.get('genres')):
             raise forms.ValidationError(
                 "Please fill in at least one of the fields to begin searching.")
 
@@ -50,7 +50,14 @@ class AdvancedSearchForm(forms.Form):
                                'class': 'form-input',
                                'placeholder': 'Enter Your Plot',
                                'rows': 5,
-                                'cols': 90,
-                                'maxlength': '1000'}))
+                               'cols': 90,
+                               'style': 'resize:none;',
+                               'maxlength': '1000'}))
+
+    def clean(self):
+        # TODO: Hide validation error for erroneous input.
+        if not (self.cleaned_data.get('plot')):
+            raise forms.ValidationError(
+                "Please fill in at least one of the fields to begin searching.")
 
 

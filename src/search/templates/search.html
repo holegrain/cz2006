@@ -21,14 +21,6 @@
     </div>
 
     <div>
-      {% for error in field.errors %}
-      <small style="color: red">{{ error }}</small>
-      {% endfor %} {% if field.help_text %}
-      <p class="help">{{ field.help_text|safe }}</p>
-      {% endif %}
-    </div>
-
-    <div>
       <ul style="text-align: center; height: 3rem; line-height: 3rem">
         {% for error in form.non_field_errors %}
         <medium style="color: red">{{ error }}</medium>

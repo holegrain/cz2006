@@ -1,11 +1,10 @@
-{% extends 'base.html' %} {% block content %}
-{% load static %}
+{% extends 'base.html' %} {% block content %} {% load static %}
 
 <!-- Custom js-->
 <script src="{% static 'main.js' %}?version=1" defer></script>
 <div id="content">
   <div class="header">
-    <h1 class="title"> {{ Title }} </h1>
+    <h1 class="title">{{ Title }}</h1>
   </div>
   <body>
     <h3>
@@ -17,133 +16,62 @@
       Physical Description: {{ Physical_desc }} <br />
     </h3>
     <td>
-      <button class="btn btn-outline-primary share-btn" data-title="{{ Title }}" data-author="{{ Author }}" data-url="{{ URL }}">Share</button>
+      <button
+        class="btn btn-outline-primary share-btn"
+        data-title="{{ Title }}"
+        data-author="{{ Author }}"
+        data-url="{{ URL }}"
+      >
+        Share
+      </button>
     </td>
     <h4>Genres: {{ Subjects }} <br /></h4>
     <p>Abstract: {{ Summary }}</p>
     <form method="post">
-    {% csrf_token %}
-    <button id="save" type="submit" name="clicked">
-      <label class="switch">
-      <input id='check' type="checkbox">
-      <svg  viewBox="0 0 17 17" class='save'> <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" ></path> </svg>
-      </label>
-    </button>
+      {% csrf_token %}
+      <button id="save" type="submit" name="clicked">
+        <label class="switch">
+          <input id="check" type="checkbox" />
+          <svg viewBox="0 0 17 17" class="save">
+            <path
+              fill-rule="evenodd"
+              d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+            ></path>
+          </svg>
+        </label>
+      </button>
     </form>
   </body>
 </div>
 
 <style>
-  #content {
-    color: rgb(24, 59, 61);
-    text-align: center;
-  }
-
-  .vertical-menu {
-    width: 200px;
-    position: relative;
-    top: 40vh;
-    left: 0vw;
-  }
-
-  .vertical-menu a {
-    color: rgb(0, 0, 0);
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    background-color: rgb(216, 212, 212);
-  }
-
-  .vertical-menu a:hover {
-    background-color: rgb(252, 199, 178);
-  }
-
-  .vertical-menu a.active {
-    background-color: lightsalmon;
-    color: white;
-  }
-
-  #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
-  }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
-  }
-  .field {
-    padding: 5px;
-  }
-  .cutebutton {
-    background-color: bisque; /* Green */
-    border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
-  }
-
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 30px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
   .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  cursor: pointer;
-}
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    cursor: pointer;
+  }
 
-#check { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-  cursor: pointer;
-}
-#save {
-	border: 0;
+  #check {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+  }
+  #save {
+    border: 0;
     width: 60px;
     background-color: transparent;
     cursor: pointer;
   }
 
-.save path{
-  fill:grey;
-}
+  .save path {
+    fill: grey;
+  }
 
-input:checked + .save path {
-  fill: red;
-}
+  input:checked + .save path {
+    fill: red;
+  }
 </style>
 
 {% endblock %}
