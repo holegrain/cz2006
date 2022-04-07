@@ -7,7 +7,7 @@ from star_ratings.models import UserRating
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/account/login/')
-def recommend(request):
+def Recommend(request):
     if UserRating.objects.filter(user=request.user).exists():
         ratelist = UserRating.objects.filter(user=request.user)
         l = [rate for rate in ratelist]
