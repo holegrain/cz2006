@@ -15,6 +15,14 @@
       BID: {{ detail.BID }} <br />
       Physical Description: {{ detail.Physical_desc }} <br />
     </h3>
+    <div>
+    <html>
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+    {% load ratings %}
+    {% ratings RatedBook %}
+    </html>
+    </div>
     <td>
       <button
         class="btn btn-outline-primary share-btn"
