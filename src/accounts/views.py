@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 import datetime
+from books.models import Save, View, Rate
 from .utils import random_password
 
 def ForgetPwView(request):
@@ -91,7 +92,15 @@ def LoginView(request):
     return render(request, 'login.html', context)
 
 def AccountView(request):
-    return render(request, 'account.html')
+    saveobjs = Save.objects.filter(user=request.user)
+    viewobjs = View.objects.filter(user=request.user)
+    print(saveobjs)
+    print(viewobjs)
+    context = {
+        'save': saveobjs,
+        'view': viewobjs
+    }
+    return render(request, 'account.html', context)
 
 @login_required(login_url='/account/login/')
 def ProfileView(request):

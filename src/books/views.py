@@ -5,6 +5,7 @@ from .models import Rate, Save, View
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
 from .forms import RatingForm
+from django.db.models import Q
 '''
 Keyword argument queries in filter(), etc. are “AND”ed together. 
 If you need to execute more complex queries (for example, queries with OR statements), you can use Q objects.
@@ -14,7 +15,7 @@ These keyword arguments are specified as in “Field lookups” above.
 For more information, visit:
 https://docs.djangoproject.com/en/4.0/topics/db/queries/ 
 '''
-from django.db.models import Q
+
 
 # Create your views here.
 
@@ -50,15 +51,32 @@ def ViewBook(request, bid):
             detail['Saved'] = isSaved
         if View.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             # Book has been viewed before by the user.
-            ViewedBook = View.objects.get(Q(user=request.user), Q(bid=bid))
+            ViewedBook = View.objects.get(user=request.user, bid=bid)
             ViewedBook.lastviewed = datetime.datetime.now()
             ViewedBook.save()
+            try:
+                top20 = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
+                View.objects.exclude(bid=top20.bid).delete()
+            except:
+                pass
         else:
             # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
             ViewedBook.save()
-
-    return render(request,'book.html', detail)
+    if request.method == 'POST':
+        heartclicked = request.POST['clicked']
+        book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
+        if book:
+            book.delete()
+            return render(request,'book.html', detail)
+        else:
+            book = Save(user=request.user, bid=bid)
+            book.save()
+            return render(request,'booksaved.html', detail)
+    if isSaved:
+        return render(request,'booksaved.html', detail)
+    else: 
+        return render(request,'book.html', detail)
         
 # RateBook() 
 def RateBook(request, bid):
