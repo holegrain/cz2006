@@ -47,6 +47,7 @@ STAR_RATINGS_STAR_HEIGHT = 32
 STAR_RATINGS_STAR_WIDTH = 32
 
 # Application definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     'search',
     'books',
     'star_ratings',
+    'recommend'
 ]
 
 MIDDLEWARE = [
@@ -146,6 +148,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

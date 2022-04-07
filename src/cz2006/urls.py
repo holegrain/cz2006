@@ -23,5 +23,6 @@ urlpatterns = [
     path('search/', include('search.urls')),
     path('', RedirectView.as_view(url='search/', permanent=True)),
     path('books/', include('books.urls')),
-    path('ratings/', include('star_ratings.urls', namespace='ratings'))
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
+    path('recommend/', include('recommend.urls', namespace='recommend'))
 ]
