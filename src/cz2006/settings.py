@@ -38,8 +38,15 @@ EMAIL_HOST_USER = 'st.test1998@gmail.com'
 EMAIL_HOST_PASSWORD = 'st12345678'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# Application definition
 
+STAR_RATINGS_RERATE = True
+STAR_RATINGS_RERATE_SAME_DELETE = True
+#STAR_RATINGS_CLEARABLE = True
+STAR_RATINGS_ANONYMOUS = False
+STAR_RATINGS_STAR_HEIGHT = 32
+STAR_RATINGS_STAR_WIDTH = 32
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,7 +57,8 @@ INSTALLED_APPS = [
 
     'accounts',
     'search',
-    'books'
+    'books',
+    'star_ratings',
 ]
 
 MIDDLEWARE = [

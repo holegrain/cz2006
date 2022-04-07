@@ -7,7 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login, logout
 import datetime
-from books.models import Save, View, Rate
+from books.models import Save, View
+#from star_ratings.models import UserRating
 from .utils import random_password
 
 def ForgetPwView(request):

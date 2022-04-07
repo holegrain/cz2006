@@ -22,5 +22,6 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path('search/', include('search.urls')),
     path('', RedirectView.as_view(url='search/', permanent=True)),
-    path('books/', include('books.urls'))
+    path('books/', include('books.urls')),
+    path('ratings/', include('star_ratings.urls', namespace='ratings'))
 ]

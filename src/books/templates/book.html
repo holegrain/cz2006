@@ -4,16 +4,16 @@
 <script src="{% static 'main.js' %}?version=1" defer></script>
 <div id="content">
   <div class="header">
-    <h1 class="title">{{ Title }}</h1>
+    <h1 class="title">{{ detail.Title }}</h1>
   </div>
   <body>
     <h3>
-      Author: {{ Author }} <br />
-      Other Authors: {{ Other_authors }} <br />
-      Publisher: {{ Publisher }} <br />
-      ISBN: {{ ISBN }} <br />
-      BID: {{ BID }} <br />
-      Physical Description: {{ Physical_desc }} <br />
+      Author: {{ detail.Author }} <br />
+      Other Authors: {{ detail.Other_authors }} <br />
+      Publisher: {{ detail.Publisher }} <br />
+      ISBN: {{ detail.ISBN }} <br />
+      BID: {{ detail.BID }} <br />
+      Physical Description: {{ detail.Physical_desc }} <br />
     </h3>
     <td>
       <button
@@ -25,8 +25,8 @@
         Share
       </button>
     </td>
-    <h4>Genres: {{ Subjects }} <br /></h4>
-    <p>Abstract: {{ Summary }}</p>
+    <h4>Genres: {{ detail.Subjects }} <br /></h4>
+    <p>Abstract: {{ detail.Summary }}</p>
     <form method="post">
       {% csrf_token %}
       <button id="save" type="submit" name="clicked">

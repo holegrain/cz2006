@@ -13,15 +13,15 @@ def SearchView(request):
             isbn = form.cleaned_data.get('isbn')
             author = form.cleaned_data.get('author')
             genres = form.cleaned_data.get('genres')
-            genretuple = tuple(genres.split(','))
-            resultlist, length = standard_search(title=title, author=author, isbn=isbn, genre=genretuple)
+            genretuple = tuple(genres.split(', '))
+            resultlist, length = standard_search(title=title, author=author, isbn=isbn, subject=genretuple)
             if title:
                 search = title+'...'
             elif isbn:
                 search = isbn+'...'
             elif author:
                 search = author+'...'
-            elif isbn:
+            elif genres:
                 search = genres+'...'
             print(search)
             request.session['search'] = search

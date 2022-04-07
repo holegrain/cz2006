@@ -1,10 +1,9 @@
 import datetime
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from .models import Rate, Save, View
+from .models import Book, Save, View
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
-from .forms import RatingForm
 from django.db.models import Q
 '''
 Keyword argument queries in filter(), etc. are “AND”ed together. 
@@ -43,9 +42,11 @@ def ViewBook(request, bid):
             'URL': "domainname.com/books/"+bookdetail.bid
         }
     if request.session.has_key('is_logged'):
-        if Rate.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-            RatedBook = Rate.objects.get(Q(user=request.user), Q(bid=bid))
-            detail['Rating'] = RatedBook.rating
+        if Book.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
+            RatedBook = Book.objects.get(Q(user=request.user), Q(bid=bid))
+        else:
+            RatedBook = Book(user=request.user, bid=bid)
+            RatedBook.save()
         if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             isSaved = True
             detail['Saved'] = isSaved
@@ -71,37 +72,15 @@ def ViewBook(request, bid):
         book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
         if book:
             book.delete()
-            return render(request,'book.html', detail)
+            return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
         else:
             book = Save(user=request.user, bid=bid)
             book.save()
-            return render(request,'booksaved.html', detail)
+            return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
     if isSaved:
-        return render(request,'booksaved.html', detail)
+        return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
     else: 
-        return render(request,'book.html', detail)
-        
-# RateBook() 
-def RateBook(request, bid):
-    if request.session.has_key('is_logged'):
-        if request.method == 'POST':
-            form = RatingForm(request.POST)
-            if form.is_valid():
-                rating = form.clean_data.get('rating') 
-                if Rate.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-                    RatedBook = Rate.objects.get(Q(user=request.user), Q(bid=bid))
-                    RatedBook.rating = rating
-                else:
-                    RatedBook = Rate(user=request.user, bid=bid, rating=rating)
-                RatedBook.save()
-                messages.success(request, f'Your account successfully updated.')
-        else:
-            form = RatingForm()
-    else:
-        messages.error(request, f"Please login to rate books!")
-    context = {'form': form, 'object': RatedBook}
-    return render(request, 'profile.html', context)
-
+        return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
 
 # SaveBook() handles the backend of saving/unsaving books.            
 def SaveBook(request, bid):
