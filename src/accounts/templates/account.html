@@ -10,7 +10,11 @@
 <div id="content">
     <h1> My account </h1>
     <p> {{save}} </p>
-    <p> {{view}} </p>
+    <ol>
+    {% for i in view %}
+    <li> {{i.bid}} </li>
+    {% endfor %} 
+  </ol>
 
 </div>
 

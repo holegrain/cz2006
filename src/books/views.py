@@ -54,15 +54,18 @@ def ViewBook(request, bid):
             ViewedBook = View.objects.get(user=request.user, bid=bid)
             ViewedBook.lastviewed = datetime.datetime.now()
             ViewedBook.save()
-            try:
-                top20 = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
-                View.objects.exclude(bid=top20.bid).delete()
-            except:
-                pass
         else:
             # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
             ViewedBook.save()
+        try:
+            userview = View.objects.filter(user=request.user)
+            top20 = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
+            for i in userview:
+                if i not in top20:
+                    i.delete()
+        except:
+            pass
     if request.method == 'POST':
         heartclicked = request.POST['clicked']
         book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
