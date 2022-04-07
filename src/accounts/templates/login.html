@@ -10,12 +10,14 @@
 		<form method="post">
 			{% csrf_token %}{% for field in form %}
 			<div>
-			  <p class="field">
-				{{ field }} 
-			  </p>
-			  {% for error in form.errors %}
-			  <small id ='field' style="color: red">{{ error }}</small>
-			  {% endfor %}
+			  	<p class="field">
+					{{ field }} 
+			  	</p>
+			  	{% for error in field.errors %}
+					<div class="errormsg">
+						<medium style="color: red;">{{ error }}</medium>
+					</div>
+				{% endfor %}
 			</div>
 			{% endfor %}
 			<div class="misc">
@@ -32,19 +34,9 @@
 			<input type="submit" value="Login">
 	</div>
 
-	<div>
-        {% if messages %}
-        <ul style="text-align: center">
-          {% for message in messages %}
-          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-            {{ message }}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
+	
 	<div class="rightside">
-		<img class="book" src="{% static 'Book.jpeg' %}" />
+		<img class="book" src="{% static 'Book.png' %}" />
 		<p id="one">New here?</p>
 	</br>
 		<p id="two">Sign up and explore the world's knowledge!</p>
@@ -57,8 +49,9 @@
 <style>
 	.leftside {
 		position: absolute;
-		left: 100px;
+		left: 8%;
 		width: 50%;
+		
 	}
 
 	.leftside h1 {
@@ -73,42 +66,42 @@
 		font-size: 4vh;
 		font-weight: 300;
 		position: relative;
-		bottom: 30px;
+		bottom: 4vh;
 		padding-bottom: 3vh;
 	}
 
 	.form-control {
 		width: 65%;
-		padding: 10px 8px;
-		height: 35px;
-		font-size: 28px;
+		padding: 1.5% 1%;
+		height: 4%;
+		font-size: 4vh;
 		border-radius: 15px;
 		background: LightCyan;
 	}
 
 	.misc {
 		position: relative;
-		bottom: 30px;
+		bottom: 8vh;
 	}
 
 	.rmbme input {
-		height: 20px;
-		width: 25px;
+		height: 3vh;
+		width: 3vh;
 	}
 
 	.rmbme label {
 		font-family: 'Open Sans', sans-serif;
-		font-size: 20px;
+		font-size: 130%;
 		font-weight: 100;
 	}
 
 	.pass {
 		position: relative;
-		bottom: 23px;
-		left: 25vw;
+		bottom:4vh;
+		left: 20vw;
 		cursor: pointer;
 		font-family: 'Open Sans', sans-serif;
-		font-size: 20px;
+		font-size: 130%;
 		font-weight: 100;
 	}
 
@@ -118,8 +111,8 @@
 
 	input[type="submit"] {
 		position: relative;
-		bottom: 4vh;
-		left: 14vw;
+		bottom: 9vh;
+		left: 13vw;
 		width: 6vw;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 3vh;
@@ -193,11 +186,14 @@
 		font-family:'Open Sans', sans-serif;
 		color:black;
 	}
-
-
-
-
 	
+	.errormsg{
+		position:absolute;
+		left:8vw;
+		bottom:2.5vh;
+		font-size: 140%;
+		
+	}
 </style>
 
 {% endblock %}
