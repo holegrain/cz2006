@@ -7,6 +7,6 @@ from .views import (
 app_name = 'recommend'
 
 urlpatterns = [
-    path('recommend/', Recommend, name='recommend'),
+    path('', Recommend, name='recommend'),
     path('<int:id>/', ResultView, name='result'),
 ]
