@@ -38,6 +38,14 @@ EMAIL_HOST_USER = 'st.test1998@gmail.com'
 EMAIL_HOST_PASSWORD = 'st12345678'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+STAR_RATINGS_RERATE = True
+STAR_RATINGS_RERATE_SAME_DELETE = True
+#STAR_RATINGS_CLEARABLE = True
+STAR_RATINGS_ANONYMOUS = False
+STAR_RATINGS_STAR_HEIGHT = 32
+STAR_RATINGS_STAR_WIDTH = 32
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,7 +58,9 @@ INSTALLED_APPS = [
 
     'accounts',
     'search',
-    'books'
+    'books',
+    'star_ratings',
+    'recommend'
 ]
 
 MIDDLEWARE = [
@@ -138,6 +148,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 

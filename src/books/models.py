@@ -1,12 +1,12 @@
 from django.db import models
 from accounts.models import User
 
-# The Rate() model stores the rating of books.
-class Rate(models.Model):
+# Can consider storing book details.
+# The Book() model stores bid of books that have been rated.
+class Book(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     bid = models.CharField(max_length=9)
-    rating = models.IntegerField()
-
+    
 # The View() model stores the books viewed by the user.
 class View(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -19,7 +19,3 @@ class View(models.Model):
 class Save(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     bid = models.CharField(max_length=9)
-
-'''# The Book() model stores the book bid.
-class Book(models.Model):
-    bid = models.CharField(max_length=9)'''

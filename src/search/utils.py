@@ -15,7 +15,7 @@ API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 model = SentenceTransformer('bert-base-nli-mean-tokens')
 client = nlbsg.Client(PRODUCTION_URL, API_KEY) # initialise the nlb client
 
-search_options = ['title', 'isbn', 'author', 'genre']
+search_options = ['title', 'isbn', 'author', 'subject']
 
 # initialise mysql connection
 db = mysql.connector.connect(host='114.119.173.226', database='library', user='root', 
@@ -32,10 +32,10 @@ def standard_search(**kwargs) -> Optional[list]:
 
         else:
             return None
-# search gives {'title': 'Jane eyre', 'author': '', 'isbn': '', 'bid': None, 'genre': ('',)}
+# search gives {'title': 'Jane eyre', 'author': '', 'isbn': '', 'bid': None, 'subject': ('',)}
     else:
         for k in list(kwargs.keys()):
-            if k == 'genre' and kwargs[k] == ('',):
+            if k == 'subject' and kwargs[k] == ('',):
                 kwargs.pop(k)
             else:
                 if kwargs[k] == '':
@@ -99,11 +99,11 @@ def adv_search(plot: Optional[str] = None, keywords: Union[str, list] = None) ->
             author = title_details.title_detail.author
             plot = title_details.title_detail.summary
             year = book.publish_year if book.publish_year is not None else '0000'
-            # author = title_details.title_detail.author
+            bid = title_details.title_detail.bid
             if name is not None and plot is not None:
                 plot = plot.replace('&#8212', '-')
                 rec_cand.append({'isbn': isbn, 'title': name, 'plot': plot, 'year': year,
-                                 'author': author, 'bid': title_details.title_detail.bid}) # get only the important information
+                                 'author': author, 'bid': bid}) # get only the important information
 
     sentences = [i['plot'] for i in rec_cand]
     sentence_emb = model.encode([plot]+sentences) # embed the sentences

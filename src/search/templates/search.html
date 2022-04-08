@@ -17,15 +17,15 @@
         <p>Author {{ form.author }}</p>
         <p>ISBN {{ form.isbn }}</p>
         <p>Genres {{ form.genres }}</p>
-      </div>
-    </div>
 
-    <div>
-      {% for error in field.errors %}
-      <small style="color: red">{{ error }}</small>
-      {% endfor %} {% if field.help_text %}
-      <p class="help">{{ field.help_text|safe }}</p>
-      {% endif %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div style="align-self: center">
+          <medium style="color: red; justify-self: center;">{{ error }}</medium>
+        </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     <div>
@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 35rem;
+    min-height: 100vh;
   }
 
   .content::after {

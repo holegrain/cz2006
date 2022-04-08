@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% block content %}
+
+<title>Search Results | Lib-RSS</title>
+
+<head>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"
+  ></script>
+</head>
+
+<div id="content">
+  <p class="header-text"> Recommendations</p>
+  
+  {% for book in resultlist %}
+  <div class="book-card">
+    <a href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
+      {{ book.title }}
+    </a>
+
+    {% if book.author is not None %}
+    <p class="book-info book-author">Author: {{ book.author }}</p>
+    {% endif %}
+
+    {% if book.isbn is not None %}
+    <p class="book-info book-isbn">ISBN: {{ book.isbn }}</p>
+    {% endif %}
+
+    {% if book.year is not None %}
+    <p class="book-info book-year">Published in {{ book.year }}</p>
+    {% endif %}
+
+    {% if book.plot is not None %}
+    <p class="book-info book-plot">{{ book.plot }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<div style="text-align:center; font-size: 20px;">
+  {% for i in page %}
+    {% if i == current %}
+      <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+    {% else %}
+      <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script>
+  const collection = document.querySelectorAll(".book-plot");
+
+  if (collection) {
+    collection.forEach((paragraph, index) => {
+      $clamp(paragraph, {clamp:5});
+    });
+  }
+</script>
+
+<style>
+  #content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-text {
+    margin-top: 1rem;
+  }
+
+  .book-card {
+    border-bottom: 2px dotted black;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .book-info {
+    margin: 0.3rem;
+  }
+
+  .book-author, .book-isbn, .book-year, .book-title {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0.3rem;
+  }
+
+  .book-plot {
+    text-align: justify;
+  }
+</style>
+
+{% endblock %}

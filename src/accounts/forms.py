@@ -8,18 +8,50 @@ years = [x for x in range(1920, 2023)]
 
 
 class ForgetPWForm(forms.Form):
-    entry = forms.CharField(min_length=4, max_length=256,  widget=forms.TextInput(attrs={'placeholder': 'Username/Email'}) )
+    entry = forms.CharField(min_length=4, max_length=256,  widget=forms.TextInput(attrs={
+        'placeholder': 'Username/Email',
+        'class': 'form-input'}))
+
+    def clean(self):
+        # TODO: Hide validation error for erroneous input.
+        if not (self.cleaned_data.get('entry')):
+            raise forms.ValidationError(
+                "Please enter your username or email.")
 
 
 class UserSignupForm(UserCreationForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget(years=years))
-    email = forms.CharField(min_length=6, max_length=256)
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'dob']
 
-    # validate username
+    username = forms.RegexField(regex=r"^[\w.@+-]+$", widget=forms.TextInput(attrs={
+        'class': 'form-input',
+        'required': 'true',
+        'placeholder': 'Username'}))
+
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-input',
+        'placeholder': 'Password',
+        'required': 'true'}))
+
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-input',
+        'type': 'password',
+        'placeholder': 'Confirm Password',
+        'required': 'true'}))
+
+    email = forms.CharField(min_length=6, max_length=256, widget=forms.TextInput(attrs={
+        'class': 'form-input',
+        'type': 'email',
+        'placeholder': 'Email Address',
+        'required': 'true'}))
+
+    dob = forms.DateField(widget=forms.SelectDateWidget(years=years, attrs={
+        'class': 'date-input',
+        'required': 'true'}))
+
+   # validate username
     def clean_username(self):
         username = self.cleaned_data.get('username')
         qs = User.objects.filter(username=username)
@@ -45,13 +77,11 @@ class UserSignupForm(UserCreationForm):
 
 class UserLoginForm(forms.Form):
     entry = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Email/Username',
-        'style': 'position: relative;bottom:40px;margin:10px 0;',
-        'class': 'form-control'}))
+        'placeholder': 'Username/Email',
+        'class': 'form-input'}))
     password = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={
         'placeholder': 'Password',
-        'style': 'position: relative;bottom:40px;margin:10px 0;',
-        'class': 'form-control'}))
+        'class': 'form-input'}))
 
     # validate password:
     def clean_entry(self):
@@ -65,7 +95,6 @@ class UserLoginForm(forms.Form):
             if not qs.exists():
                 raise forms.ValidationError("Username does not exist.")
         return entry
-
 
 class UserUpdateForm(UserCreationForm):
     dob = forms.DateField(widget=forms.SelectDateWidget(years=years))

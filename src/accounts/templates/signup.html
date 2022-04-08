@@ -1,84 +1,166 @@
-{% extends 'base.html' %} {% block content %}
-<div class="header">
-  <h1 class="title">Signup</h1>
+{% extends 'base.html' %}{% block content %} {% load static %}
+
+<title>Signup | Lib-RSS</title>
+
+<div class="left-col" style="flex-direction: column;">
+  <p class="header-text" style="font-size: 40px">Welcome to Lib-RSS!</p>
+  <div style="max-width: 20rem; padding-top: 1.5rem; font-size: 20px;">
+    <p>“The more that you read, the more things you will know. The more that you learn, the more places you'll go.” </p>
+    <p style="text-align: right">― Dr. Seuss</p>
+  </div>
 </div>
 
-<form id="form" action="" method="POST">
-  {% csrf_token %} {% for field in form %}
-  <div>
-    <p class="field">
-      {{ field.label }}: <br />
-      {{ field }}
-    </p>
-    {% for error in field.errors %}
-    <small style="color: red">{{ error }}</small>
-    {% endfor %}
+<div class="right-col">
+  <div class="search-content">
+    <div class="search-header">
+      <p class="header-text"><u>Create Account</u></p>
+    </div>
+
+    <form action="" method="POST">
+      {% csrf_token %}
+
+      <div style="display: flex; justify-content: center">
+        <div class="input-boxes">
+          <p>{{ form.username }}</p>
+          <p>{{ form.email }}</p>
+          <p style="white-space: initial; width: 30rem; text-align: left;"> Your password must be at least 8 characters
+            long and must contain at least one uppercase and special character.</p>
+          <p>{{ form.password1 }}</p>
+          <p>{{ form.password2 }}</p>
+          <p class="form-input">Date of Birth: &nbsp; {{ form.dob }}</p>
+          
+          {% for field in form %}
+					{% for error in field.errors %}
+					<div class="errormsg">
+						<medium style="color: red;">{{ error }}</medium>
+					</div>
+					{% endfor %}
+					{% endfor %}
+          
+          <p>Already a member? <a href="/account/login">Log in</a></p>
+        </div>
+      </div>
+
+      <div>
+        <ul style="text-align: center; height: 3rem; line-height: 3rem">
+          {% for error in form.non_field_errors %}
+          <medium style="color: red">{{ error }}</medium>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <button id="search-button" type="submit">
+        <p id="btnText">Signup</p>
+      </button>
+    </form>
   </div>
-  {% endfor %}
-  <button class="cutebutton" type="submit">Register</button>
-</form>
+</div>
 
 <style>
-  #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
-  }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
-  }
-  .field {
-    padding: 5px;
-  }
-  .cutebutton {
-    background-color: bisque; /* Green */
-    border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
+  html {
+    min-width: 70rem;
   }
 
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
-  }
-
-  #prompt {
-    color: black;
-    text-align: center;
-    margin-top: 10px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-  }
-
-  .header {
+  .content {
     position: relative;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 70rem;
   }
 
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 50px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
+  .left-col,
+  .right-col {
+    min-width: 50%;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+  }
+
+  .left-col::after {
+    position: absolute;
+    content: "";
+    background-image: url("{% static 'images/quote-bg.jpg' %}");
+    opacity: 0.5;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+  }
+
+  .right-col::after {
+    position: absolute;
+    content: "";
+    background-image: url("{% static 'images/signup-bg.png' %}");
+    opacity: 0.5;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+  }
+
+  .search-content {
+    position: relative;
     text-align: center;
-    text-transform: uppercase;
+    background-color: rgba(131, 130, 130, 0.35);
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.481);
+    align-self: center;
+    flex-shrink: 0;
+  }
+
+  .search-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Container for all form input boxes */
+  .input-boxes {
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .form-input {
+    font-size: inherit;
+    width: 30rem;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .date-input {
+    font-size: inherit;
+  }
+
+  #search-button {
+    width: 150px;
+    height: 45px;
+    border: none;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
+    text-align: center;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
   }
 </style>
 

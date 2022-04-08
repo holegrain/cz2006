@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/4.0/ref/validators/#regexvalidator
 from django.core.validators import RegexValidator
 
 alphanumeric = RegexValidator(
-    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed.")
+    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed for the Title and Author.")
 onlyX = RegexValidator(
-    '^[X0-9]*$', message="Only numbers and capital 'X' are allowed.")
+    '^[X0-9]*$', message="Only numbers and capital 'X' are allowed for the ISBN.")
 withcomma = RegexValidator(
-    '^[a-zA-Z0-9 ,]*$', message="Only letters and numbers are allowed.")
+    '^[a-zA-Z0-9 ,]*$', message="Only letters, numbers and commmas are allowed for the Genre.")
 
 '''
 https://stackoverflow.com/questions/15472764/regular-expression-to-allow-spaces-between-words
@@ -39,7 +39,7 @@ class SimpleSearchForm(forms.Form):
 
     def clean(self):
         # TODO: Hide validation error for erroneous input.
-        if not (self.cleaned_data.get('title') or self.cleaned_data.get('author') or self.cleaned_data.get('isbn') or self.cleaned_data.get('bid') or self.cleaned_data.get('genres')):
+        if not (self.cleaned_data.get('title') or self.cleaned_data.get('author') or self.cleaned_data.get('isbn') or self.cleaned_data.get('genres')):
             raise forms.ValidationError(
                 "Please fill in at least one of the fields to begin searching.")
 
@@ -50,7 +50,14 @@ class AdvancedSearchForm(forms.Form):
                                'class': 'form-input',
                                'placeholder': 'Enter Your Plot',
                                'rows': 5,
-                                'cols': 90,
-                                'maxlength': '1000'}))
+                               'cols': 90,
+                               'style': 'resize:none;',
+                               'maxlength': '1000'}))
+
+    def clean(self):
+        # TODO: Hide validation error for erroneous input.
+        if not (self.cleaned_data.get('plot')):
+            raise forms.ValidationError(
+                "Please fill in at least one of the fields to begin searching.")
 
 

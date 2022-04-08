@@ -1,110 +1,112 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %}{% block content %} {% load static %}
 
-<div id="content">
-    <div class="header">
-        <h1 class="title">Trouble Logging In?</h1>
+<title>Forget Password | Lib-RSS</title>
+
+<div class="search-content">
+  <div class="search-header">
+    <p class="header-text"><u>Trouble Logging In?</u></p>
+  </div>
+
+  <div style="padding-left: 2rem; padding-right: 2rem; padding-bottom: 1rem;">
+    <p>Don't worry! Enter your email or username.</p> 
+    <p>We'll send you a link to get back into your account.</p>
+  </div>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <div style="display: flex; justify-content: center">
+      <div class="input-boxes">
+        <p>{{ form.entry }}</p>
       </div>
-      
-      <form id="form" action="" method="POST">
-        <p id="nicemsg"> Enter your email or username and we'll send you a temporary password to get back into your account.</p>
-        {% csrf_token %}
-        <div style="display: flex; justify-content: center">
-          <p class="field">
-            {{ form.entry }} </p>
-          {% for error in form.entry.errors %}
-          <small style="color: red">{{ error }}</small>
-          {% endfor %} 
-        </div>
-        <button class="cutebutton" type="submit">Send temporary password</button>
-      </form>
-      
-      <div>
-        {% if messages %}
-        <ul style="text-align: center">
-          {% for message in messages %}
-          <li {% if message.tags %} class=" {{ message.tags }} " {% endif %} style="color: red">
-            {{ message }}
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-      <p> <br/> ------ OR ------  <br/></p>
-      <a id='createnew' href="{% url 'accounts:signup' %} "><p style="text-align: center">Create New Account</p></a>
+    </div>
+
+    <div>
+      <ul style="text-align: center; height: 3rem; line-height: 3rem">
+        {% for error in form.non_field_errors %}
+        <medium style="color: red">{{ error }}</medium>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <button id="search-button" type="submit">
+      <p id="btnText">Send Email</p>
+    </button>
+  </form>
 </div>
 
 <style>
-    #content{
-        color: rgb(24, 59, 61);    
-        text-align: center;
-    }
+  .content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-    #form {
+  .content::after {
+    position: absolute;
+    content: "";
+    background-image: url("{% static 'images/forget-bg.jpg' %}");
+    opacity: 0.5;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+  }
+
+  .search-content {
+    position: relative;
     text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
+    background-color: rgba(255, 226, 198, 0.35);
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.481);
   }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
+
+  .search-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
-  .field {
-    padding: 1vh;
+
+  /* Container for all form input boxes */
+  .input-boxes {
+    display: flex;
+    align-items: flex-end;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+    white-space: nowrap;
   }
-  .cutebutton {
-    background-color: bisque; /* Green */
+
+  .form-input {
+    font-size: inherit;
+    width: 30rem;
+    height: 2rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  #search-button {
+    width: 150px;
+    height: 45px;
     border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 1vh;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
   }
-
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
-  }
-
-
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 4vh;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
-    margin-top: 20vh;
-  }
-
-  #nicemsg {
-      color: grey
-  }
-
-  #createnew{
-      text-decoration: none;
-      color: black;
-      font-weight: 600;
-  }
-
 </style>
+
 {% endblock %}

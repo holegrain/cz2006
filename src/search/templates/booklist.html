@@ -10,8 +10,9 @@
 </head>
 
 <div id="content">
-  <p class="header-text">You searched for {{plot}}</p>
   <p class="header-text"> Search Results</p>
+  <medium style="text-align: center">You searched for <em>{{ plot }}</em></medium>
+  
   {% for book in resultlist %}
   <div class="book-card">
     <a href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
@@ -40,9 +41,9 @@
 <div style="text-align:center; font-size: 20px;">
   {% for i in page %}
     {% if i == current %}
-      <a href = "{% url 'search:result' id=i %}" style="color:black;  text-decoration: none;">{{i}}</a>
+      <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
     {% else %}
-      <a href = "{% url 'search:result' id=i %}" style="color:grey;  text-decoration: none;">{{i}}</a>
+      <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
     {% endif %}
   {% endfor %}
 </div>
