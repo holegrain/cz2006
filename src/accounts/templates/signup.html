@@ -2,50 +2,90 @@
 
 <title>Signup | Lib-RSS</title>
 
-<div class="search-content">
-  <div class="search-header">
-    <p class="header-text"><u>Create Account</u></p>
+<div class="left-col" style="flex-direction: column;">
+  <p class="header-text" style="font-size: 40px">Welcome to Lib-RSS!</p>
+  <div style="max-width: 20rem; padding-top: 1.5rem; font-size: 20px;">
+    <p>“The more that you read, the more things you will know. The more that you learn, the more places you'll go.” </p>
+    <p style="text-align: right">― Dr. Seuss</p>
   </div>
+</div>
 
-  <form action="" method="POST">
-    {% csrf_token %}
+<div class="right-col">
+  <div class="search-content">
+    <div class="search-header">
+      <p class="header-text"><u>Create Account</u></p>
+    </div>
 
-    <div style="display: flex; justify-content: center">
-      <div class="input-boxes">
-        <p>{{ form.username }}</p>
-        <p>{{ form.email }}</p>
-        <p style="white-space: initial; width: 30rem; text-align: left;"> Your password must be at least 8 characters long and must contain at least one uppercase and special character.</p>
-        <p>{{ form.password1 }}</p>
-        <p>{{ form.password2 }}</p>
-        <p class="form-input">Date of Birth: &nbsp; {{ form.dob }}</p>
-        <p>Already a member? <a href="/account/login">Log in</a></p>
+    <form action="" method="POST">
+      {% csrf_token %}
+
+      <div style="display: flex; justify-content: center">
+        <div class="input-boxes">
+          <p>{{ form.username }}</p>
+          <p>{{ form.email }}</p>
+          <p style="white-space: initial; width: 30rem; text-align: left;"> Your password must be at least 8 characters
+            long and must contain at least one uppercase and special character.</p>
+          <p>{{ form.password1 }}</p>
+          <p>{{ form.password2 }}</p>
+          <p class="form-input">Date of Birth: &nbsp; {{ form.dob }}</p>
+          <p>Already a member? <a href="/account/login">Log in</a></p>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <ul style="text-align: center; height: 3rem; line-height: 3rem">
-        {% for error in form.non_field_errors %}
-        <medium style="color: red">{{ error }}</medium>
-        {% endfor %}
-      </ul>
-    </div>
+      <div>
+        <ul style="text-align: center; height: 3rem; line-height: 3rem">
+          {% for error in form.non_field_errors %}
+          <medium style="color: red">{{ error }}</medium>
+          {% endfor %}
+        </ul>
+      </div>
 
-    <button id="search-button" type="submit">
-      <p id="btnText">Signup</p>
-    </button>
-  </form>
+      <button id="search-button" type="submit">
+        <p id="btnText">Signup</p>
+      </button>
+    </form>
+  </div>
 </div>
 
 <style>
+  html {
+    min-width: 70rem;
+  }
+
   .content {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-width: 70rem;
   }
 
-  .content::after {
+  .left-col,
+  .right-col {
+    min-width: 50%;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+  }
+
+  .left-col::after {
+    position: absolute;
+    content: "";
+    background-image: url("{% static 'images/quote-bg.jpg' %}");
+    opacity: 0.5;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+  }
+
+  .right-col::after {
     position: absolute;
     content: "";
     background-image: url("{% static 'images/signup-bg.png' %}");
@@ -65,6 +105,8 @@
     background-color: rgba(131, 130, 130, 0.35);
     padding: 1rem;
     border: 1px solid rgba(0, 0, 0, 0.481);
+    align-self: center;
+    flex-shrink: 0;
   }
 
   .search-header {
