@@ -37,16 +37,16 @@ def ViewBook(request, bid):
             'Subjects': bookdetail.subjects,
             'Summary': bookdetail.summary,
             'Notes': bookdetail.notes,
-            'Rating': 0,
             'Saved': isSaved,
             'URL': "domainname.com/books/"+bookdetail.bid
         }
+    
+    if Book.objects.filter(bid=bid).exists():
+            RatedBook = Book.objects.get(bid=bid)
+    else:
+        RatedBook = Book(bid=bid)
+        RatedBook.save()
     if request.session.has_key('is_logged'):
-        if Book.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-            RatedBook = Book.objects.get(Q(user=request.user), Q(bid=bid))
-        else:
-            RatedBook = Book(user=request.user, bid=bid)
-            RatedBook.save()
         if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             isSaved = True
             detail['Saved'] = isSaved
@@ -67,36 +67,17 @@ def ViewBook(request, bid):
                     i.delete()
         except:
             pass
-    if request.method == 'POST':
-        heartclicked = request.POST['clicked']
-        book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
-        if book:
-            book.delete()
-            return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
-        else:
-            book = Save(user=request.user, bid=bid)
-            book.save()
-            return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
+        if request.method == 'POST':
+            heartclicked = request.POST['clicked']
+            book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
+            if book:
+                book.delete()
+                return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
+            else:
+                book = Save(user=request.user, bid=bid)
+                book.save()
+                return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
     if isSaved:
         return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
     else: 
         return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
-
-# SaveBook() handles the backend of saving/unsaving books.            
-def SaveBook(request, bid):
-    if request.session.has_key('is_logged'):
-        if request.method == 'POST':
-            if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-                SavedBook = Save.objects.get(Q(user=request.user), Q(bid=bid))
-                SavedBook.delete()
-                messages.success(request, 'Unsaved!')
-            else:
-                SavedBook = Save(user=request.user, bid=bid)
-                SavedBook.save()
-                messages.success(request, 'Saved!')
-        else:
-            return 
-    else:
-        messages.error(request, 'Please login to rate books!')
-
-# ShareBook()

@@ -35,7 +35,7 @@
     </td>
     <h4>Genres: {{ detail.Subjects }} <br /></h4>
     <p>Abstract: {{ detail.Summary }}</p>
-    <form method="post">
+    <form method="POST">
       {% csrf_token %}
       <button id="save" type="submit" name="clicked">
         <label class="switch">
