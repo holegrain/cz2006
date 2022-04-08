@@ -17,6 +17,14 @@
         <p>Author {{ form.author }}</p>
         <p>ISBN {{ form.isbn }}</p>
         <p>Genres {{ form.genres }}</p>
+
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div style="align-self: center">
+          <medium style="color: red; justify-self: center;">{{ error }}</medium>
+        </div>
+        {% endfor %}
+        {% endfor %}
       </div>
     </div>
 
