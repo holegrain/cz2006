@@ -67,15 +67,14 @@ def ViewBook(request, bid):
         except:
             pass
     if request.method == 'POST':
-        heartclicked = request.POST['clicked']
         book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
         if book:
             book.delete()
-            return render(request,'book.html', detail)
+            return redirect('books:ViewBook', bid=bid)
         else:
             book = Save(user=request.user, bid=bid)
             book.save()
-            return render(request,'booksaved.html', detail)
+            return redirect('books:ViewBook', bid=bid)
     if isSaved:
         return render(request,'booksaved.html', detail)
     else: 
