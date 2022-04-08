@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/4.0/ref/validators/#regexvalidator
 from django.core.validators import RegexValidator
 
 alphanumeric = RegexValidator(
-    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed.")
+    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed for the Title and Author.")
 onlyX = RegexValidator(
-    '^[X0-9]*$', message="Only numbers and capital 'X' are allowed.")
+    '^[X0-9]*$', message="Only numbers and capital 'X' are allowed for the ISBN.")
 withcomma = RegexValidator(
-    '^[a-zA-Z0-9 ,]*$', message="Only letters and numbers are allowed.")
+    '^[a-zA-Z0-9 ,]*$', message="Only letters, numbers and commmas are allowed for the Genre.")
 
 '''
 https://stackoverflow.com/questions/15472764/regular-expression-to-allow-spaces-between-words

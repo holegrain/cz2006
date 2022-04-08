@@ -28,6 +28,15 @@
           <p>{{ form.password1 }}</p>
           <p>{{ form.password2 }}</p>
           <p class="form-input">Date of Birth: &nbsp; {{ form.dob }}</p>
+          
+          {% for field in form %}
+					{% for error in field.errors %}
+					<div class="errormsg">
+						<medium style="color: red;">{{ error }}</medium>
+					</div>
+					{% endfor %}
+					{% endfor %}
+          
           <p>Already a member? <a href="/account/login">Log in</a></p>
         </div>
       </div>

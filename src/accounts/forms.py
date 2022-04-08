@@ -23,6 +23,7 @@ class UserSignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
+        fields = ['username', 'email', 'password1', 'password2', 'dob']
 
     username = forms.RegexField(regex=r"^[\w.@+-]+$", widget=forms.TextInput(attrs={
         'class': 'form-input',
@@ -46,7 +47,7 @@ class UserSignupForm(UserCreationForm):
         'placeholder': 'Email Address',
         'required': 'true'}))
 
-    dob = forms.DateField(widget=forms.SelectDateWidget(attrs={
+    dob = forms.DateField(widget=forms.SelectDateWidget(years=years, attrs={
         'class': 'date-input',
         'required': 'true'}))
 
@@ -76,13 +77,11 @@ class UserSignupForm(UserCreationForm):
 
 class UserLoginForm(forms.Form):
     entry = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Email/Username',
-        'style': 'position: relative;bottom:7vh;margin:1% 0;',
-        'class': 'form-control'}))
+        'placeholder': 'Username/Email',
+        'class': 'form-input'}))
     password = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={
         'placeholder': 'Password',
-        'style': 'position: relative;bottom:7vh;margin:1% 0;',
-        'class': 'form-control'}))
+        'class': 'form-input'}))
 
     # validate password:
     def clean_entry(self):
@@ -96,7 +95,6 @@ class UserLoginForm(forms.Form):
             if not qs.exists():
                 raise forms.ValidationError("Username does not exist.")
         return entry
-
 
 class UserUpdateForm(UserCreationForm):
     dob = forms.DateField(widget=forms.SelectDateWidget(years=years))
