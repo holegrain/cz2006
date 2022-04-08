@@ -14,7 +14,7 @@
       <div class="input-boxes">
         <p>{{ form.username }}</p>
         <p>{{ form.email }}</p>
-        <p style="white-space: initial; width: 25rem;"> Password must be at least 8 characters and must contain one uppercase and special character.</p>
+        <p style="white-space: initial; width: 30rem; text-align: left;"> Your password must be at least 8 characters long and must contain at least one uppercase and special character.</p>
         <p>{{ form.password1 }}</p>
         <p>{{ form.password2 }}</p>
         <p class="form-input">Date of Birth: &nbsp; {{ form.dob }}</p>
@@ -48,7 +48,7 @@
   .content::after {
     position: absolute;
     content: "";
-    background-image: url("{% static 'images/advsearch-bg.jpeg' %}");
+    background-image: url("{% static 'images/signup-bg.png' %}");
     opacity: 0.5;
     background-position: center;
     background-size: cover;
@@ -62,7 +62,7 @@
   .search-content {
     position: relative;
     text-align: center;
-    background-color: rgba(97, 202, 255, 0.35);
+    background-color: rgba(131, 130, 130, 0.35);
     padding: 1rem;
     border: 1px solid rgba(0, 0, 0, 0.481);
   }
@@ -86,7 +86,7 @@
 
   .form-input {
     font-size: inherit;
-    width: 25rem;
+    width: 30rem;
     height: 2rem;
     margin-bottom: 0.5rem;
     padding-left: 0.5rem;
