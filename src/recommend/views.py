@@ -3,29 +3,34 @@ from .utils import Recommendation, ColdStart
 from django.http import Http404  
 from django.contrib import messages
 from math import ceil
+from books.models import Save
 from star_ratings.models import UserRating
+from accounts.models import User
 from django.contrib.auth.decorators import login_required
+
 
 @login_required(login_url='/account/login/')
 def Recommend(request):
     if UserRating.objects.filter(user=request.user).exists():
-        ratelist = UserRating.objects.filter(user=request.user)
-        l = [rate for rate in ratelist]
-        if len(l) < 5:
+        numrate = UserRating.objects.filter(user=request.user).count() # number of books the user has rated
+        if numrate < 5:
             msg = 'Please rate at least {N} more books to unlock recommendations!'
-            messages.error(request, msg.format(5-len(l)))
+            messages.error(request, msg.format(5-numrate))
         else:
-            users = UserRating.objects.all()
-            u = [user for user in users]
-            if len(u)<10:
-                recommendlist = ColdStart(request)
+            totalusers = User.objects.count() # total number of users
+            totalratings = UserRating.objects.count() # total number of ratings
+            if (totalusers<10 or totalratings<50): # less than 10 users or 50 ratings in total
+                recommendlist, length = ColdStart(request)
             else:
-                recommendlist = Recommendation(request)
-            return redirect('http://127.0.0.1:8000/search/1')
+                recommendlist, length = Recommendation(request)
+            request.session['resultlength'] = length
+            request.session['resultlist'] = recommendlist
+            resultlist = request.session['resultlist']
+            return redirect('http://127.0.0.1:8000/recommend/1')
     else:
         messages.error(request, 'Please rate at least 5 more books to unlock recommendations!')
 
-def ResultView(request, id=id):
+def ResultView1(request, id=id):
     resultlist = request.session['resultlist']
     length = request.session['resultlength']
     start = (id-1)*10 + 1

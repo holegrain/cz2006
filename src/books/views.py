@@ -5,6 +5,9 @@ from .models import Book, Save, View
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
 from django.db.models import Q
+from django.utils import timezone
+import pytz
+
 '''
 Keyword argument queries in filter(), etc. are “AND”ed together. 
 If you need to execute more complex queries (for example, queries with OR statements), you can use Q objects.
@@ -42,7 +45,7 @@ def ViewBook(request, bid):
         }
     
     if Book.objects.filter(bid=bid).exists():
-            RatedBook = Book.objects.get(bid=bid)
+        RatedBook = Book.objects.get(bid=bid)
     else:
         RatedBook = Book(bid=bid)
         RatedBook.save()
@@ -53,11 +56,11 @@ def ViewBook(request, bid):
         if View.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             # Book has been viewed before by the user.
             ViewedBook = View.objects.get(user=request.user, bid=bid)
-            ViewedBook.lastviewed = datetime.datetime.now()
+            ViewedBook.lastviewed = timezone.now()
             ViewedBook.save()
         else:
             # Book is not among the last 20 books viewed by the user.
-            ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
+            ViewedBook = View(user=request.user, bid=bid, lastviewed=timezone.now())
             ViewedBook.save()
         try:
             userview = View.objects.filter(user=request.user)
