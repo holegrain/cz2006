@@ -23,6 +23,10 @@ def Recommend(request):
                 recommendlist, length = ColdStart(request)
             else:
                 recommendlist, length = Recommendation(request)
+                if length < 20: # coldstart if not enough recommendations
+                    recommendlist1, length1 = ColdStart(request)
+                    recommendlist = recommendlist.append(recommendlist1)[:100]
+                    length = length(recommendlist)
             request.session['resultlength'] = length
             request.session['resultlist'] = recommendlist
             resultlist = request.session['resultlist']
