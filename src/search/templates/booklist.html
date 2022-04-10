@@ -51,11 +51,7 @@
 
   {% for book in resultlist %}
   <div class="book-card">
-<<<<<<< HEAD
-    <a id="title" href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
-=======
     <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank" class="book-title">
->>>>>>> 4beac955411dd43be1b838827a60beb948763152
       {{ book.title }}
     </a>
 

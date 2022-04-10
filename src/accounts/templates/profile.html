@@ -21,16 +21,21 @@
           <p>{{ form.password1 }}</p>
           <p>{{ form.password2 }}</p>
           <p class="form-input" style="width: 26rem; padding-bottom: 3rem;">Date of Birth: &nbsp; {{ form.dob }}</p>
-          <p style="white-space: initial; width: 30rem; padding-bottom: 0.5rem;"> Please enter your current passsword to continue.</p>
+          <p style="white-space: initial; width: 30rem; padding-bottom: 0.5rem;"> Please enter your current password to continue.</p>
           <p>{{ form.current }}</p>
-        </div>
-        
+        </div>        
         <button id="search-button" type="submit">
           <p id="btnText">Update</p>
         </button>
       </form>
     </div>
-
+    {% for field in form %}
+    {% for error in field.errors %}
+    <div>
+      <medium style="color: red;">{{ error }}</medium>
+    </div>
+    {% endfor %}
+    {% endfor %}
     <div>
       <ul style="text-align: center; height: 3rem; line-height: 3rem; list-style-type: none;">
         {% if messages %}

@@ -153,7 +153,7 @@ class UserUpdateForm(UserCreationForm):
 
 
 class UserDeleteForm(forms.Form):
-    password1 = forms.CharField(
+    password = forms.CharField(
         max_length=32, label='password', widget=forms.PasswordInput(attrs={
         'placeholder': 'Current Password',
         'class': 'form-input'}))
@@ -169,3 +169,4 @@ class UserDeleteForm(forms.Form):
         if authenticate(username=self.request.user, password=password) == None:
             raise forms.ValidationError("Incorrect Password.")
         return password
+

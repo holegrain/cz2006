@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 import datetime
 from books.models import Save, View
 from star_ratings.models import UserRating
@@ -142,7 +142,7 @@ def ProfileView(request):
                 obj.set_password(password)
             obj.save()
             messages.success(
-                request, f'Your account successfully updated.')
+                request, f'Your account is successfully updated.')
             form = UserUpdateForm(initial={'username': obj.username, 'dob': obj.dob, 'email': obj.email}, request=request)
     else:
         form = UserUpdateForm(initial={'username': obj.username, 'dob': obj.dob, 'email': obj.email}, request=request)

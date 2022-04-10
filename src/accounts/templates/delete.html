@@ -18,9 +18,18 @@
        
         <div style="display:flex; flex-direction: column; align-items: center;">
           <p style="white-space: initial; width: 30rem; color: red; padding-bottom: 0.5rem;">Are you sure you want to delete your account?</p>
-          <p style="white-space: initial; width: 30rem; padding-bottom: 0.5rem;">If you're sure, enter your passsword to continue.</p>
-          <p>{{ form.password1 }}</p>
+          <p style="white-space: initial; width: 30rem; padding-bottom: 0.5rem;">If you are sure, enter your password to continue.</p>
+          <p>{{ form.password }}</p>
+          {% for field in form %}
+          {% for error in field.errors %}
+            <medium style="color: red;margin-bottom:20px;">{{ error }}</medium>
+          {% endfor %}
+          {% endfor %}
+        
         </div>
+
+
+
         
         <button id="search-button" type="submit">
           <p id="btnText">Confirm Delete</p>
@@ -28,18 +37,7 @@
       </form>
     </div>
     
-    <div>
-      {% if messages %}
-      <ul style="text-align: center">
-        {% for message in messages %}
-        <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
-          {{ message }}
-        </li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-    </div>
-  </div>
+
 </div>
 
 <style>
