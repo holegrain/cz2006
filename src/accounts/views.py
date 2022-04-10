@@ -40,7 +40,7 @@ def ForgetPwView(request):
                 )
                 # go back to account page
                 messages.success(
-                    request, f'We have emailed you your temporary password. You can log in now!')
+                    request, f'Check your email for a temporary password.')
                 return redirect('/account/login/')
             
             else: 
@@ -85,7 +85,7 @@ def LoginView(request):
             else:
                 user = authenticate(username=entry, password=password)
             if user == None:
-                messages.error(request, f"Your username and password didn't match. Please try again!")
+                messages.error(request, f"Your username and password didn't match.")
             else:
                 login(request, user)
                 request.session['is_logged'] = True
