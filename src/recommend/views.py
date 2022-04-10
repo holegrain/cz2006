@@ -16,6 +16,7 @@ def Recommend(request):
         if numrate < 5:
             msg = 'Please rate at least {0} more books to unlock recommendations!'.format(5-numrate)
             messages.error(request, msg)
+            return redirect('/')
         else:
             totalusers = User.objects.count() # total number of users
             totalratings = UserRating.objects.count() # total number of ratings
