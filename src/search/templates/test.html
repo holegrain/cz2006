@@ -1,1 +1,148 @@
-<p>testing</p>>
+{% extends 'base.html' %} {% block content %}
+
+<title>Search Results | Lib-RSS</title>
+
+<head>
+  <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/Clamp.js/0.5.1/clamp.min.js"
+  ></script>
+</head>
+
+<div id="content">
+  <p class="header-text"> Search Results</p>
+  <medium style="text-align: center">You searched for <em>{{ plot }}</em></medium>
+  <p><br/></p>
+  <div style="text-align:center; font-size: 16px;">
+      {% if sortby == 'default' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'title' %}
+      <a>Sort by: </a>
+      <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:black; text-decoration: none;">Title</a>
+      <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+      <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+      <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'newest' %}
+      <a>Sort by: </a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:black; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'oldest' %}
+      <a>Sort by: </a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:black; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'popularity' %}
+      <a>Sort by: </a>
+      <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+      <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+      <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+      <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:black; text-decoration: none;">Popularity</a>
+      {% endif %}
+  </div>
+
+  {% for book in resultlist %}
+  <div class="book-card">
+    <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
+      {{ book.title }}
+    </a>
+
+    {% if book.author is not None %}
+    <p class="book-info book-author">Author: {{ book.author }}</p>
+    {% endif %}
+
+    {% if book.isbn is not None %}
+    <p class="book-info book-isbn">ISBN: {{ book.isbn }}</p>
+    {% endif %}
+
+    {% if book.year is not None %}
+    <p class="book-info book-year">Published in {{ book.year }}</p>
+    {% endif %}
+
+    {% if book.plot is not None %}
+    <p class="book-info book-plot">{{ book.plot }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<div style="text-align:center; font-size: 20px;">
+  {% if sortby == 'default' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:sortby' id=i value=sortby%}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:sortby' id=i value=sortby%}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  const collection = document.querySelectorAll(".book-plot");
+
+  if (collection) {
+    collection.forEach((paragraph, index) => {
+      $clamp(paragraph, {clamp:5});
+    });
+  }
+</script>
+
+<style>
+  #content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-text {
+    margin-top: 1rem;
+  }
+
+  .book-card {
+    border-bottom: 2px dotted black;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .book-info {
+    margin: 0.3rem;
+  }
+
+  .book-author, .book-isbn, .book-year, .book-title {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0.3rem;
+  }
+
+  .book-plot {
+    text-align: justify;
+  }
+
+  #title {
+    text-decoration:none; 
+    color:rgb(9, 42, 154);
+    font-size: 20px;
+  }
+
+  #title:hover {
+    color:black
+  }
+</style>
+
+{% endblock %}

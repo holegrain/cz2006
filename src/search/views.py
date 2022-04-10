@@ -85,16 +85,20 @@ def ResultView(request, id=id):
     if resultlist:
         return render(request, 'booklist.html', context)        
 
-def ResultTitleView(request, id=id):
-    #sortbytitle
+
+def SortByView(request, id, value):
     try:
         resultlist = request.session['resultlist']
-        resultlist=sort(resultlist, sort_by='title', reverse=False)
+        if value == 'newest':
+            resultlist=sort(resultlist, sort_by='year', reverse=True)
+        elif value == 'oldest':
+            resultlist=sort(resultlist, sort_by='year', reverse=False)
+        else:
+            resultlist=sort(resultlist, sort_by=value, reverse=False)
     except:
         raise Http404
     length = request.session['resultlength']
     plot = request.session['search']
-    sortby = 'title'
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  
@@ -103,73 +107,6 @@ def ResultTitleView(request, id=id):
         end=length
     resultlist = resultlist[start:end+1]
     pagenum = ceil(length/10)
-    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
-    if resultlist:
-        return render(request, 'booklist.html', context)   
-
-
-def ResultNewestView(request, id=id):
-    #sort by year 
-    # try:
-    resultlist = request.session['resultlist']
-    resultlist = sort(resultlist, sort_by='year', reverse=True)
-    # except:
-    #     raise Http404
-    length = request.session['resultlength']
-    plot = request.session['search']
-    sortby = 'newest'
-    start = (id-1)*10 + 1
-    if start>length:
-        raise Http404  
-    end = id*10
-    if end>length:
-        end=length
-    resultlist = resultlist[start:end+1]
-    pagenum = ceil(length/10)
-    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
-    if resultlist:
-        return render(request, 'booklist.html', context)  
-
-def ResultOldestView(request, id=id):
-    #sort by year 
-    # try:
-    resultlist = request.session['resultlist']
-    resultlist = sort(resultlist, sort_by='year', reverse=False)
-    # except:
-    #     raise Http404
-    length = request.session['resultlength']
-    plot = request.session['search']
-    sortby = 'oldest'
-    start = (id-1)*10 + 1
-    if start>length:
-        raise Http404  
-    end = id*10
-    if end>length:
-        end=length
-    resultlist = resultlist[start:end+1]
-    pagenum = ceil(length/10)
-    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
-    if resultlist:
-        return render(request, 'booklist.html', context)    
-
-def ResultPopularityView(request, id=id):
-    #sort by popularity
-    # try:
-    resultlist = request.session['resultlist']
-    resultlist = sort(resultlist, sort_by='popularity', reverse=True)
-    # except:
-    #     raise Http404
-    length = request.session['resultlength']
-    plot = request.session['search']
-    sortby = 'popularity'
-    start = (id-1)*10 + 1
-    if start>length:
-        raise Http404  
-    end = id*10
-    if end>length:
-        end=length
-    resultlist = resultlist[start:end+1]
-    pagenum = ceil(length/10)
-    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':value}
     if resultlist:
         return render(request, 'booklist.html', context)   

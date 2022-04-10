@@ -16,37 +16,37 @@
   <div style="text-align:center; font-size: 16px;">
       {% if sortby == 'default' %}
         <a>Sort by: </a>
-        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
-        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
-        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
-        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
       {% elif sortby == 'title' %}
-        <a>Sort by: </a>
-        <a href = "{% url 'search:bytitle' id=current %}" style="color:black; text-decoration: none;">Title</a>
-        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
-        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
-        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      <a>Sort by: </a>
+      <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:black; text-decoration: none;">Title</a>
+      <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+      <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+      <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
       {% elif sortby == 'newest' %}
-        <a>Sort by: </a>
-        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
-        <a href = "{% url 'search:bynewest' id=current %}" style="color:black; text-decoration: none;">Newest</a>
-        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
-        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      <a>Sort by: </a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:black; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
       {% elif sortby == 'oldest' %}
-        <a>Sort by: </a>
-        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
-        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
-        <a href = "{% url 'search:byoldest' id=current %}" style="color:black; text-decoration: none;">Oldest</a>
-        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      <a>Sort by: </a>
+        <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:black; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:grey; text-decoration: none;">Popularity</a>
       {% elif sortby == 'popularity' %}
-        <a>Sort by: </a>
-        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
-        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
-        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
-        <a href = "{% url 'search:bypopularity' id=current %}" style="color:black; text-decoration: none;">Popularity</a>
+      <a>Sort by: </a>
+      <a href = "{% url 'search:sortby' id=current value='title'%}" style="color:grey; text-decoration: none;">Title</a>
+      <a href = "{% url 'search:sortby' id=current value='newest'%}" style="color:grey; text-decoration: none;">Newest</a>
+      <a href = "{% url 'search:sortby' id=current value='oldest'%}" style="color:grey; text-decoration: none;">Oldest</a>
+      <a href = "{% url 'search:sortby' id=current value='popularity'%}" style="color:black; text-decoration: none;">Popularity</a>
       {% endif %}
   </div>
-  
+
   {% for book in resultlist %}
   <div class="book-card">
     <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
@@ -81,36 +81,12 @@
         <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
       {% endif %}
     {% endfor %}
-  {% elif sortby == 'title' %}
+  {% else %}
     {% for i in page %}
       {% if i == current %}
-        <a href = "{% url 'search:bytitle' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+        <a href = "{% url 'search:sortby' id=i value=sortby%}" style="color:black; text-decoration: none;">{{i}}</a>
       {% else %}
-        <a href = "{% url 'search:bytitle' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  {% elif sortby == 'newest' %}
-    {% for i in page %}
-      {% if i == current %}
-        <a href = "{% url 'search:bynewest' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
-      {% else %}
-        <a href = "{% url 'search:bynewest' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  {% elif sortby == 'oldest' %}
-    {% for i in page %}
-      {% if i == current %}
-        <a href = "{% url 'search:byoldest' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
-      {% else %}
-        <a href = "{% url 'search:byoldest' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
-      {% endif %}
-    {% endfor %}
-  {% elif sortby == 'popularity' %}
-    {% for i in page %}
-      {% if i == current %}
-        <a href = "{% url 'search:bypopularity' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
-      {% else %}
-        <a href = "{% url 'search:bypopularity' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+        <a href = "{% url 'search:sortby' id=i value=sortby%}" style="color:grey; text-decoration: none;">{{i}}</a>
       {% endif %}
     {% endfor %}
   {% endif %}

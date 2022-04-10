@@ -4,10 +4,7 @@ from .views import (
     SearchView, 
     AdvSearchView, 
     ResultView,
-    ResultTitleView,
-    ResultNewestView,
-    ResultOldestView,
-    ResultPopularityView
+    SortByView
 
 )
 
@@ -17,9 +14,5 @@ urlpatterns = [
     path('', SearchView, name='search'),
     path('adv/', AdvSearchView, name='advsearch'),
     path('<int:id>/', ResultView, name='result'),
-    path('<int:id>/sortby=title', ResultTitleView, name='bytitle'),
-    path('<int:id>/sortby=newest', ResultNewestView, name='bynewest'),
-    path('<int:id>/sortby=oldest', ResultOldestView, name='byoldest'),
-    path('<int:id>/sortby=popularity', ResultPopularityView, name='bypopularity')
-
+    path('<int:id>/sortby=<value>', SortByView, name='sortby'),
 ]
