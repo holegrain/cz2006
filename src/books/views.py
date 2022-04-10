@@ -59,11 +59,11 @@ def ViewBook(request, bid):
             ViewedBook.lastviewed = timezone.now()
             ViewedBook.save()
         else:
-            # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=timezone.now())
             ViewedBook.save()
-    if request.user.is_authenticated:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+        
             book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
             if book:
                 book.delete()
@@ -72,8 +72,8 @@ def ViewBook(request, bid):
                 book = Save(user=request.user, bid=bid)
                 book.save()
                 return redirect('books:ViewBook', bid=bid)
-    else: 
-        messages.error(
+        else: 
+            messages.error(
             request, f"Please login to save book"
         )
     if isSaved:
