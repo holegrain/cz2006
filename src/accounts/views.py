@@ -10,7 +10,7 @@ from nlbsg.catalogue import PRODUCTION_URL
 from django.contrib.auth import authenticate, login, logout
 import datetime
 from books.models import Save, View
-#from star_ratings.models import UserRating
+from star_ratings.models import UserRating
 from .utils import random_password
 
 API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
@@ -103,8 +103,16 @@ def AccountView(request):
         viewobjs = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
     except:
         viewobjs = View.objects.filter(user=request.user)
+    rateobjs = []
+    if UserRating.objects.filter(user=request.user).exists():
+        rateobjs = UserRating.objects.filter(user=request.user)
     viewbooklist = []
     savebooklist = []
+    ratebooklist = []
+    for i in rateobjs:
+        book = client.get_title_details(bid=i.rating.content_object.bid).title_detail
+        if book != None:
+            ratebooklist.append(book)
     for i in viewobjs:
         book = client.get_title_details(bid=i.bid).title_detail
         if book != None:
@@ -115,9 +123,11 @@ def AccountView(request):
             savebooklist.append(book)
     viewbidlist = [int(i.bid) for i in viewobjs]
     savebidlist = [int(i.bid) for i in saveobjs]
+    ratebidlist = [int(i.rating.content_object.bid) for i in rateobjs]
     context = {
         'save': savebooklist,
-        'view': viewbooklist
+        'view': viewbooklist,
+        'rate': ratebooklist
     }
     return render(request, 'account.html', context)
 
