@@ -5,11 +5,16 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
+from nlbsg import Client
+from nlbsg.catalogue import PRODUCTION_URL
 from django.contrib.auth import authenticate, login, logout
 import datetime
 from books.models import Save, View
 #from star_ratings.models import UserRating
 from .utils import random_password
+
+API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
+client = Client(PRODUCTION_URL, API_KEY)
 
 def ForgetPwView(request):
     if request.method == 'POST':
@@ -94,12 +99,25 @@ def LoginView(request):
 
 def AccountView(request):
     saveobjs = Save.objects.filter(user=request.user)
-    viewobjs = View.objects.filter(user=request.user)
-    print(saveobjs)
-    print(viewobjs)
+    try:
+        viewobjs = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
+    except:
+        viewobjs = View.objects.filter(user=request.user)
+    viewbooklist = []
+    savebooklist = []
+    for i in viewobjs:
+        book = client.get_title_details(bid=i.bid).title_detail
+        if book != None:
+            viewbooklist.append(book)
+    for i in saveobjs:
+        book = client.get_title_details(bid=i.bid).title_detail
+        if book != None:
+            savebooklist.append(book)
+    viewbidlist = [int(i.bid) for i in viewobjs]
+    savebidlist = [int(i.bid) for i in saveobjs]
     context = {
-        'save': saveobjs,
-        'view': viewobjs
+        'save': savebooklist,
+        'view': viewbooklist
     }
     return render(request, 'account.html', context)
 

@@ -47,7 +47,7 @@ def AdvSearchView(request):
             plot = form.cleaned_data.get('plot')
             resultlist, length = adv_search(plot=plot)
             plot_truncated = plot[:30] + '...'
-            request.session['search'] = plot
+            request.session['search'] = plot_truncated
             request.session['resultlength'] = length
             request.session['resultlist'] = resultlist
             resultlist = request.session['resultlist']

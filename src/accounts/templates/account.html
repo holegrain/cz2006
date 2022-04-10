@@ -8,14 +8,20 @@
       </div>
 </div>
 <div id="content">
-    <h1> My account </h1>
-    <p> {{save}} </p>
-    <ol>
-    {% for i in view %}
-    <li> {{i.bid}} </li>
+  <h1> My account </h1>
+  <div class="scrollmenu">
+    <p> Recent View</p>
+    {% for book in view %}
+      <a href="{% url 'books:ViewBook' bid=book.bid %}"> {{book.title_name}} </a>
     {% endfor %} 
-  </ol>
-
+  </div>
+  <div class="scrollmenu">
+   <p></p>
+   <p> Recent Save</p>
+    {% for book in save %}
+      <a href="{% url 'books:ViewBook' bid=book.bid %}"> {{book.title_name}} </a>
+    {% endfor %} 
+  </div>
 </div>
 
 <style>
@@ -47,6 +53,24 @@
       background-color: lightsalmon;
       color: white;
     }
+
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
 
 </style>
 
