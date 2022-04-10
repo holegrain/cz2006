@@ -1,85 +1,145 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="wrapper">
-    <div class="vertical-menu">
-        <a href="/account"  class="active">My Account</a>
-        <a href="/account/editprofile">Edit Profile</a>
-        <a href="/account/delete">Delete Account</a>
-      </div>
-</div>
+<!-- VIEW SAVE RATE book.title_name -->
 
-<div id="content">
-  <h1> My account </h1>
-  <div class="scrollmenu">
-    <p> Recent View</p>
-    {% for book in view %}
-      <a href="{% url 'books:ViewBook' bid=book.bid %}"> {{book.title_name}} </a>
-    {% endfor %} 
+<title>Account History | Lib-RSS</title>
+
+<div style="display:flex;">
+  <div class="vertical-menu">
+    <a href="/account/editprofile">My Account</a>
+    <a href="/account" class="active">Account History</a>
+    <a href="/account/delete">Delete Account</a>
   </div>
-  <div class="scrollmenu">
-   <p></p>
-   <p> Recent Save</p>
-    {% for book in save %}
-      <a href="{% url 'books:ViewBook' bid=book.bid %}"> {{book.title_name}} </a>
-    {% endfor %} 
+
+  <div style="display:flex; flex-direction:column; align-items: center;">
+    <div style="padding-top: 1.5rem;">
+      <p class="header-text">Account History</p>
+    </div>
+  
+    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+      <p class="para-text">RECENTLY VIEWED</p>
+      
+      <div class="vertical-menu-books">
+        {% for book in view %}
+        <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+      <p class="para-text">RECENTLY RATED</p>
+      
+      <div class="vertical-menu-books">
+        {% for book in rate %}
+        <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+      <p class="para-text">RECENTLY SAVED</p>
+      
+      <div class="vertical-menu-books">
+        {% for book in save %}
+        <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
+        {% endfor %}
+      </div>
+    </div>
+  
   </div>
-  <div class="scrollmenu">
-    <p></p>
-    <p> Recent Rate</p>
-     {% for book in rate %}
-       <a href="{% url 'books:ViewBook' bid=book.bid %}"> {{book.title_name}} </a>
-     {% endfor %} 
-   </div>
+  
+
 </div>
 
 <style>
-    #content{
-        color: rgb(24, 59, 61);
-        text-align: center;
-        padding: 100px;
-    }
-    .vertical-menu {
-      width: 200px;
-      position:relative;
-      top:40vh;
-      left:0vw;
-    }
-    
-    .vertical-menu a {
-      color: rgb(0, 0, 0);
-      display: block;
-      padding: 12px;
-      text-decoration: none;
-      background-color: rgb(216, 212, 212);
-    }
-    
-    .vertical-menu a:hover {
-      background-color: rgb(252, 199, 178);
-    }
-    
-    .vertical-menu a.active {
-      background-color: lightsalmon;
-      color: white;
-    }
+  .vertical-menu {
+    min-width: 200px;
+  }
 
-div.scrollmenu {
-  background-color: #333;
-  overflow: auto;
-  white-space: nowrap;
-}
+  .vertical-menu a {
+    color: rgb(0, 0, 0);
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    background-color: rgb(216, 212, 212);
+  }
 
-div.scrollmenu a {
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-}
+  .vertical-menu a:hover {
+    background-color: rgb(252, 199, 178);
+  }
 
-div.scrollmenu a:hover {
-  background-color: #777;
-}
+  .vertical-menu a.active {
+    background-color: lightsalmon;
+    color: white;
+  }
 
+  .input-boxes {
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .form-input {
+    font-size: inherit;
+    width: 25rem;
+    height: 2rem;
+    margin-bottom: 3rem;
+    padding-left: 0.5rem;
+  }
+
+  .date-input {
+    font-size: inherit;
+    margin-bottom: 0.5rem;
+  }
+
+  #search-button {
+    width: 150px;
+    height: 45px;
+    border: none;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
+    text-align: center;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .header-text {
+    padding: 1rem;
+  }
+
+  .para-text {
+    white-space: initial;
+    width: 30rem; 
+    padding-top: 2rem;
+    padding-bottom: 0.3rem;
+    font-size: 20px;
+    text-decoration: underline;
+  }
+
+  .vertical-menu-books {
+    height: 20rem;
+    overflow-y: auto;
+  }
+
+  .vertical-menu-books a {
+    background-color: #eee; /* Grey background color */
+    color: black; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove underline from links */
+  }
+
+  .vertical-menu-books a:hover {
+    background-color: #ccc; /* Dark grey background on mouse-over */
+  }
 </style>
 
-{% endblock %}
+  {% endblock %}
+</div>

@@ -49,7 +49,7 @@
 
   {% for book in resultlist %}
   <div class="book-card">
-    <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
+    <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank" class="book-title">
       {{ book.title }}
     </a>
 
