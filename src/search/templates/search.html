@@ -29,6 +29,14 @@
     </div>
 
     <div>
+      <ul style="text-align: center; height: 3rem; line-height: 3rem">
+        {% for error in form.non_field_errors %}
+        <medium style="color: red">{{ error }}</medium>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div>
       <ul class='messages' style="text-align: center; height: 3rem; line-height: 3rem; list-style-type: none;">
         {% if messages %}
         {% for message in messages %}
