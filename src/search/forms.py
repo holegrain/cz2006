@@ -58,6 +58,6 @@ class AdvancedSearchForm(forms.Form):
         # TODO: Hide validation error for erroneous input.
         if not (self.cleaned_data.get('plot')):
             raise forms.ValidationError(
-                "Please fill in at least one of the fields to begin searching.")
+                "Please input at least 1 word/sentence to begin searching.")
 
 
