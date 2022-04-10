@@ -121,9 +121,6 @@ def AccountView(request):
         book = client.get_title_details(bid=i.bid).title_detail
         if book != None:
             savebooklist.append(book)
-    viewbidlist = [int(i.bid) for i in viewobjs]
-    savebidlist = [int(i.bid) for i in saveobjs]
-    ratebidlist = [int(i.rating.content_object.bid) for i in rateobjs]
     context = {
         'save': savebooklist,
         'view': viewbooklist,
