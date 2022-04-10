@@ -16,3 +16,4 @@ urlpatterns = [
     path('<int:id>/', ResultView, name='result'),
     path('<int:id>/sortby=<value>', SortByView, name='sortby'),
 ]
+
