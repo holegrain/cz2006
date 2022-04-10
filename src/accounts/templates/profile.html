@@ -1,36 +1,35 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="wrapper">
-    <div class="vertical-menu">
-        <a href="/account">My Account</a>
-        <a href="/account/editprofile" class="active">Edit Profile</a>
-        <a href="/account/delete">Delete Account</a>
-      </div>
-</div>
+<title>Edit Profile | Lib-RSS</title>
 
-<div id="content">
-    <div class="header">
-        <h1 class="title">My Profile</h1>
-      </div>
-      
+<div style="display:flex;">
+  <div class="vertical-menu">
+    <a href="/account">My Account</a>
+    <a href="/account/editprofile" class="active">Edit Profile</a>
+    <a href="/account/delete">Delete Account</a>
+  </div>
+
+  <div style="width:100%; text-align:center;">
+    <p class="header-text">Edit Profile</p>
+
+    <div>
       <form id="form" action="" method="POST">
-        <p class="field">
-            username: <br />
-            {{ object.username }} 
-        </p>
-        {% csrf_token %} {% for field in form %}
-        <div>
-          <p class="field">
-            {{ field.label }}: <br />
-            {{ field }} 
-          </p>
-          {% for error in field.errors %}
-          <small style="color: red">{{ error }}</small>
-          {% endfor %}
+        {% csrf_token %}
+       
+        <div style="display:flex; flex-direction: column; align-items: center;">
+          <p>{{ form.email }}</p>
+          <p>{{ form.password1 }}</p>
+          <p>{{ form.password2 }}</p>
+          <p class="form-input" style="width: 26rem; padding-bottom: 3rem;">Date of Birth: &nbsp; {{ form.dob }}</p>
+          <p style="white-space: initial; width: 30rem; padding-bottom: 0.5rem;"> Please enter your current passsword to continue.</p>
+          <p>{{ form.current }}</p>
         </div>
-        {% endfor %}
-        <button class="cutebutton" type="submit">Update</button>
+        
+        <button id="search-button" type="submit">
+          <p id="btnText">Update</p>
+        </button>
       </form>
+<<<<<<< Updated upstream
       <div>
         <ul style="text-align: center; height: 3rem; line-height: 3rem; list-style-type: none;">
           {% if messages %}
@@ -43,95 +42,84 @@
         </ul>
       </div>
 
+=======
+    </div>
+    
+    <div>
+      {% if messages %}
+      <ul style="text-align: center">
+        {% for message in messages %}
+        <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
+          {{ message }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+>>>>>>> Stashed changes
 </div>
 
-
 <style>
-    #content{
-        color: rgb(24, 59, 61);    
-        text-align: center;
-    }
-
-
-    .vertical-menu {
-      width: 200px;
-      position:relative;
-      top:40vh;
-      left:0vw;
-    }
-    
-    .vertical-menu a {
-      color: rgb(0, 0, 0);
-      display: block;
-      padding: 12px;
-      text-decoration: none;
-      background-color: rgb(216, 212, 212);
-    }
-    
-    .vertical-menu a:hover {
-      background-color: rgb(252, 199, 178);
-    }
-    
-    .vertical-menu a.active {
-      background-color: lightsalmon;
-      color: white;
-    }
-
-    #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
+  .vertical-menu {
+    min-width: 200px;
   }
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
-  }
-  .field {
-    padding: 5px;
-  }
-  .cutebutton {
-    background-color: bisque; /* Green */
-    border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
-    text-align: center;
+
+  .vertical-menu a {
+    color: rgb(0, 0, 0);
+    display: block;
+    padding: 12px;
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
+    background-color: rgb(216, 212, 212);
   }
 
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
+  .vertical-menu a:hover {
+    background-color: rgb(252, 199, 178);
   }
 
+  .vertical-menu a.active {
+    background-color: lightsalmon;
+    color: white;
+  }
 
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
+  .input-boxes {
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .form-input {
+    font-size: inherit;
+    width: 25rem;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .date-input {
+    font-size: inherit;
+    margin-bottom: 0.5rem;
+  }
+
+  #search-button {
+    width: 150px;
+    height: 45px;
+    border: none;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
     text-align: center;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
   }
 
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 30px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
+<<<<<<< Updated upstream
   .success{
     color:black
   }
@@ -140,6 +128,12 @@
     color:red
   }
 
+=======
+  .header-text {
+    padding: 1rem;
+  }
+>>>>>>> Stashed changes
 </style>
 
-{% endblock %}
+  {% endblock %}
+</div>
