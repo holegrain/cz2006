@@ -49,7 +49,7 @@
   
   {% for book in resultlist %}
   <div class="book-card">
-    <a href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
+    <a  id="title" href="{% url 'books:ViewBook' bid=book.bid %}" class="book-title">
       {{ book.title }}
     </a>
 
@@ -73,13 +73,47 @@
 </div>
 
 <div style="text-align:center; font-size: 20px;">
-  {% for i in page %}
-    {% if i == current %}
-      <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
-    {% else %}
-      <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
-    {% endif %}
-  {% endfor %}
+  {% if sortby == 'default' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% elif sortby == 'title' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:bytitle' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:bytitle' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% elif sortby == 'newest' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:bynewest' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:bynewest' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% elif sortby == 'oldest' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:byoldest' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:byoldest' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% elif sortby == 'popularity' %}
+    {% for i in page %}
+      {% if i == current %}
+        <a href = "{% url 'search:bypopularity' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      {% else %}
+        <a href = "{% url 'search:bypopularity' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
 
 <script>
@@ -122,6 +156,16 @@
 
   .book-plot {
     text-align: justify;
+  }
+
+  #title {
+    text-decoration:none; 
+    color:rgb(9, 42, 154);
+    font-size: 20px;
+  }
+
+  #title:hover {
+    color:black
   }
 </style>
 
