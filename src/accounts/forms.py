@@ -97,14 +97,22 @@ class UserLoginForm(forms.Form):
         return entry
 
 class UserUpdateForm(UserCreationForm):
-    dob = forms.DateField(widget=forms.SelectDateWidget(years=years))
-    email = forms.CharField(min_length=6, max_length=256)
+    dob = forms.DateField(widget=forms.SelectDateWidget(years=years, attrs={
+        'class': 'date-input'}))
+    email = forms.CharField(min_length=6, max_length=256, widget=forms.TextInput(attrs={
+        'placeholder': 'Email Address',
+        'class': 'form-input'}))
     password1 = forms.CharField(
-        max_length=32, label='new password', widget=forms.PasswordInput, required=False)
+        max_length=32, label='new password', required=False, widget=forms.PasswordInput(attrs={
+        'placeholder': 'New Password',
+        'class': 'form-input'}))
     password2 = forms.CharField(
-        max_length=32, label='password confirmation', widget=forms.PasswordInput, required=False)
-    current = forms.CharField(
-        max_length=32, label='current password', widget=forms.PasswordInput)
+        max_length=32, label='password confirmation', required=False, widget=forms.PasswordInput(attrs={
+        'placeholder': 'Re-enter Password',
+        'class': 'form-input'}))
+    current = forms.CharField(max_length=32, label='current password', widget=forms.PasswordInput(attrs={
+        'placeholder': 'Current Password',
+        'class': 'form-input'}))
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -145,8 +153,10 @@ class UserUpdateForm(UserCreationForm):
 
 
 class UserDeleteForm(forms.Form):
-    password = forms.CharField(
-        max_length=32, label='password', widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        max_length=32, label='password', widget=forms.PasswordInput(attrs={
+        'placeholder': 'Current Password',
+        'class': 'form-input'}))
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
