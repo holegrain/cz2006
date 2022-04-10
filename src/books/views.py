@@ -62,7 +62,7 @@ def ViewBook(request, bid):
             # Book is not among the last 20 books viewed by the user.
             ViewedBook = View(user=request.user, bid=bid, lastviewed=timezone.now())
             ViewedBook.save()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         if request.method == 'POST':
             book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
             if book:
