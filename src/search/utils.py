@@ -144,13 +144,13 @@ def sort(results: list, sort_by: Literal['title', 'year', 'popularity'], reverse
     elif sort_by == 'popularity':
         popularity = []
         # else do sql query
-        isbns = [result['isbn'] for result in results]
-        for isbn in isbns:
-            query = f"SELECT * FROM views WHERE isbn = {isbn}"
+        bids = [result['bid'] for result in results]
+        for bid in bids:
+            query = f"SELECT * FROM books_view WHERE bid = {bid}"
             cursor.execute(query)
 
             count = len(cursor.fetchall()) # get number of views
-            popularity.append((isbn, count))
+            popularity.append((bid, count))
     
         sorted_results = [r for r, _ in sorted(zip(results, popularity), \
                           key=lambda x: x[1][1], reverse=True)] # sort by the count
