@@ -1,139 +1,118 @@
 {% extends 'base.html' %} {% block content %} {% load static %}
 
+<script src="{% static 'main.js' %}?version=1" defer></script>
+<link
+  rel="stylesheet"
+  href="{% static 'star-ratings/css/star-ratings.css' %}"
+/>
+<script
+  type="text/javascript"
+  src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"
+></script>
+
 <title>{{ detail.Title }}</title>
 
-<!-- Custom js-->
-<script src="{% static 'main.js' %}?version=1" defer></script>
-<div id="content">
-  <div class="header">
-    <h1 class="title"> {{ detail.Title }} </h1>
+<div class="book-content">
+  <p class="book-title">{{ detail.Title }}</p>
+
+  <div>
+    {% if detail.Author %}
+    <p>Author: &nbsp; {{ detail.Author }}</p>
+    {% endif %} {% if detail.Other_authors %}
+    <p>Other Authors: &nbsp; {{ detail.Other_authors }}</p>
+    {% endif %} {% if detail.Publisher %}
+    <p>Publisher: &nbsp; {{ detail.Publisher }}</p>
+    {% endif %} {% if detail.ISBN %}
+    <p>ISBN: &nbsp; {{ detail.ISBN }}</p>
+    {% endif %} {% if detail.BID %}
+    <p>Book ID: &nbsp; {{ detail.BID }}</p>
+    {% endif %} {% if detail.Physical_desc %}
+    <p>Physical Description: &nbsp; {{ detail.Physical_desc }}</p>
+    {% endif %}
   </div>
 
-  <body>
-    <h3>
-      Author: {{ detail.Author }} <br />
-      Other Authors: {{ detail.Other_authors }} <br />
-      Publisher: {{ detail.Publisher }} <br />
-      ISBN: {{ detail.ISBN }} <br />
-      BID: {{ detail.BID }} <br />
-      Physical Description: {{ detail.Physical_desc }} <br />
-    </h3>
-    <div>
-      <html>
-      <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-      <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-      {% load ratings %}
-      {% ratings RatedBook %}
+  <div style="display:flex; align-self:center">
+    <button
+      id="share-btn"
+      class="share-btn"
+      data-title="{{ detail.Title }}"
+      data-url="{{ detail.URL }}"
+    >
+      Share
+    </button>
+  </div>
 
-      </html>
+  <div>
+    <!-- <p>{{ detail.Subjects }}</p> -->
+    <p style="text-align: justify;">{{ detail.Summary }}</p>
+  </div>
+
+  <div style="display:flex; gap:1rem; align-self:center; border:1px solid black; padding:1rem;">
+    <div>
+      {% load ratings %} {% ratings RatedBook %}
     </div>
-    <td>
-      <button class="btn btn-outline-primary share-btn" data-title="{{ Title }}" data-author="{{ Author }}"
-        data-url="{{ URL }}">Share</button>
-    </td>
-    <h4>Genres: {{ detail.Subjects }} <br /></h4>
-    <p>Abstract: {{ detail.Summary }}</p>
-    <form method="POST">
-      {% csrf_token %}
-      <button id="save" type="submit" name="clicked">
-        <label class="switch">
-          <input id='check' type="checkbox">
-          <svg viewBox="0 0 17 17" class='save'>
-            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z">
-            </path>
-          </svg>
-        </label>
-      </button>
-    </form>
-  </body>
+  
+    {% if user.is_authenticated %}
+    <div style="display:flex; flex-direction:column;">
+      <form method="POST" style="align-self: center;">
+        {% csrf_token %}
+        <button id="save" type="submit" name="clicked">
+          <label class="switch">
+            <input id="check" type="checkbox"/>
+            <svg viewBox="0 0 17 17" class="save">
+              <path
+                fill-rule="evenodd"
+                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+              ></path>
+            </svg>
+          </label>
+        </button>
+      </form>
+
+      <p><b>Save Book</b></p>
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 <style>
-  #content {
-    color: rgb(24, 59, 61);
-    text-align: center;
+  html {
+    min-width: 50rem;
   }
 
-  .vertical-menu {
-    width: 200px;
+  .content {
     position: relative;
-    top: 40vh;
-    left: 0vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
 
-  .vertical-menu a {
-    color: rgb(0, 0, 0);
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-    background-color: rgb(216, 212, 212);
+  .book-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .vertical-menu a:hover {
-    background-color: rgb(252, 199, 178);
+  .book-title {
+    font-size: 32px;
+    font-weight: 400;
   }
 
-  .vertical-menu a.active {
-    background-color: lightsalmon;
-    color: white;
-  }
-
-  #form {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    color: black;
-  }
-
-  form {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-    padding-top: 10px;
-  }
-
-  .field {
-    padding: 5px;
-  }
-
-  .cutebutton {
-    background-color: bisque;
-    /* Green */
+  #share-btn {
+    width: 150px;
+    height: 45px;
     border: none;
-    color: black;
-    border-radius: 5px;
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    text-transform: uppercase;
-    padding: 5px 5px;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .cutebutton:hover {
-    /* border: 1px #000000 solid; */
-    background-color: rgb(198, 255, 215);
-  }
-
-  .header {
-    padding-top: 0;
-    /* margin-left: 35%;
-    margin-top: 3%; */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50em;
-    text-align: center;
-  }
-
-  .title {
-    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-    font-size: 30px;
-    /* color: #442b38; */
-    text-shadow: 2px 2px #d7bdca;
-    text-align: center;
-    text-transform: uppercase;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
   }
 
   .switch {
@@ -152,7 +131,8 @@
 
   #save {
     border: 0;
-    width: 60px;
+    height: 45px;
+    width: auto;
     background-color: transparent;
     cursor: pointer;
   }
@@ -161,7 +141,7 @@
     fill: grey;
   }
 
-  input:checked+.save path {
+  input:checked + .save path {
     fill: red;
   }
 </style>
