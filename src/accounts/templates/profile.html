@@ -31,17 +31,16 @@
         {% endfor %}
         <button class="cutebutton" type="submit">Update</button>
       </form>
-      
       <div>
-        {% if messages %}
-        <ul style="text-align: center">
+        <ul style="text-align: center; height: 3rem; line-height: 3rem; list-style-type: none;">
+          {% if messages %}
           {% for message in messages %}
           <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
             {{ message }}
           </li>
           {% endfor %}
+          {% endif %}
         </ul>
-        {% endif %}
       </div>
 
 </div>
@@ -131,6 +130,14 @@
     text-shadow: 2px 2px #d7bdca;
     text-align: center;
     text-transform: uppercase;
+  }
+
+  .success{
+    color:black
+  }
+
+  .error{
+    color:red
   }
 
 </style>

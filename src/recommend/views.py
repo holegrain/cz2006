@@ -25,9 +25,17 @@ def Recommend(request):
             else:
                 recommendlist, length = Recommendation(request)
                 if length < 20: # coldstart if not enough recommendations
-                    recommendlist1, length = ColdStart(request)
-                    recommendlist = recommendlist.append(recommendlist1)[:100]
-                    length = length(recommendlist)
+                    recommendlist, length = ColdStart(request)
+                    try:
+                        if length<=100:
+                            pass
+                        else:   
+                            recommendlist = recommendlist[:100]
+                            length = length(recommendlist)
+                    except:
+                        messages.error(
+                            request, f'No Recommendations found!'
+                        )
             request.session['resultlength'] = length
             request.session['resultlist'] = recommendlist
             return redirect('http://127.0.0.1:8000/recommend/1')
@@ -48,4 +56,4 @@ def ResultView1(request, id=id):
     pagenum = ceil(length/10)
     context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'current':id}
     if resultlist:
-         return render(request, 'booklist.html', context)
+         return render(request, 'reclist.html', context)

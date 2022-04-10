@@ -45,7 +45,10 @@ def standard_search(**kwargs) -> Optional[list]:
             return None
 
         responses = client.search(**kwargs, limit=100)
-        titles = list(responses.titles) # titles is a list of Title objects
+        if responses.titles is not None:
+            titles = list(responses.titles) # titles is a list of Title objects
+        else:
+            return None
         
         plots = []
         # obtain the plot of each book

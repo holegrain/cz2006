@@ -14,7 +14,12 @@ def SearchView(request):
             author = form.cleaned_data.get('author')
             genres = form.cleaned_data.get('genres')
             genretuple = tuple(genres.split(', '))
-            resultlist, length = standard_search(title=title, author=author, isbn=isbn, subject=genretuple)
+            try:
+                resultlist, length = standard_search(title=title, author=author, isbn=isbn, subject=genretuple)
+                request.session['resultlength'] = length
+                request.session['resultlist'] = resultlist
+            except:
+                request.session['resultlist'] = None
             if title:
                 search = title+'...'
             elif isbn:
@@ -23,10 +28,7 @@ def SearchView(request):
                 search = author+'...'
             elif genres:
                 search = genres+'...'
-            print(search)
             request.session['search'] = search
-            request.session['resultlength'] = length
-            request.session['resultlist'] = resultlist
             resultlist = request.session['resultlist']
             if resultlist:
                 return redirect('http://127.0.0.1:8000/search/1')
@@ -45,14 +47,17 @@ def AdvSearchView(request):
         form = AdvancedSearchForm(request.POST)
         if form.is_valid():
             plot = form.cleaned_data.get('plot')
-            resultlist, length = adv_search(plot=plot)
+            try:
+                resultlist, length = adv_search(plot=plot)
+                request.session['resultlength'] = length
+                request.session['resultlist'] = resultlist
+            except: 
+                request.session['resultlist'] = None
             try:
                 plot_truncated = plot[:30] + '...'
             except:
                 plot_truncated=plot
             request.session['search'] = plot_truncated
-            request.session['resultlength'] = length
-            request.session['resultlist'] = resultlist
             resultlist = request.session['resultlist']
             if resultlist:
                 return redirect('http://127.0.0.1:8000/search/1')
