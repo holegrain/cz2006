@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<title>Search Results | Lib-RSS</title>
+<title>Recommendations | Lib-RSS</title>
 
 <head>
   <script
@@ -40,9 +40,9 @@
 <div style="text-align:center; font-size: 20px;">
   {% for i in page %}
     {% if i == current %}
-      <a href = "{% url 'search:result' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
+      <a href = "{% url 'recommend:result1' id=i %}" style="color:black; text-decoration: none;">{{i}}</a>
     {% else %}
-      <a href = "{% url 'search:result' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
+      <a href = "{% url 'recommend:result1' id=i %}" style="color:grey; text-decoration: none;">{{i}}</a>
     {% endif %}
   {% endfor %}
 </div>

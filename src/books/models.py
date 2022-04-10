@@ -4,7 +4,6 @@ from accounts.models import User
 # Can consider storing book details.
 # The Book() model stores bid of books that have been rated.
 class Book(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
     bid = models.CharField(max_length=9)
     
 # The View() model stores the books viewed by the user.

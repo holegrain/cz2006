@@ -5,6 +5,9 @@ from .models import Book, Save, View
 from nlbsg import Client
 from nlbsg.catalogue import PRODUCTION_URL
 from django.db.models import Q
+from django.utils import timezone
+import pytz
+
 '''
 Keyword argument queries in filter(), etc. are “AND”ed together. 
 If you need to execute more complex queries (for example, queries with OR statements), you can use Q objects.
@@ -37,27 +40,27 @@ def ViewBook(request, bid):
             'Subjects': bookdetail.subjects,
             'Summary': bookdetail.summary,
             'Notes': bookdetail.notes,
-            'Rating': 0,
             'Saved': isSaved,
             'URL': "domainname.com/books/"+bookdetail.bid
         }
+    
+    if Book.objects.filter(bid=bid).exists():
+        RatedBook = Book.objects.get(bid=bid)
+    else:
+        RatedBook = Book(bid=bid)
+        RatedBook.save()
     if request.session.has_key('is_logged'):
-        if Book.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-            RatedBook = Book.objects.get(Q(user=request.user), Q(bid=bid))
-        else:
-            RatedBook = Book(user=request.user, bid=bid)
-            RatedBook.save()
         if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             isSaved = True
             detail['Saved'] = isSaved
         if View.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
             # Book has been viewed before by the user.
             ViewedBook = View.objects.get(user=request.user, bid=bid)
-            ViewedBook.lastviewed = datetime.datetime.now()
+            ViewedBook.lastviewed = timezone.now()
             ViewedBook.save()
         else:
             # Book is not among the last 20 books viewed by the user.
-            ViewedBook = View(user=request.user, bid=bid, lastviewed=datetime.datetime.now())
+            ViewedBook = View(user=request.user, bid=bid, lastviewed=timezone.now())
             ViewedBook.save()
     if request.method == 'POST':
         book = Save.objects.filter(Q(user=request.user), Q(bid=bid)).first()
@@ -72,22 +75,3 @@ def ViewBook(request, bid):
         return render(request,'booksaved.html', {'detail': detail, 'RatedBook': RatedBook})
     else: 
         return render(request,'book.html', {'detail': detail, 'RatedBook': RatedBook})
-
-# SaveBook() handles the backend of saving/unsaving books.            
-def SaveBook(request, bid):
-    if request.session.has_key('is_logged'):
-        if request.method == 'POST':
-            if Save.objects.filter(Q(user=request.user), Q(bid=bid)).exists():
-                SavedBook = Save.objects.get(Q(user=request.user), Q(bid=bid))
-                SavedBook.delete()
-                messages.success(request, 'Unsaved!')
-            else:
-                SavedBook = Save(user=request.user, bid=bid)
-                SavedBook.save()
-                messages.success(request, 'Saved!')
-        else:
-            return 
-    else:
-        messages.error(request, 'Please login to rate books!')
-
-# ShareBook()
