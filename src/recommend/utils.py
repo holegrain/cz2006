@@ -81,6 +81,7 @@ def Recommendation(request):
 
 def ColdStart(request):
     userratings = UserRating.objects.filter(user=request.user) # queryset of UserRating objs 
+    savelist = []
     if Save.objects.filter(user=request.user).exists():
         savelist = Save.objects.filter(user=request.user)
     bidset = set() # set of bids saved/rated by the user
