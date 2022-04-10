@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/4.0/ref/validators/#regexvalidator
 from django.core.validators import RegexValidator
 
 alphanumeric = RegexValidator(
-    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed for the Title and Author.")
+    '^[a-zA-Z0-9 ]*$', message="Only letters and numbers are allowed for the Title.")
+alpha = RegexValidator(
+    '^[a-zA-Z ]*$', message="Only letters are allowed for the Author.")
 onlyX = RegexValidator(
     '^[X0-9]*$', message="Only numbers and capital 'X' are allowed for the ISBN.")
 withcomma = RegexValidator(
-    '^[a-zA-Z0-9 ,]*$', message="Only letters, numbers and commmas are allowed for the Genre.")
+    '^[a-zA-Z ,]*$', message="Only letters and commmas are allowed for the Genre.")
 
 '''
 https://stackoverflow.com/questions/15472764/regular-expression-to-allow-spaces-between-words
@@ -24,7 +26,7 @@ class SimpleSearchForm(forms.Form):
     title = forms.CharField(max_length=50, label='Title', required=False, validators=[alphanumeric],
                             widget=forms.TextInput(attrs={
                                 'class': 'form-input'}))
-    author = forms.CharField(max_length=50, label='Author', required=False, validators=[alphanumeric],
+    author = forms.CharField(max_length=50, label='Author', required=False, validators=[alpha],
                              widget=forms.TextInput(attrs={
                                  'class': 'form-input'}))
     isbn = forms.CharField(max_length=13, label='ISBN', required=False, validators=[onlyX],
