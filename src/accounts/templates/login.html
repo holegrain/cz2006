@@ -16,7 +16,7 @@
 				<div class="input-boxes">
 					<p>{{ form.entry }}</p>
 					<p>{{ form.password }}</p>
-					<p id="forgot" style="text-align: right; align-self: flex-end;"><a href="http://127.0.0.1:8000/account/forget/">Forgot your
+					<p style="text-align: right; align-self: flex-end;"><a id='forgot' href="http://127.0.0.1:8000/account/forget/">Forgot your
 							password?</a></p>
 					
 					{% for field in form %}
@@ -158,8 +158,13 @@
 		cursor: pointer;
 	}
 
-	#id {
-		text-decoration: none;
+	#forgot {
+		text-decoration: none; 
+		color:rgb(63, 62, 62)
+	}
+
+	#forgot:hover{
+		color: black
 	}
 </style>
 

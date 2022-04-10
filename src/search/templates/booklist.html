@@ -12,6 +12,40 @@
 <div id="content">
   <p class="header-text"> Search Results</p>
   <medium style="text-align: center">You searched for <em>{{ plot }}</em></medium>
+  <p><br/></p>
+  <div style="text-align:center; font-size: 16px;">
+      {% if sortby == 'default' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'title' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:bytitle' id=current %}" style="color:black; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'newest' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:bynewest' id=current %}" style="color:black; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'oldest' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:byoldest' id=current %}" style="color:black; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:bypopularity' id=current %}" style="color:grey; text-decoration: none;">Popularity</a>
+      {% elif sortby == 'popularity' %}
+        <a>Sort by: </a>
+        <a href = "{% url 'search:bytitle' id=current %}" style="color:grey; text-decoration: none;">Title</a>
+        <a href = "{% url 'search:bynewest' id=current %}" style="color:grey; text-decoration: none;">Newest</a>
+        <a href = "{% url 'search:byoldest' id=current %}" style="color:grey; text-decoration: none;">Oldest</a>
+        <a href = "{% url 'search:bypopularity' id=current %}" style="color:black; text-decoration: none;">Popularity</a>
+      {% endif %}
+  </div>
   
   {% for book in resultlist %}
   <div class="book-card">

@@ -135,7 +135,7 @@ def filter(results: list, year: int) -> list:
     return [i for i in results if int(i['year']) >= year]
 
 
-def sort(results: list, sort_by: Literal['title', 'author', 'year', 'popularity'], reverse: Literal[True, False]) \
+def sort(results: list, sort_by: Literal['title', 'year', 'popularity'], reverse: Literal[True, False]) \
         -> Optional[list]:
     # if sort by title, author or year is easy
     if sort_by in ['title', 'author', 'year']:

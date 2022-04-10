@@ -14,8 +14,8 @@ def Recommend(request):
     if UserRating.objects.filter(user=request.user).exists():
         numrate = UserRating.objects.filter(user=request.user).count() # number of books the user has rated
         if numrate < 5:
-            msg = 'Please rate at least {N} more books to unlock recommendations!'
-            messages.error(request, msg.format(5-numrate))
+            msg = 'Please rate at least {0} more books to unlock recommendations!'.format(5-numrate)
+            messages.error(request, msg)
         else:
             totalusers = User.objects.count() # total number of users
             totalratings = UserRating.objects.count() # total number of ratings
@@ -24,12 +24,11 @@ def Recommend(request):
             else:
                 recommendlist, length = Recommendation(request)
                 if length < 20: # coldstart if not enough recommendations
-                    recommendlist1, length1 = ColdStart(request)
+                    recommendlist1, length = ColdStart(request)
                     recommendlist = recommendlist.append(recommendlist1)[:100]
                     length = length(recommendlist)
             request.session['resultlength'] = length
             request.session['resultlist'] = recommendlist
-            resultlist = request.session['resultlist']
             return redirect('http://127.0.0.1:8000/recommend/1')
     else:
         messages.error(request, 'Please rate at least 5 more books to unlock recommendations!')

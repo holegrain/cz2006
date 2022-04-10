@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import AdvancedSearchForm, SimpleSearchForm
-from .utils import standard_search, adv_search
+from .utils import standard_search, adv_search, filter, sort
 from django.http import Http404  
 from math import ceil
 from django.contrib import messages
@@ -46,7 +46,10 @@ def AdvSearchView(request):
         if form.is_valid():
             plot = form.cleaned_data.get('plot')
             resultlist, length = adv_search(plot=plot)
-            plot_truncated = plot[:30] + '...'
+            try:
+                plot_truncated = plot[:30] + '...'
+            except:
+                plot_truncated=plot
             request.session['search'] = plot_truncated
             request.session['resultlength'] = length
             request.session['resultlist'] = resultlist
@@ -63,17 +66,110 @@ def AdvSearchView(request):
     return render(request, 'advsearch.html', context)
 
 def ResultView(request, id=id):
-    resultlist = request.session['resultlist']
+    try:
+        resultlist = request.session['resultlist']
+    except:
+        raise Http404
     length = request.session['resultlength']
     plot = request.session['search']
+    sortby = 'default'
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  
     end = id*10
     if end>length:
         end=length
-    resultlist = resultlist[start:end]
+    resultlist = resultlist[start:end+1]
     pagenum = ceil(length/10)
-    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id}
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
     if resultlist:
-         return render(request, 'booklist.html', context)
+        return render(request, 'booklist.html', context)        
+
+def ResultTitleView(request, id=id):
+    #sortbytitle
+    try:
+        resultlist = request.session['resultlist']
+        resultlist=sort(resultlist, sort_by='title', reverse=False)
+    except:
+        raise Http404
+    length = request.session['resultlength']
+    plot = request.session['search']
+    sortby = 'title'
+    start = (id-1)*10 + 1
+    if start>length:
+        raise Http404  
+    end = id*10
+    if end>length:
+        end=length
+    resultlist = resultlist[start:end+1]
+    pagenum = ceil(length/10)
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
+    if resultlist:
+        return render(request, 'booklist.html', context)   
+
+
+def ResultNewestView(request, id=id):
+    #sort by year 
+    # try:
+    resultlist = request.session['resultlist']
+    resultlist = sort(resultlist, sort_by='year', reverse=True)
+    # except:
+    #     raise Http404
+    length = request.session['resultlength']
+    plot = request.session['search']
+    sortby = 'newest'
+    start = (id-1)*10 + 1
+    if start>length:
+        raise Http404  
+    end = id*10
+    if end>length:
+        end=length
+    resultlist = resultlist[start:end+1]
+    pagenum = ceil(length/10)
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
+    if resultlist:
+        return render(request, 'booklist.html', context)  
+
+def ResultOldestView(request, id=id):
+    #sort by year 
+    # try:
+    resultlist = request.session['resultlist']
+    resultlist = sort(resultlist, sort_by='year', reverse=False)
+    # except:
+    #     raise Http404
+    length = request.session['resultlength']
+    plot = request.session['search']
+    sortby = 'oldest'
+    start = (id-1)*10 + 1
+    if start>length:
+        raise Http404  
+    end = id*10
+    if end>length:
+        end=length
+    resultlist = resultlist[start:end+1]
+    pagenum = ceil(length/10)
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
+    if resultlist:
+        return render(request, 'booklist.html', context)    
+
+def ResultPopularityView(request, id=id):
+    #sort by popularity
+    # try:
+    resultlist = request.session['resultlist']
+    resultlist = sort(resultlist, sort_by='popularity', reverse=True)
+    # except:
+    #     raise Http404
+    length = request.session['resultlength']
+    plot = request.session['search']
+    sortby = 'popularity'
+    start = (id-1)*10 + 1
+    if start>length:
+        raise Http404  
+    end = id*10
+    if end>length:
+        end=length
+    resultlist = resultlist[start:end+1]
+    pagenum = ceil(length/10)
+    context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
+    if resultlist:
+        return render(request, 'booklist.html', context)   
