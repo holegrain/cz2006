@@ -16,7 +16,23 @@
     <div style="display: flex; justify-content: center">
       <div class="input-boxes">
         </p>{{ form.plot }}</p>
+
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div style="align-self: center">
+          <medium style="color: red; justify-self: center;">{{ error }}</medium>
+        </div>
+        {% endfor %}
+        {% endfor %}
       </div>
+    </div>
+
+    <div>
+      <ul style="text-align: center; height: 3rem; line-height: 3rem">
+        {% for error in form.non_field_errors %}
+        <medium style="color: red">{{ error }}</medium>
+        {% endfor %}
+      </ul>
     </div>
 
     <div>
