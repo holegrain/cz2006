@@ -16,42 +16,58 @@
       <p class="header-text">Account History</p>
     </div>
   
-    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="book-boxes">
       <p class="para-text">RECENTLY VIEWED</p>
       
       <div class="vertical-menu-books">
+        {% if view %}
         {% for book in view %}
         <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
         {% endfor %}
+        {% else %}
+        No books here.
+        {% endif %}
       </div>
     </div>
 
-    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="book-boxes">
       <p class="para-text">RECENTLY RATED</p>
       
       <div class="vertical-menu-books">
+        {% if rate %}
         {% for book in rate %}
         <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
         {% endfor %}
+        {% else %}
+        No books here.
+        {% endif %}
       </div>
     </div>
 
-    <div style="padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="book-boxes">
       <p class="para-text">RECENTLY SAVED</p>
       
       <div class="vertical-menu-books">
+        {% if save %}
         {% for book in save %}
         <a href="{% url 'books:ViewBook' bid=book.bid %}" target="_blank">{{book.title_name}}</a>
         {% endfor %}
+        {% else %}
+        No books here.
+        {% endif %}
       </div>
     </div>
   
   </div>
-  
-
 </div>
 
 <style>
+  .book-boxes {
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .vertical-menu {
     min-width: 200px;
   }
@@ -124,8 +140,10 @@
   }
 
   .vertical-menu-books {
-    height: 20rem;
+    min-height: 1.5rem;
+    max-height: 20rem;
     overflow-y: auto;
+    width: 100%;
   }
 
   .vertical-menu-books a {
