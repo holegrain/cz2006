@@ -16,9 +16,10 @@
 				<div class="input-boxes">
 					<p>{{ form.entry }}</p>
 					<p>{{ form.password }}</p>
-					<p style="text-align: right; align-self: flex-end;"><a id='forgot' href="http://127.0.0.1:8000/account/forget/">Forgot your
+					<p style="text-align: right; align-self: flex-end;"><a id='forgot'
+							href="http://127.0.0.1:8000/account/forget/">Forgot your
 							password?</a></p>
-					
+
 					{% for field in form %}
 					{% for error in field.errors %}
 					<div>
@@ -30,10 +31,10 @@
 			</div>
 
 			<div>
-				<ul style="text-align: center; height: 3rem; line-height: 3rem">
+				<ul style="text-align: center; height: 3rem; line-height: 3rem; list-style-type: none;">
 					{% if messages %}
-						{% for message in messages %}
-						<li >
+					{% for message in messages %}
+					<li {% if message.tags %} class=" {{ message.tags }} " {% endif %}>
 						{{ message }}
 					</li>
 					{% endfor %}
@@ -163,13 +164,21 @@
 	}
 
 	#forgot {
-		text-decoration: none; 
-		color:rgb(63, 62, 62)
+		text-decoration: none;
+		color: rgb(63, 62, 62)
 	}
 
-	#forgot:hover{
+	#forgot:hover {
 		color: black
 	}
+
+	.success{
+    color:black
+  }
+
+  .error{
+    color:red
+  }
 </style>
 
 {% endblock %}
