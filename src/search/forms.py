@@ -15,7 +15,7 @@ alpha = RegexValidator(
 onlyX = RegexValidator(
     '^[X0-9]*$', message="Only numbers and capital 'X' are allowed for the ISBN.")
 withcomma = RegexValidator(
-    '^[a-zA-Z ,]*$', message="Only letters and commmas are allowed for the Genre.")
+    '^[a-zA-Z ,]*$', message="Only letters and commas are allowed for the Genre.")
 
 '''
 https://stackoverflow.com/questions/15472764/regular-expression-to-allow-spaces-between-words
