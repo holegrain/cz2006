@@ -31,7 +31,7 @@ def SearchView(request):
             request.session['search'] = search
             resultlist = request.session['resultlist']
             if resultlist:
-                return redirect('http://127.0.0.1:8000/search/1')
+                return redirect('books:result', kwargs={'id': 1})
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"
@@ -60,7 +60,7 @@ def AdvSearchView(request):
             request.session['search'] = plot_truncated
             resultlist = request.session['resultlist']
             if resultlist:
-                return redirect('http://127.0.0.1:8000/search/1')
+                return redirect('books:result', kwargs={'id': 1})
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"
