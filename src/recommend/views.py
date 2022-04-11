@@ -6,8 +6,8 @@ from math import ceil
 from books.models import Save
 from star_ratings.models import UserRating
 from accounts.models import User
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 
 
 @login_required(login_url='/account/login/')
@@ -39,7 +39,7 @@ def Recommend(request):
                         )
             request.session['resultlength'] = length
             request.session['resultlist'] = recommendlist
-            return redirect('books:result', kwargs={'id': 1})
+            return redirect(reverse('recommend:result1', kwargs={'id': 1}))
     else:
         messages.error(request, 'Please rate at least 5 more books to unlock recommendations!')
         return redirect('/')

@@ -3,6 +3,7 @@ from .forms import AdvancedSearchForm, SimpleSearchForm
 from .utils import standard_search, adv_search, filter, sort
 from django.http import Http404  
 from math import ceil
+from django.urls import reverse
 from django.contrib import messages
 
 def SearchView(request):
@@ -31,7 +32,7 @@ def SearchView(request):
             request.session['search'] = search
             resultlist = request.session['resultlist']
             if resultlist:
-                return redirect('books:result', kwargs={'id': 1})
+                return redirect(reverse('search:result', kwargs={'id': 1}))
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"
@@ -60,7 +61,7 @@ def AdvSearchView(request):
             request.session['search'] = plot_truncated
             resultlist = request.session['resultlist']
             if resultlist:
-                return redirect('books:result', kwargs={'id': 1})
+                return redirect(reverse('books:result', kwargs={'id': 1}))
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"
