@@ -6,9 +6,9 @@ Additionally, it acts as a book cataloging website where users can rate, save, s
 ![concept](homepage.png)
 
 ### Table of contents
-1.
-2.
-3.
+[Getting started](https://github.com/holegrain/cz2006#getting-started)
+[Contributing](https://github.com/holegrain/cz2006#contributing--issues)
+[License](https://github.com/holegrain/cz2006#license)
 
 ### Features
 - Book information search
