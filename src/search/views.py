@@ -61,7 +61,7 @@ def AdvSearchView(request):
             request.session['search'] = plot_truncated
             resultlist = request.session['resultlist']
             if resultlist:
-                return redirect(reverse('books:result', kwargs={'id': 1}))
+                return redirect(reverse('search:result', kwargs={'id': 1}))
             else:
                 messages.error(
                     request, f"Sorry, no matching books can be found!"

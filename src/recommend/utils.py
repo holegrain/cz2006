@@ -6,8 +6,9 @@ from itertools import combinations
 import pandas as pd
 from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
-from books.models import Book, Save
+from books.models import Save
 from star_ratings.models import UserRating
+import heapq
 
 '''
 For more information, visit:
@@ -96,37 +97,28 @@ def ColdStart(request):
         else:
             subjecttuple = details.title_detail.subjects
             for subject in subjecttuple:
-                count = subjectdict.get(subject)
-                if count is None:
-                    subjectdict[subject] = 1
-                else:
-                    subjectdict[subject] += 1
+                subjectdict[subject] = 1 if subjectdict.get(subject) is None else subjectdict[subject] + 1
+ 
+    topsubjects = heapq.nlargest(10, subjectdict, key=subjectdict.get) if len(subjectdict) > 10 else list(subjectdict.values()) # list of most popular subjects
 
-    topsubjects = [] # list of most popular subjects 
-    if len(subjectdict) > 10:
-        for x in range(10):
-            topsubjects.append(max(subjectdict, key=subjectdict.get))
-            subjectdict.pop(topsubjects[x])
-    else: # less than 10 subjects from books rated/saved by the user
-        for x in subjectdict.keys():
-            topsubjects.append(x)
-
-    num = len(topsubjects)
     resultbid = set()
-    count = 3 if num > 3 else num
-    while len(resultbid-bidset) < 100 and count > 0:
-        combs = combinations(topsubjects, count)
-        for comb in combs:  
-            if len(resultbid-bidset) > 100:
-                break  
-            responses = client.search(subject=comb, media_code=MediaCode.BOOKS, limit=25)
-            #titles = list(responses.titles) # titles is a list of Title objects
+    combs = combinations(topsubjects, 2)
+    for comb in combs:    
+        responses = client.search(subject=comb, media_code=MediaCode.BOOKS, limit=50)
+        if responses.titles is None:
+            continue
+        else: 
+            for response in responses.titles:
+                resultbid.add(response.bid)
+    
+    if len(resultbid) < 20:
+        for top in topsubjects[:3]:    
+            responses = client.search(subject=top, media_code=MediaCode.BOOKS, limit=20)
             if responses.titles is None:
                 continue
             else: 
                 for response in responses.titles:
                     resultbid.add(response.bid)
-        count -= 1
 
     results = list(resultbid-bidset)[:100]
     resultlist = []

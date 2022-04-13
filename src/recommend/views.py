@@ -26,17 +26,19 @@ def Recommend(request):
             else:
                 recommendlist, length = Recommendation(request)
                 if length < 20: # coldstart if not enough recommendations
-                    recommendlist, length = ColdStart(request)
-                    try:
-                        if length<=100:
-                            pass
-                        else:   
-                            recommendlist = recommendlist[:100]
-                            length = length(recommendlist)
-                    except:
-                        messages.error(
-                            request, f'No Recommendations found!'
-                        )
+                    recommendlist1, length1 = ColdStart(request)
+                    recommendlist = recommendlist + recommendlist1
+                    length += length1
+                try:
+                    if length<=100:
+                        pass
+                    else:   
+                        recommendlist = recommendlist[:100]
+                        length = length(recommendlist)
+                except:
+                    messages.error(
+                        request, f'No Recommendations found!'
+                    )
             request.session['resultlength'] = length
             request.session['resultlist'] = recommendlist
             return redirect(reverse('recommend:result1', kwargs={'id': 1}))
@@ -45,7 +47,10 @@ def Recommend(request):
         return redirect('/')
 
 def ResultView1(request, id=id):
-    resultlist = request.session['resultlist']
+    try:
+        resultlist = request.session['resultlist']
+    except:
+        raise Http404
     length = request.session['resultlength']
     start = (id-1)*10 + 1
     if start>length:
@@ -53,7 +58,7 @@ def ResultView1(request, id=id):
     end = id*10
     if end>length:
         end=length
-    resultlist = resultlist[start:end]
+    resultlist = resultlist[start:end+1]
     pagenum = ceil(length/10)
     context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'current':id}
     if resultlist:
