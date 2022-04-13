@@ -3,7 +3,7 @@ LibRSS is a tool for people to search books based on either the information abou
 
 Additionally, it acts as a book cataloging website where users can rate, save, share or get recommendations about books available on the website.
 
-![concept](homepage.jpg)
+![concept](homepage.png)
 
 ## Table of contents
 1.
