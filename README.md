@@ -60,10 +60,10 @@ sudo apt-get install libmysqlclient-dev
     2. In the same file, the host where the website will be hosted on needs to be added to `ALLOWED_HOSTS`
     3. In the same file, `DATABASES` needs to be modified to have your own local database
 
-4. Run `python manage.py runserver` to start the website
+4. Execute `python manage.py runserver` to start the website
 
 ## Contributing & issues
-Contributions from all over the world has always been a key for open sources projects. We welcome you to contribute by forking out your own branch. Any problems with the app can be raised as an issue.
+Contributions from all over the world has always been a key for open sources projects. We welcome you to contribute by forking out your own branch. Any problems with the website can be raised as an issue.
 
 ## License
 This software is distributed under the [MIT License](LICENSE).
