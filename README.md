@@ -19,7 +19,7 @@ Additionally, it acts as a book cataloging website where users can rate, save, s
 - Rate books
 - Save books
 
-### Build with
+### Built with
 - [Anaconda](https://www.anaconda.com/)
 - [Django](https://www.djangoproject.com/)
 - [Python](https://www.python.org/)
