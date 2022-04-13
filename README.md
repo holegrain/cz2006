@@ -26,7 +26,6 @@ Additionally, it acts as a book cataloging website where users can rate, save, s
 - [Huawei Cloud](https://www.huaweicloud.com/intl/en-us/)
 
 ## Getting Started
-This project has been deployed on both Windows and Ubuntu.
 
 ### Prerequisite
 - Database server
