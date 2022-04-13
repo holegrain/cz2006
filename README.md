@@ -5,7 +5,7 @@ Additionally, it acts as a book cataloging website where users can rate, save, s
 
 ![concept](homepage.png)
 
-## Table of contents
+### Table of contents
 1.
 2.
 3.
@@ -23,4 +23,45 @@ Additionally, it acts as a book cataloging website where users can rate, save, s
 - [Anaconda](https://www.anaconda.com/)
 - [Django](https://www.djangoproject.com/)
 - [Python](https://www.python.org/)
-- [Huawei Cloud]
+- [Huawei Cloud](https://www.huaweicloud.com/intl/en-us/)
+
+## Getting Started
+This project has been deployed on both Windows and Ubuntu.
+
+### Prerequisite
+- Database server
+- Windows/Ubuntu OS
+- Anaconda
+
+### Installation
+1. Clone the repo
+```
+git clone https://github.com/holegrain/cz2006
+cd cz2006
+```
+
+2. Create environment with `environment.yml`
+```
+conda env create -f environment.yml
+conda activate softengg
+cd src
+```
+
+For **Ubuntu OS**, additional packages need to be installed with
+```
+sudo apt-get install mysql-client
+sudo apt-get install libmysqlclient-dev
+```
+
+3. Modify variables
+    1. In `cz2006/settings.py`, the variables `EMAIL_BACKEND, EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD` needs to be modified to your own email.
+    2. In the same file, the host where the website will be hosted on needs to be added to `ALLOWED_HOSTS`
+    3. In the same file, `DATABASES` needs to be modified to have your own local database
+
+4. Run `python manage.py runserver` to start the website
+
+## Contributing & issues
+Contributions from all over the world has always been a key for open sources projects. We welcome you to contribute by forking out your own branch. Any problems with the app can be raised as an issue.
+
+## License
+This software is distributed under the [MIT License](LICENSE).
