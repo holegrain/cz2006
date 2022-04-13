@@ -17,7 +17,7 @@
 					<p>{{ form.entry }}</p>
 					<p>{{ form.password }}</p>
 					<p style="text-align: right; align-self: flex-end; padding-bottom: 0.3rem;"><a id='forgot'
-							href="http://127.0.0.1:8000/account/forget/">Forgot your
+							href="{%url 'accounts:forget'%}">Forgot your
 							password?</a></p>
 
 					{% for field in form %}
@@ -52,7 +52,7 @@
 	<div style="max-width: 20rem; padding-top: 1.5rem; padding-bottom:1.5rem; font-size: 20px;">
 		<p style="text-align:center">Signup and explore the world's knowledge!</p>
 	</div>
-	<a href="url 'accounts:forget' ">
+	<a href="{%url 'accounts:signup'%}">
 		<button id="search-button">
 			<p id="btnText">Signup</p>
 		</button>
