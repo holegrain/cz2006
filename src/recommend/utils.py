@@ -41,12 +41,9 @@ def Recommendation(request):
     model_knn.fit(df_matrix)
 
     userratings = UserRating.objects.filter(user=request.user) # queryset of UserRating objs
-    recolist = [] # list of books to generate recommendations
-    bidset = set() # set of bids rated by user
-    for userrating in userratings:
-        bidset.add(userrating.rating.content_object.bid) 
-        if userrating.score > 2: # find similar books for books with rating more than 2
-            recolist.append(userrating.rating.content_object.bid)
+    recolist = [userrating.rating.content_object.bid for userrating in userratings if userrating.score > 2] # list of books to generate recommendations
+    bidlist = [userrating.rating.content_object.bid for userrating in userratings]
+    bidset = set(bidlist) # set of bids rated by user
 
     resultbid = set() # recommended set of bids
     for bid in recolist:
@@ -84,15 +81,12 @@ def ColdStart(request):
     savelist = []
     if Save.objects.filter(user=request.user).exists():
         savelist = Save.objects.filter(user=request.user)
-    bidset = set() # set of bids saved/rated by the user
-    recoset = set() # set of bids to generate recommendations
-    for userrating in userratings:
-        bidset.add(userrating.rating.content_object.bid) 
-        if userrating.score > 2: # find similar books for books with rating more than 2
-            recoset.add(userrating.rating.content_object.bid)
-    for save in savelist:
-        bidset.add(save.bid)
-        recoset.add(save.bid)
+    bidlist1 = [userrating.rating.content_object.bid for userrating in userratings]
+    recolist1 = [userrating.rating.content_object.bid for userrating in userratings if userrating.score > 2]
+    bidlist2 = [save.bid for save in savelist]
+    recolist2 = [save.bid for save in savelist]
+    bidset = set(bidlist1 + bidlist2) # set of bids saved/rated by the user
+    recoset = set(recolist1 + recolist2) # set of bids to generate recommendations
 
     subjectdict = {} # dict to count subject occurrences 
     for bid in recoset:
@@ -119,10 +113,7 @@ def ColdStart(request):
 
     num = len(topsubjects)
     resultbid = set()
-    if num > 3:
-        count = 3
-    else:
-        count = num
+    count = 3 if num > 3 else num
     while len(resultbid-bidset) < 100 and count > 0:
         combs = combinations(topsubjects, count)
         for comb in combs:  
@@ -137,9 +128,7 @@ def ColdStart(request):
                     resultbid.add(response.bid)
         count -= 1
 
-    results = list(resultbid-bidset)
-    if len(results) > 100:
-        results = results[:100]
+    results = list(resultbid-bidset)[:100]
     resultlist = []
     for result in results:
         title_details = client.get_title_details(bid=result) # get the details of each book
