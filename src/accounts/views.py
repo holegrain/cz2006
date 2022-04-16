@@ -85,7 +85,7 @@ def LoginView(request):
             else:
                 user = authenticate(username=entry, password=password)
             if user == None:
-                messages.error(request, f"Your username and password didn't match.")
+                messages.error(request, f"Your username/email and password didn't match.")
             else:
                 login(request, user)
                 request.session['is_logged'] = True
@@ -138,7 +138,7 @@ def ProfileView(request):
             obj.dob = form.cleaned_data.get('dob')
             obj.email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
-            if password != None:
+            if password != '':
                 obj.set_password(password)
             obj.save()
             messages.success(
