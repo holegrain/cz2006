@@ -16,11 +16,13 @@ def SearchView(request):
             genres = form.cleaned_data.get('genres')
             genretuple = tuple(genres.split(', '))
             try:
+                # use standard search function 
                 resultlist, length = standard_search(title=title, author=author, isbn=isbn, subject=genretuple)
                 request.session['resultlength'] = length
                 request.session['resultlist'] = resultlist
             except:
                 request.session['resultlist'] = None
+            # get search input to be displayed 
             if title:
                 search = title+'...'
             elif isbn:
@@ -49,15 +51,19 @@ def AdvSearchView(request):
         if form.is_valid():
             plot = form.cleaned_data.get('plot')
             try:
+                # use advanced search function 
                 resultlist, length = adv_search(plot=plot)
                 request.session['resultlength'] = length
                 request.session['resultlist'] = resultlist
             except: 
                 request.session['resultlist'] = None
+
+            # get search input to be displayed 
             try:
                 plot_truncated = plot[:30] + '...'
             except:
                 plot_truncated=plot
+
             request.session['search'] = plot_truncated
             resultlist = request.session['resultlist']
             if resultlist:
@@ -71,21 +77,27 @@ def AdvSearchView(request):
     context = {'form': form}
     return render(request, 'advsearch.html', context)
 
+
 def ResultView(request, id=id):
+    # get results from session
     try:
         resultlist = request.session['resultlist']
     except:
         raise Http404
+    # get length of results
     length = request.session['resultlength']
     plot = request.session['search']
     sortby = 'default'
+    # get first book in page
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  
+    # get last book in page 
     end = id*10
     if end>length:
         end=length
     resultlist = resultlist[start:end+1]
+    # get number of pages
     pagenum = ceil(length/10)
     context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':sortby}
     if resultlist:
@@ -93,6 +105,7 @@ def ResultView(request, id=id):
 
 
 def SortByView(request, id, value):
+    # get results from session and use sort function 
     try:
         resultlist = request.session['resultlist']
         if value == 'newest':
@@ -103,15 +116,19 @@ def SortByView(request, id, value):
             resultlist=sort(resultlist, sort_by=value, reverse=False)
     except:
         raise Http404
+    # get length of results
     length = request.session['resultlength']
     plot = request.session['search']
+    # get first book in page
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  
+    # get last book in page 
     end = id*10
     if end>length:
         end=length
     resultlist = resultlist[start:end+1]
+    # get number of pages
     pagenum = ceil(length/10)
     context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'plot':plot, 'current':id, 'sortby':value}
     if resultlist:

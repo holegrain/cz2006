@@ -46,19 +46,25 @@ def Recommend(request):
         messages.error(request, 'Please rate at least 5 more books to unlock recommendations!')
         return redirect('/')
 
+
 def ResultView1(request, id=id):
+    # get results from session
     try:
         resultlist = request.session['resultlist']
     except:
         raise Http404
+    # get length of results
     length = request.session['resultlength']
+    # get first book in page
     start = (id-1)*10 + 1
     if start>length:
         raise Http404  
+    # get last book in page 
     end = id*10
     if end>length:
         end=length
     resultlist = resultlist[start:end+1]
+    # get number of pages
     pagenum = ceil(length/10)
     context = {'resultlist':resultlist, 'page':range(1,pagenum+1), 'current':id}
     if resultlist:

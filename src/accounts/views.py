@@ -16,18 +16,22 @@ from .utils import random_password
 API_KEY = 'RGV2LVpob3VXZWk6IW5sYkAxMjMj'
 client = Client(PRODUCTION_URL, API_KEY)
 
+
 def ForgetPwView(request):
+    # check if user is authenticated
+    if request.user.is_authenticated:
+        return render (request, 'loggedin.html')
     if request.method == 'POST':
         form = ForgetPWForm(request.POST)
         if form.is_valid():
             entry = form.cleaned_data['entry']
+            #  check for username or email
             if '@' in entry:
                 user = User.objects.filter(email=entry).first()
             else: 
                 user = User.objects.filter(username=entry).first()
 
-            if isinstance(user, User): 
-            # if there is a valid username email pair
+            if isinstance(user, User): # if user exists
                 new_pw = random_password()
                 user.set_password(new_pw)
                 user.save()
@@ -38,7 +42,7 @@ def ForgetPwView(request):
                     recipient_list = [user.email],
                     fail_silently=False,
                 )
-                # go back to account page
+                # redirect to account page
                 messages.success(
                     request, f'Check your email for a temporary password.')
                 return redirect('/account/login/')
@@ -51,11 +55,15 @@ def ForgetPwView(request):
     context = {'form': form}
     return render(request, 'forget.html', context)
 
-# Create your views here.
+
 def SignupView(request):
+    # check if user is authenticated
+    if request.user.is_authenticated:
+        return render (request, 'loggedin.html')
     if request.method == 'POST':
         form = UserSignupForm(request.POST, initial={'dob': datetime.date.today()})
         if form.is_valid():
+            # no validation error raised, to store object in database
             send_mail(
                 'Welcome to klib!',
                 f"Thank you {form.cleaned_data['username']}, our journey to find great books begins today!",
@@ -66,6 +74,7 @@ def SignupView(request):
             form.save()
             messages.success(
                 request, f'Your account has been created. You can log in now!')
+            # redirect to login page
             return redirect('/account/login/')
     else:
         form = UserSignupForm(initial={'dob': datetime.date.today()})
@@ -74,19 +83,26 @@ def SignupView(request):
 
         
 def LoginView(request):
+    # check if user is authenticated
+    if request.user.is_authenticated:
+        return render (request, 'loggedin.html')
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
             entry = form.cleaned_data.get('entry')
             password = form.cleaned_data.get('password')
+            # check for username of email
             if '@' in entry:
                 user = User.objects.get(email=entry)
                 user = authenticate(username=user, password=password)
             else:
                 user = authenticate(username=entry, password=password)
+            # authentication failed
             if user == None:
                 messages.error(request, f"Your username/email and password didn't match.")
+            # authentication passed
             else:
+                # create session 
                 login(request, user)
                 request.session['is_logged'] = True
                 user = request.user.id
@@ -97,18 +113,23 @@ def LoginView(request):
     context = {'form': form}
     return render(request, 'login.html', context)
 
+
+# decorator for login required
+@login_required(login_url='/account/login/')
 def AccountView(request):
+    # get saved books
     saveobjs = Save.objects.filter(user=request.user)
+    # get viewed books
     try:
         viewobjs = View.objects.filter(user=request.user).order_by('-lastviewed')[:20]
     except:
         viewobjs = View.objects.filter(user=request.user)
-    rateobjs = []
-    if UserRating.objects.filter(user=request.user).exists():
-        rateobjs = UserRating.objects.filter(user=request.user)
+    # get rated books
+    rateobjs = UserRating.objects.filter(user=request.user)
     viewbooklist = []
     savebooklist = []
     ratebooklist = []
+    # get titles of books
     for i in rateobjs:
         book = client.get_title_details(bid=i.rating.content_object.bid).title_detail
         if book != None:
@@ -121,6 +142,7 @@ def AccountView(request):
         book = client.get_title_details(bid=i.bid).title_detail
         if book != None:
             savebooklist.append(book)
+
     context = {
         'save': savebooklist,
         'view': viewbooklist,
@@ -128,16 +150,20 @@ def AccountView(request):
     }
     return render(request, 'account.html', context)
 
+
+# decorator for login required
 @login_required(login_url='/account/login/')
 def ProfileView(request):
     user = request.user
     obj = get_object_or_404(User, username=user)
     if request.method == 'POST':
+        # display user's dob and email
         form = UserUpdateForm(request.POST, initial={'dob': obj.dob, 'email': obj.email}, request=request)
-        if form.is_valid():
+        if form.is_valid(): # if user is authenticated and no validation errors are raised
             obj.dob = form.cleaned_data.get('dob')
             obj.email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
+            # if new password is entered, set new password
             if password != '':
                 obj.set_password(password)
             obj.save()
@@ -150,14 +176,22 @@ def ProfileView(request):
     'object': obj}
     return render(request, 'profile.html', context)
 
+
+# decorator for login required
 @login_required(login_url='/account/login/')
 def DeleteView(request):
     if request.method == 'POST':
         form = UserDeleteForm(request.POST, request=request)
-        if form.is_valid():
+        if form.is_valid(): # if user is authenticated
             obj = get_object_or_404(User, username=request.user)
+            # delete user related data
+            Save.objects.filter(user=request.user).delete()
+            View.objects.filter(user=request.user).delete()
+            UserRating.objects.filter(user=request.user).delete()
+            # logout
             logout(request)
-            obj.delete()
+            # delete user from database
+            obj.delete() 
             return redirect('/') 
     else:
         form = UserDeleteForm(request=request)

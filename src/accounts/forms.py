@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model, authenticate
 from .models import User
-from django.db import transaction
 
 years = [x for x in range(1920, 2023)]
 
@@ -20,16 +19,17 @@ class ForgetPWForm(forms.Form):
 
 
 class UserSignupForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'dob']
 
+    # username field
     username = forms.RegexField(regex=r"^[\w.@+-]+$", widget=forms.TextInput(attrs={
         'class': 'form-input',
         'required': 'true',
         'placeholder': 'Username'}))
 
+    # password field
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': 'form-input',
         'placeholder': 'Password',
@@ -41,12 +41,13 @@ class UserSignupForm(UserCreationForm):
         'placeholder': 'Confirm Password',
         'required': 'true'}))
 
+    # email field
     email = forms.CharField(min_length=6, max_length=256, widget=forms.TextInput(attrs={
         'class': 'form-input',
         'type': 'email',
         'placeholder': 'Email Address',
         'required': 'true'}))
-
+    # dob
     dob = forms.DateField(widget=forms.SelectDateWidget(years=years, attrs={
         'class': 'date-input',
         'required': 'true'}))
@@ -76,9 +77,12 @@ class UserSignupForm(UserCreationForm):
 
 
 class UserLoginForm(forms.Form):
+    # username/email field
     entry = forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'Username/Email',
         'class': 'form-input'}))
+
+    # password field
     password = forms.CharField(max_length=32, widget=forms.PasswordInput(attrs={
         'placeholder': 'Password',
         'class': 'form-input'}))
@@ -97,19 +101,27 @@ class UserLoginForm(forms.Form):
         return entry
 
 class UserUpdateForm(UserCreationForm):
+    # dob field 
     dob = forms.DateField(widget=forms.SelectDateWidget(years=years, attrs={
         'class': 'date-input'}))
+
+    # email field
     email = forms.CharField(min_length=6, max_length=256, widget=forms.TextInput(attrs={
         'placeholder': 'Email Address',
         'class': 'form-input'}))
+
+    # new password field
     password1 = forms.CharField(
         max_length=32, label='new password', required=False, widget=forms.PasswordInput(attrs={
         'placeholder': 'New Password',
         'class': 'form-input'}))
+
     password2 = forms.CharField(
         max_length=32, label='password confirmation', required=False, widget=forms.PasswordInput(attrs={
         'placeholder': 'Re-enter Password',
         'class': 'form-input'}))
+
+    # current password field
     current = forms.CharField(max_length=32, label='current password', widget=forms.PasswordInput(attrs={
         'placeholder': 'Current Password',
         'class': 'form-input'}))
@@ -122,7 +134,7 @@ class UserUpdateForm(UserCreationForm):
         self.request = kwargs.pop("request")
         super(UserUpdateForm, self).__init__(*args, **kwargs)
 
-    # validate password:
+    # validate password
     def clean_current(self):
         current = self.cleaned_data.get('current')
         if authenticate(username=self.request.user, password=current) == None:
@@ -153,6 +165,7 @@ class UserUpdateForm(UserCreationForm):
 
 
 class UserDeleteForm(forms.Form):
+    # password field
     password = forms.CharField(
         max_length=32, label='password', widget=forms.PasswordInput(attrs={
         'placeholder': 'Current Password',
@@ -163,7 +176,6 @@ class UserDeleteForm(forms.Form):
         super(UserDeleteForm, self).__init__(*args, **kwargs)
 
     # validate password:
-
     def clean_password(self):
         password = self.cleaned_data.get('password')
         if authenticate(username=self.request.user, password=password) == None:

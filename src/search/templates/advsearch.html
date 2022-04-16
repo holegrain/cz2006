@@ -18,7 +18,7 @@
         </p>{{ form.plot }}</p>
 
         {% for field in form %}
-        {% for error in field.errors %}
+        {% for error in field.errors|slice:":1" %}
         <div style="align-self: center">
           <medium style="color: red; justify-self: center;">{{ error }}</medium>
         </div>

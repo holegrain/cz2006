@@ -1,5 +1,6 @@
 import random
 
+# generate random password of length 15
 def random_password():
     lower = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     upper = 'abcdefghijklmnopqrstuvwxyz'
