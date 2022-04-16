@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+
+<title>Error 404 - Page Not Found</title>
+
+<div class="search-content">
+    <div class="search-header">
+        <p class="header-text">404 - Page Not Found</p>
+    </div>
+</div>
+
+<style>
+    .search-content {
+    position: relative;
+    text-align: center;
+    background-color: rgba(243, 255, 246, 0.35);
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.481);
+    }
+    
+    .search-header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    }
+</style>
+
+{% endblock %}
